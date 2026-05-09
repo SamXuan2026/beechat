@@ -48,6 +48,12 @@ npm start
 http://127.0.0.1:5188
 ```
 
+Docker 启动：
+
+```bash
+docker compose up -d --build
+```
+
 ## 状态与停止
 
 ```bash
@@ -64,6 +70,17 @@ npm run smoke
 ```
 
 冒烟覆盖：健康检查、登录态、WebSocket、频道消息、私信、编辑、撤回、频道权限、成员管理、文件上传下载、搜索、审计筛选。
+
+## 文档
+
+```text
+docs/API.md             接口文档
+docs/DEPLOYMENT.md      部署说明
+docs/ITERATION_PLAN.md  后续迭代计划
+migrations/001_init.sql SQLite 初始化结构
+Dockerfile              容器镜像定义
+docker-compose.yml      单机部署编排
+```
 
 ## 数据目录
 

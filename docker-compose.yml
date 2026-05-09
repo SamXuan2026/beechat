@@ -1,0 +1,12 @@
+services:
+  beechat:
+    build: .
+    container_name: beechat-mvp
+    restart: unless-stopped
+    environment:
+      PORT: 5188
+    ports:
+      - "5188:5188"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
