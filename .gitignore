@@ -1,0 +1,6 @@
+.DS_Store
+data/*.json
+data/*.sqlite
+data/uploads/
+logs/
+run/

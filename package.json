@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js",
+    "smoke": "node scripts/smoke.js"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

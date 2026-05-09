@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BeeChat MVP</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <section id="loginScreen" class="login-screen">
+      <form id="loginForm" class="login-panel">
+        <div class="login-brand">
+          <span>B</span>
+          <div>
+            <strong>BeeChat</strong>
+            <small>企业内网协同聊天</small>
+          </div>
+        </div>
+        <label>
+          <span>账号</span>
+          <input id="loginAccount" autocomplete="username" value="13677889001" />
+        </label>
+        <label>
+          <span>密码</span>
+          <input id="loginPassword" type="password" autocomplete="current-password" value="admin123" />
+        </label>
+        <div id="loginError" class="login-error hidden"></div>
+        <button type="submit">登录</button>
+      </form>
+    </section>
+
+    <div id="app" class="hidden">
+      <aside class="sidebar">
+        <div class="brand">
+          <span>B</span>
+          <div>
+            <strong>BeeChat</strong>
+            <small id="securityMode">内网安全模式</small>
+          </div>
+        </div>
+        <input id="searchInput" class="search" placeholder="搜索频道、人员、消息" />
+        <div class="section-title">频道</div>
+        <div id="channelList" class="nav-list"></div>
+        <div class="create-channel">
+          <input id="channelName" placeholder="新频道名称" />
+          <button id="createChannelBtn">创建</button>
+        </div>
+        <div class="section-title">私信</div>
+        <div id="dmList" class="dm-list"></div>
+        <div class="user-card">
+          <span id="currentAvatar">我</span>
+          <div>
+            <strong id="currentName">当前用户</strong>
+            <small>审计在线 · 加密会话</small>
+          </div>
+          <button id="logoutBtn" title="退出登录">退出</button>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="chat-header">
+          <div>
+            <strong id="channelTitle"># general</strong>
+            <span id="channelDesc">128 成员 · 日常协作与公告</span>
+          </div>
+          <div class="header-tags">
+            <span>内网审计</span>
+            <span>消息留痕</span>
+            <span>文件脱敏</span>
+          </div>
+        </header>
+        <div id="notice" class="notice hidden"></div>
+        <div id="searchResults" class="search-results hidden"></div>
+        <section id="messages" class="messages"></section>
+        <footer class="composer">
+          <div class="tools">B　I　链接　代码　截图　文件　/ 调用机器人、审批、知识库</div>
+          <div class="composer-row">
+            <input id="messageInput" placeholder="发送到 #general" />
+            <input id="fileInput" class="hidden" type="file" />
+            <button id="fileBtn" title="上传文件">文件</button>
+            <span>加密</span>
+            <button id="sendBtn">发送</button>
+          </div>
+        </footer>
+      </main>
+
+      <aside class="thread">
+        <header>
+          <div class="panel-tabs">
+            <button id="threadTabBtn" class="active">线程</button>
+            <button id="auditTabBtn">审计</button>
+            <button id="memberTabBtn">成员</button>
+          </div>
+          <button id="closeThreadBtn">关闭</button>
+        </header>
+        <div id="threadContent" class="thread-empty">选择一条消息查看线程。</div>
+        <div id="auditContent" class="audit-panel hidden"></div>
+        <div id="memberContent" class="member-panel hidden"></div>
+      </aside>
+
+      <aside class="discover">
+        <strong>发现频道</strong>
+        <div id="discoverList"></div>
+      </aside>
+    </div>
+    <script src="/app.js"></script>
+  </body>
+</html>
