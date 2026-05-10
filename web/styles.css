@@ -448,6 +448,32 @@ button {
   text-align: center;
 }
 
+.load-more-messages {
+  display: block;
+  width: fit-content;
+  margin: 2px auto 12px;
+  border: 1px solid #d8e3f2;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #357abd;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.load-more-messages:disabled {
+  cursor: default;
+  color: #8a93a5;
+  background: #f2f4f7;
+}
+
+.no-more-messages {
+  margin: 2px auto 12px;
+  color: #98a2b3;
+  font-size: 12px;
+  text-align: center;
+}
+
 .message {
   gap: 12px;
   margin-bottom: 10px;

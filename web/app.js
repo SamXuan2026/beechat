@@ -8,8 +8,10 @@ const state = {
   activeChannelId: 1,
   activeDmUserId: null,
   messages: [],
+  messagePage: { hasMore: false, nextBeforeId: null, loadingOlder: false },
   threadRoot: null,
   threadMessages: [],
+  threadPage: { hasMore: false, nextBeforeId: null, loadingOlder: false },
   searchTimer: null,
   sidePanel: "thread",
   editingMessageId: null,
@@ -20,6 +22,8 @@ const state = {
   realtimeTimer: null,
   realtimeRefreshTimer: null
 };
+
+const MESSAGE_PAGE_SIZE = 30;
 
 const dom = {
   app: document.querySelector("#app"),
@@ -95,6 +99,23 @@ function activeDmUser() {
   return state.workspace.users.find((item) => item.id === state.activeDmUserId);
 }
 
+function normalizeMessagePage(data) {
+  if (Array.isArray(data)) {
+    return {
+      items: data,
+      hasMore: false,
+      nextBeforeId: data.length ? data[0].id : null,
+      pageSize: data.length
+    };
+  }
+  return {
+    items: Array.isArray(data.items) ? data.items : [],
+    hasMore: Boolean(data.hasMore),
+    nextBeforeId: data.nextBeforeId ?? null,
+    pageSize: data.pageSize ?? MESSAGE_PAGE_SIZE
+  };
+}
+
 async function applySession(session) {
   state.token = session.token;
   state.workspace = session.workspace;
@@ -143,8 +164,10 @@ function logout() {
   state.user = null;
   state.token = null;
   state.messages = [];
+  state.messagePage = { hasMore: false, nextBeforeId: null, loadingOlder: false };
   state.threadRoot = null;
   state.threadMessages = [];
+  state.threadPage = { hasMore: false, nextBeforeId: null, loadingOlder: false };
   state.audits = [];
   state.members = [];
   state.editingMessageId = null;
@@ -163,17 +186,45 @@ async function refreshWorkspace() {
   renderHeader();
 }
 
-async function loadMessages() {
+async function loadMessages(options = {}) {
+  const older = Boolean(options.older);
+  const beforeId = older ? state.messagePage.nextBeforeId : null;
+  const query = new URLSearchParams({ pageSize: String(MESSAGE_PAGE_SIZE) });
+  if (beforeId) query.set("beforeId", String(beforeId));
+  const previousScrollHeight = older ? dom.messages.scrollHeight : 0;
   if (state.viewMode === "direct") {
-    state.messages = await request(`/api/direct/${state.activeDmUserId}/messages`);
+    const page = normalizeMessagePage(await request(`/api/direct/${state.activeDmUserId}/messages?${query.toString()}`));
+    state.messages = older ? [...page.items, ...state.messages] : page.items;
+    state.messagePage = { ...state.messagePage, hasMore: page.hasMore, nextBeforeId: page.nextBeforeId, loadingOlder: false };
     if (state.workspace?.directUnreadCounts) {
       state.workspace.directUnreadCounts[String(state.activeDmUserId)] = 0;
     }
+    if (older) {
+      renderMessages({ preserveScrollHeight: previousScrollHeight });
+    }
     return;
   }
-  state.messages = await request(`/api/channels/${state.activeChannelId}/messages`);
+  const page = normalizeMessagePage(await request(`/api/channels/${state.activeChannelId}/messages?${query.toString()}`));
+  state.messages = older ? [...page.items, ...state.messages] : page.items;
+  state.messagePage = { ...state.messagePage, hasMore: page.hasMore, nextBeforeId: page.nextBeforeId, loadingOlder: false };
   const channel = state.workspace?.channels.find((item) => item.id === state.activeChannelId);
   if (channel) channel.unreadCount = 0;
+  if (older) {
+    renderMessages({ preserveScrollHeight: previousScrollHeight });
+  }
+}
+
+async function loadOlderMessages() {
+  if (!state.messagePage.hasMore || state.messagePage.loadingOlder) return;
+  state.messagePage.loadingOlder = true;
+  renderMessages({ keepPosition: true });
+  try {
+    await loadMessages({ older: true });
+  } catch (error) {
+    state.messagePage.loadingOlder = false;
+    showNotice(error.message);
+    renderMessages({ keepPosition: true });
+  }
 }
 
 async function refreshCurrentView() {
@@ -231,8 +282,32 @@ function disconnectRealtime() {
 async function openThread(message) {
   if (state.viewMode === "direct") return;
   state.threadRoot = message;
-  state.threadMessages = await request(`/api/channels/${message.channelId}/messages?parentId=${message.id}`);
+  const query = new URLSearchParams({ parentId: String(message.id), pageSize: String(MESSAGE_PAGE_SIZE) });
+  const page = normalizeMessagePage(await request(`/api/channels/${message.channelId}/messages?${query.toString()}`));
+  state.threadMessages = page.items;
+  state.threadPage = { hasMore: page.hasMore, nextBeforeId: page.nextBeforeId, loadingOlder: false };
   renderThread();
+}
+
+async function loadOlderThreadMessages() {
+  if (!state.threadRoot || !state.threadPage.hasMore || state.threadPage.loadingOlder) return;
+  state.threadPage.loadingOlder = true;
+  renderThread();
+  try {
+    const query = new URLSearchParams({
+      parentId: String(state.threadRoot.id),
+      pageSize: String(MESSAGE_PAGE_SIZE),
+      beforeId: String(state.threadPage.nextBeforeId)
+    });
+    const page = normalizeMessagePage(await request(`/api/channels/${state.threadRoot.channelId}/messages?${query.toString()}`));
+    state.threadMessages = [...page.items, ...state.threadMessages];
+    state.threadPage = { hasMore: page.hasMore, nextBeforeId: page.nextBeforeId, loadingOlder: false };
+    renderThread();
+  } catch (error) {
+    state.threadPage.loadingOlder = false;
+    showNotice(error.message);
+    renderThread();
+  }
 }
 
 async function sendMessage(parentId = null) {
@@ -371,9 +446,11 @@ function renderSidebar() {
       state.viewMode = "channel";
       state.activeChannelId = Number(button.dataset.channelId);
       state.activeDmUserId = null;
+      state.messagePage = { hasMore: false, nextBeforeId: null, loadingOlder: false };
       await loadMessages();
       state.threadRoot = null;
       state.threadMessages = [];
+      state.threadPage = { hasMore: false, nextBeforeId: null, loadingOlder: false };
       render();
     });
   });
@@ -393,14 +470,24 @@ function renderSidebar() {
       state.activeDmUserId = Number(button.dataset.dmUserId);
       state.threadRoot = null;
       state.threadMessages = [];
+      state.threadPage = { hasMore: false, nextBeforeId: null, loadingOlder: false };
+      state.messagePage = { hasMore: false, nextBeforeId: null, loadingOlder: false };
       await loadMessages();
       render();
     });
   });
 }
 
-function renderMessages() {
-  dom.messages.innerHTML = `<div class="date">今天</div>` + state.messages.map((message) => {
+function renderMessages(options = {}) {
+  const previousScrollHeight = options.preserveScrollHeight || 0;
+  const pager = state.messagePage.loadingOlder
+    ? `<button class="load-more-messages" disabled>正在加载...</button>`
+    : state.messagePage.hasMore
+      ? `<button class="load-more-messages" id="loadMoreMessagesBtn">加载更早消息</button>`
+      : state.messages.length
+        ? `<div class="no-more-messages">没有更早消息</div>`
+        : "";
+  dom.messages.innerHTML = `${pager}<div class="date">今天</div>` + state.messages.map((message) => {
     const mine = message.senderId === state.user.id;
     const revoked = Boolean(message.revoked);
     const editing = state.editingMessageId === message.id;
@@ -460,7 +547,15 @@ function renderMessages() {
   dom.messages.querySelectorAll("[data-cancel-edit-id]").forEach((button) => {
     button.addEventListener("click", cancelEditMessage);
   });
-  dom.messages.scrollTop = dom.messages.scrollHeight;
+  const loadMoreBtn = dom.messages.querySelector("#loadMoreMessagesBtn");
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener("click", loadOlderMessages);
+  }
+  if (previousScrollHeight) {
+    dom.messages.scrollTop = dom.messages.scrollHeight - previousScrollHeight;
+  } else if (!options.keepPosition) {
+    dom.messages.scrollTop = dom.messages.scrollHeight;
+  }
 }
 
 function renderThread() {
@@ -491,6 +586,13 @@ function renderThread() {
     </div>
     <div class="thread-audit">此线程包含客户信息时，转发前需完成脱敏检查。</div>
     <div class="thread-list">
+      ${state.threadPage.loadingOlder
+        ? "<button class=\"load-more-messages\" disabled>正在加载...</button>"
+        : state.threadPage.hasMore
+          ? "<button class=\"load-more-messages\" id=\"loadMoreThreadBtn\">加载更早回复</button>"
+          : state.threadMessages.length
+            ? "<div class=\"no-more-messages\">没有更早回复</div>"
+            : ""}
       ${state.threadMessages.map((message) => `
         <div class="thread-item">
           <span style="background:${message.avatarColor}">${message.avatarText}</span>
@@ -507,6 +609,10 @@ function renderThread() {
     </div>
   `;
   document.querySelector("#threadSendBtn").addEventListener("click", () => sendMessage(state.threadRoot.id));
+  const loadMoreThreadBtn = document.querySelector("#loadMoreThreadBtn");
+  if (loadMoreThreadBtn) {
+    loadMoreThreadBtn.addEventListener("click", loadOlderThreadMessages);
+  }
 }
 
 async function refreshAudits() {
@@ -706,8 +812,10 @@ async function searchMessages(keyword) {
         state.activeChannelId = Number(button.dataset.channelId);
         state.activeDmUserId = null;
       }
+      state.messagePage = { hasMore: false, nextBeforeId: null, loadingOlder: false };
       state.threadRoot = null;
       state.threadMessages = [];
+      state.threadPage = { hasMore: false, nextBeforeId: null, loadingOlder: false };
       await loadMessages();
       render();
       hideSearchResults();

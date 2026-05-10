@@ -376,20 +376,53 @@ function sqliteChannelMembers(channelId) {
   }));
 }
 
-function sqliteChannelMessages(channelId, parentId) {
-  const rows = parentId
-    ? db.prepare("SELECT * FROM messages WHERE channel_id = ? AND parent_id = ? AND message_type != 'DIRECT' ORDER BY id ASC").all(channelId, parentId)
-    : db.prepare("SELECT * FROM messages WHERE channel_id = ? AND parent_id IS NULL AND message_type != 'DIRECT' ORDER BY id ASC").all(channelId);
-  return rows.map(sqliteMessageFromRow).map(publicMessage);
+function normalizePageSize(value) {
+  const pageSize = Number(value) || 30;
+  return Math.min(Math.max(pageSize, 1), 100);
 }
 
-function sqliteDirectMessages(userId, peerId) {
-  return db.prepare(`
+function pagedMessages(rows, pageSize) {
+  const hasMore = rows.length > pageSize;
+  const items = (hasMore ? rows.slice(0, pageSize) : rows)
+    .reverse()
+    .map(sqliteMessageFromRow)
+    .map(publicMessage);
+  return {
+    items,
+    hasMore,
+    nextBeforeId: items.length ? items[0].id : null,
+    pageSize
+  };
+}
+
+function sqliteChannelMessages(channelId, parentId, beforeId, pageSize) {
+  const limit = pageSize + 1;
+  const beforeSql = beforeId ? " AND id < ?" : "";
+  const params = parentId
+    ? [channelId, parentId]
+    : [channelId];
+  if (beforeId) params.push(beforeId);
+  params.push(limit);
+  const rows = parentId
+    ? db.prepare(`SELECT * FROM messages WHERE channel_id = ? AND parent_id = ? AND message_type != 'DIRECT'${beforeSql} ORDER BY id DESC LIMIT ?`).all(...params)
+    : db.prepare(`SELECT * FROM messages WHERE channel_id = ? AND parent_id IS NULL AND message_type != 'DIRECT'${beforeSql} ORDER BY id DESC LIMIT ?`).all(...params);
+  return pagedMessages(rows, pageSize);
+}
+
+function sqliteDirectMessages(userId, peerId, beforeId, pageSize) {
+  const beforeSql = beforeId ? " AND id < ?" : "";
+  const params = [userId, peerId, peerId, userId];
+  if (beforeId) params.push(beforeId);
+  params.push(pageSize + 1);
+  const rows = db.prepare(`
     SELECT * FROM messages
     WHERE message_type = 'DIRECT'
       AND ((sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?))
-    ORDER BY id ASC
-  `).all(userId, peerId, peerId, userId).map(sqliteMessageFromRow).map(publicMessage);
+      ${beforeSql}
+    ORDER BY id DESC
+    LIMIT ?
+  `).all(...params);
+  return pagedMessages(rows, pageSize);
 }
 
 function sqliteAudits(type) {
@@ -780,14 +813,16 @@ async function routeApi(request, response, url) {
     if (!user) return;
     const channelId = Number(messageMatch[1]);
     const parentId = url.searchParams.get("parentId");
+    const beforeId = Number(url.searchParams.get("beforeId")) || null;
+    const pageSize = normalizePageSize(url.searchParams.get("pageSize"));
     const channel = sqliteChannel(channelId);
     if (!channel) return sendJson(response, 404, { message: "频道不存在" });
     if (!isChannelMember(channel, user.id)) return sendJson(response, 403, { message: "非频道成员不可读取消息" });
-    if (user && !parentId) {
+    if (user && !parentId && !beforeId) {
       markRead(user.id, "channel", channelId);
       saveStore();
     }
-    const result = sqliteChannelMessages(channelId, parentId ? Number(parentId) : null);
+    const result = sqliteChannelMessages(channelId, parentId ? Number(parentId) : null, beforeId, pageSize);
     return sendJson(response, 200, result);
   }
 
@@ -798,9 +833,13 @@ async function routeApi(request, response, url) {
     const peerId = Number(directMatch[1]);
     const peer = users.find((item) => item.id === peerId);
     if (!peer || peer.id === user.id) return sendJson(response, 404, { message: "私信用户不存在" });
-    markRead(user.id, "direct", peerId);
-    saveStore();
-    const result = sqliteDirectMessages(user.id, peerId);
+    const beforeId = Number(url.searchParams.get("beforeId")) || null;
+    const pageSize = normalizePageSize(url.searchParams.get("pageSize"));
+    if (!beforeId) {
+      markRead(user.id, "direct", peerId);
+      saveStore();
+    }
+    const result = sqliteDirectMessages(user.id, peerId, beforeId, pageSize);
     return sendJson(response, 200, result);
   }
 

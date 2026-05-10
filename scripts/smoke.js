@@ -30,10 +30,17 @@ async function main() {
   });
   assert(workspace.channels.length >= 3, "频道列表异常");
 
-  const messages = await request("/api/channels/1/messages", {
+  const messagesPage = await request("/api/channels/1/messages?pageSize=2", {
     headers: { Authorization: `Bearer ${session.token}` }
   });
-  assert(messages.length >= 1, "消息列表异常");
+  assert(Array.isArray(messagesPage.items) && messagesPage.items.length >= 1, "消息列表异常");
+  assert(typeof messagesPage.hasMore === "boolean", "频道消息分页字段异常");
+  if (messagesPage.hasMore) {
+    const olderPage = await request(`/api/channels/1/messages?pageSize=2&beforeId=${messagesPage.nextBeforeId}`, {
+      headers: { Authorization: `Bearer ${session.token}` }
+    });
+    assert(Array.isArray(olderPage.items), "加载更早频道消息失败");
+  }
 
   const sent = await request("/api/messages", {
     method: "POST",
@@ -146,10 +153,11 @@ async function main() {
   });
   assert(Number(directUnreadWorkspace.directUnreadCounts["2"] || 0) >= 1, "私信未读数异常");
 
-  const directMessages = await request("/api/direct/2/messages", {
+  const directMessagesPage = await request("/api/direct/2/messages?pageSize=2", {
     headers: { Authorization: `Bearer ${session.token}` }
   });
-  assert(directMessages.some((item) => item.id === direct.id), "私信列表异常");
+  assert(directMessagesPage.items.some((item) => item.id === direct.id), "私信列表异常");
+  assert(typeof directMessagesPage.hasMore === "boolean", "私信分页字段异常");
 
   const directReadWorkspace = await request("/api/workspace", {
     headers: { Authorization: `Bearer ${session.token}` }

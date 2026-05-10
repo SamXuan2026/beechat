@@ -68,11 +68,31 @@ GET /api/channels/{channelId}/messages
 Authorization: Bearer <token>
 ```
 
+分页参数：
+
+```text
+pageSize  每页条数，默认 30，最大 100
+beforeId  加载指定消息 ID 之前的更早消息
+```
+
+分页响应：
+
+```json
+{
+  "items": [],
+  "hasMore": true,
+  "nextBeforeId": 101,
+  "pageSize": 30
+}
+```
+
 线程回复：
 
 ```http
 GET /api/channels/{channelId}/messages?parentId={messageId}
 ```
+
+线程回复同样支持 `pageSize` 和 `beforeId`。
 
 发送频道消息：
 
@@ -105,6 +125,8 @@ Content-Type: application/json
 GET /api/direct/{userId}/messages
 Authorization: Bearer <token>
 ```
+
+私信消息同样返回分页结构，并支持 `pageSize` 和 `beforeId`。
 
 ```http
 POST /api/direct/messages
