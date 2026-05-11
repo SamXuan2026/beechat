@@ -1,0 +1,1660 @@
+{
+  "version": "2.11",
+  "children": [
+    {
+      "type": "frame",
+      "id": "bc_main",
+      "x": 0,
+      "y": 0,
+      "name": "BeeChat - Main",
+      "width": 1280,
+      "height": 720,
+      "fill": "#F3F5F9",
+      "layout": "horizontal",
+      "gap": 0,
+      "padding": 0,
+      "children": [
+        {
+          "type": "frame",
+          "id": "bc_main_sidebar",
+          "name": "左侧导航",
+          "width": 232,
+          "height": "fill_container",
+          "fill": "#281850",
+          "layout": "vertical",
+          "gap": 14,
+          "padding": [18, 12, 14, 12],
+          "children": [
+            {
+              "type": "frame",
+              "id": "bc_main_brand",
+              "name": "品牌",
+              "width": "fill_container",
+              "height": 32,
+              "layout": "horizontal",
+              "gap": 8,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "bc_main_logo",
+                  "name": "Logo",
+                  "width": 24,
+                  "height": 24,
+                  "cornerRadius": 5,
+                  "fill": "#4A9FD8",
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bc_main_logo_text",
+                      "content": "B",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "700",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "bc_main_brand_text",
+                  "content": "BeeChat",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "700",
+                  "fill": "#FFFFFF"
+                },
+                {
+                  "type": "text",
+                  "id": "bc_main_brand_arrow",
+                  "content": "⌄",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fill": "#A99BE5"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bc_main_search",
+              "name": "搜索",
+              "width": "fill_container",
+              "height": 34,
+              "cornerRadius": 6,
+              "fill": "#3A236B",
+              "layout": "horizontal",
+              "gap": 6,
+              "alignItems": "center",
+              "padding": [0, 10],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_main_search_icon",
+                  "content": "⌕",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fill": "#8F7DCA"
+                },
+                {
+                  "type": "text",
+                  "id": "bc_main_search_text",
+                  "content": "搜索频道、成员、消息",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fill": "#8F7DCA"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bc_main_channels",
+              "name": "频道列表",
+              "width": "fill_container",
+              "height": "fit_content",
+              "layout": "vertical",
+              "gap": 7,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "bc_main_channel_header",
+                  "name": "频道标题",
+                  "width": "fill_container",
+                  "height": 20,
+                  "layout": "horizontal",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bc_main_channel_title",
+                      "content": "频道",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "700",
+                      "fill": "#9C8DCE"
+                    },
+                    {
+                      "type": "text",
+                      "id": "bc_main_channel_plus",
+                      "content": "+",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fill": "#9C8DCE"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bc_main_channel_general",
+                  "name": "频道-general",
+                  "width": "fill_container",
+                  "height": 32,
+                  "cornerRadius": 6,
+                  "fill": "#5A3A9E",
+                  "layout": "horizontal",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "padding": [0, 10],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bc_main_channel_general_icon",
+                      "content": "#",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fill": "#FFFFFF"
+                    },
+                    {
+                      "type": "text",
+                      "id": "bc_main_channel_general_text",
+                      "content": "general",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "700",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bc_main_channel_random",
+                  "name": "频道-random",
+                  "width": "fill_container",
+                  "height": 30,
+                  "layout": "horizontal",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "padding": [0, 10],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bc_main_channel_random_icon",
+                      "content": "#",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fill": "#9C8DCE"
+                    },
+                    {
+                      "type": "text",
+                      "id": "bc_main_channel_random_text",
+                      "content": "random",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fill": "#C7BDEC"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bc_main_channel_engineering",
+                  "name": "频道-engineering",
+                  "width": "fill_container",
+                  "height": 30,
+                  "layout": "horizontal",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "padding": [0, 10],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bc_main_channel_engineering_icon",
+                      "content": "#",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fill": "#9C8DCE"
+                    },
+                    {
+                      "type": "text",
+                      "id": "bc_main_channel_engineering_text",
+                      "content": "engineering",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fill": "#C7BDEC"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "bc_main_channel_badge",
+                      "name": "未读",
+                      "width": 18,
+                      "height": 18,
+                      "cornerRadius": 9,
+                      "fill": "#E05252",
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "bc_main_channel_badge_text",
+                          "content": "3",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fontWeight": "700",
+                          "fill": "#FFFFFF"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bc_main_channel_ann",
+                  "name": "频道-announcements",
+                  "width": "fill_container",
+                  "height": 30,
+                  "layout": "horizontal",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "padding": [0, 10],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bc_main_channel_ann_icon",
+                      "content": "▢",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fill": "#9C8DCE"
+                    },
+                    {
+                      "type": "text",
+                      "id": "bc_main_channel_ann_text",
+                      "content": "announcements",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fill": "#C7BDEC"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bc_main_dm",
+              "name": "私信列表",
+              "width": "fill_container",
+              "height": "fit_content",
+              "layout": "vertical",
+              "gap": 9,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_main_dm_title",
+                  "content": "私信",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "700",
+                  "fill": "#9C8DCE"
+                },
+                {
+                  "type": "text",
+                  "id": "bc_main_dm_1",
+                  "content": "●  张三",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fill": "#C7BDEC"
+                },
+                {
+                  "type": "text",
+                  "id": "bc_main_dm_2",
+                  "content": "●  李四",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fill": "#C7BDEC"
+                },
+                {
+                  "type": "text",
+                  "id": "bc_main_dm_3",
+                  "content": "●  王五",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fill": "#C7BDEC"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bc_main_spacer",
+              "name": "弹性空间",
+              "width": "fill_container",
+              "height": "fill_container",
+              "fill": "#281850"
+            },
+            {
+              "type": "frame",
+              "id": "bc_main_user",
+              "name": "当前用户",
+              "width": "fill_container",
+              "height": 52,
+              "cornerRadius": 8,
+              "fill": "#3A236B",
+              "layout": "horizontal",
+              "gap": 10,
+              "alignItems": "center",
+              "padding": [0, 10],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "bc_main_user_avatar",
+                  "name": "头像",
+                  "width": 28,
+                  "height": 28,
+                  "cornerRadius": 14,
+                  "fill": "#4A9FD8",
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bc_main_user_avatar_text",
+                      "content": "我",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "700",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "bc_main_user_name",
+                  "content": "当前用户",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "700",
+                  "fill": "#FFFFFF"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "bc_main_content",
+          "name": "消息主区域",
+          "width": "fill_container",
+          "height": "fill_container",
+          "fill": "#F3F5F9",
+          "layout": "vertical",
+          "gap": 0,
+          "children": [
+            {
+              "type": "frame",
+              "id": "bc_main_header",
+              "name": "频道头部",
+              "width": "fill_container",
+              "height": 56,
+              "fill": "#FFFFFF",
+              "layout": "horizontal",
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "padding": [0, 18],
+              "stroke": { "fill": "#E6EAF2", "thickness": { "bottom": 1 } },
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "bc_main_header_title_wrap",
+                  "name": "标题组",
+                  "width": "fit_content",
+                  "height": "fit_content",
+                  "layout": "horizontal",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bc_main_header_hash",
+                      "content": "#",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "700",
+                      "fill": "#1F2937"
+                    },
+                    {
+                      "type": "text",
+                      "id": "bc_main_header_title",
+                      "content": "general",
+                      "fontFamily": "Inter",
+                      "fontSize": 15,
+                      "fontWeight": "700",
+                      "fill": "#1F2937"
+                    },
+                    {
+                      "type": "text",
+                      "id": "bc_main_header_count",
+                      "content": "128 成员",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fill": "#9AA3B2"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bc_main_header_actions",
+                  "name": "操作区",
+                  "width": "fit_content",
+                  "height": "fit_content",
+                  "layout": "horizontal",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bc_main_action_search",
+                      "content": "⌕",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fill": "#6B7280"
+                    },
+                    {
+                      "type": "text",
+                      "id": "bc_main_action_users",
+                      "content": "成员",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fill": "#6B7280"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "bc_main_audit_badge",
+                      "name": "内网审计",
+                      "width": 72,
+                      "height": 24,
+                      "cornerRadius": 12,
+                      "fill": "#E9FBF2",
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "bc_main_audit_badge_text",
+                          "content": "内网审计",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "700",
+                          "fill": "#16885A"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bc_main_messages",
+              "name": "消息列表",
+              "width": "fill_container",
+              "height": "fill_container",
+              "fill": "#F3F5F9",
+              "layout": "vertical",
+              "gap": 16,
+              "padding": [18, 18, 18, 18],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_main_date",
+                  "content": "2026年5月8日",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fill": "#9AA3B2",
+                  "textAlign": "center",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container"
+                },
+                {
+                  "type": "frame",
+                  "id": "bc_main_notice",
+                  "name": "安全提示",
+                  "width": "fill_container",
+                  "height": 30,
+                  "cornerRadius": 5,
+                  "fill": "#EAF5FF",
+                  "stroke": { "fill": "#B9DCF8", "thickness": 1 },
+                  "layout": "horizontal",
+                  "gap": 6,
+                  "alignItems": "center",
+                  "padding": [0, 12],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bc_main_notice_text",
+                      "content": "当前频道已开启消息留痕、文件脱敏与敏感词提醒",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fill": "#3578B8"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bc_main_msg_1",
+                  "name": "张三消息",
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "layout": "horizontal",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "bc_main_msg_1_avatar",
+                      "name": "头像",
+                      "width": 32,
+                      "height": 32,
+                      "cornerRadius": 16,
+                      "fill": "#F59E43",
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "bc_main_msg_1_avatar_text",
+                          "content": "张",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "700",
+                          "fill": "#FFFFFF"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "bc_main_msg_1_body",
+                      "name": "消息内容",
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "bc_main_msg_1_meta",
+                          "content": "张三  10:32 AM",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "700",
+                          "fill": "#374151"
+                        },
+                        {
+                          "type": "text",
+                          "id": "bc_main_msg_1_text",
+                          "content": "大家好！新版聊天工具的 UI 设计稿已经出来了，请大家看看效果如何？",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "lineHeight": 1.5,
+                          "fill": "#1F2937",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container"
+                        },
+                        {
+                          "type": "text",
+                          "id": "bc_main_msg_1_thread",
+                          "content": "3 条回复   ·   查看线程",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fill": "#4A9FD8"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bc_main_msg_2",
+                  "name": "李四消息",
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "layout": "horizontal",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "bc_main_msg_2_avatar",
+                      "name": "头像",
+                      "width": 32,
+                      "height": 32,
+                      "cornerRadius": 16,
+                      "fill": "#52A9E8",
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "bc_main_msg_2_avatar_text",
+                          "content": "李",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "700",
+                          "fill": "#FFFFFF"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "bc_main_msg_2_body",
+                      "name": "消息内容",
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "layout": "vertical",
+                      "gap": 5,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "bc_main_msg_2_meta",
+                          "content": "李四  10:35 AM",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "700",
+                          "fill": "#374151"
+                        },
+                        {
+                          "type": "text",
+                          "id": "bc_main_msg_2_text",
+                          "content": "设计风格挺清爽！相比传统企业 IM，线程和审计提示更适合内部协作。",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "lineHeight": 1.5,
+                          "fill": "#1F2937",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "bc_main_file",
+                          "name": "文件卡片",
+                          "width": 260,
+                          "height": 40,
+                          "cornerRadius": 6,
+                          "fill": "#FFFFFF",
+                          "stroke": { "fill": "#E6EAF2", "thickness": 1 },
+                          "layout": "horizontal",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "padding": [0, 10],
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "bc_main_file_icon",
+                              "content": "▣",
+                              "fontFamily": "Inter",
+                              "fontSize": 13,
+                              "fill": "#4A9FD8"
+                            },
+                            {
+                              "type": "text",
+                              "id": "bc_main_file_text",
+                              "content": "BeeChat-MVP-接口说明.pdf",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fill": "#374151"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bc_main_msg_mine",
+                  "name": "本人消息",
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "layout": "horizontal",
+                  "justifyContent": "end",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "bc_main_bubble_mine",
+                      "name": "本人气泡",
+                      "width": 320,
+                      "height": "fit_content",
+                      "cornerRadius": 8,
+                      "fill": "#4A9FD8",
+                      "layout": "vertical",
+                      "gap": 6,
+                      "padding": [10, 12],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "bc_main_mine_text",
+                          "content": "同意！我特别喜欢 Lark 那种干净的排版，加上 Telegram 的高效沟通会更舒服。",
+                          "fontFamily": "Inter",
+                          "fontSize": 13,
+                          "lineHeight": 1.45,
+                          "fill": "#FFFFFF",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container"
+                        },
+                        {
+                          "type": "text",
+                          "id": "bc_main_mine_state",
+                          "content": "已读 12 人 · 已审计",
+                          "fontFamily": "Inter",
+                          "fontSize": 10,
+                          "fill": "#D8ECFF",
+                          "textAlign": "right",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bc_main_warning",
+                  "name": "敏感词提示",
+                  "width": "fill_container",
+                  "height": 30,
+                  "cornerRadius": 5,
+                  "fill": "#FFF5DF",
+                  "stroke": { "fill": "#F5C66A", "thickness": 1 },
+                  "layout": "horizontal",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "padding": [0, 12],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bc_main_warning_text",
+                      "content": "李四 在一条消息中触发了敏感词，查看",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fill": "#A05C00"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bc_main_composer",
+              "name": "输入区",
+              "width": "fill_container",
+              "height": 74,
+              "fill": "#FFFFFF",
+              "stroke": { "fill": "#E6EAF2", "thickness": { "top": 1 } },
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [9, 16],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_main_toolbar",
+                  "content": "B   I   链接   代码   附件",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fill": "#6B7280"
+                },
+                {
+                  "type": "frame",
+                  "id": "bc_main_input_row",
+                  "name": "输入行",
+                  "width": "fill_container",
+                  "height": 34,
+                  "layout": "horizontal",
+                  "gap": 10,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "bc_main_input",
+                      "name": "输入框",
+                      "width": "fill_container",
+                      "height": 34,
+                      "cornerRadius": 6,
+                      "fill": "#F6F7FA",
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "padding": [0, 12],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "bc_main_input_text",
+                          "content": "给 #general 发送消息...",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fill": "#9AA3B2"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "bc_main_send",
+                      "name": "发送按钮",
+                      "width": 58,
+                      "height": 34,
+                      "cornerRadius": 17,
+                      "fill": "#4A9FD8",
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "bc_main_send_text",
+                          "content": "发送",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "700",
+                          "fill": "#FFFFFF"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "bc_thread",
+      "x": 1320,
+      "y": 0,
+      "name": "BeeChat - Thread View",
+      "width": 1280,
+      "height": 720,
+      "fill": "#F3F5F9",
+      "layout": "horizontal",
+      "gap": 0,
+      "padding": 0,
+      "children": [
+        {
+          "type": "ref",
+          "id": "bc_thread_sidebar_ref",
+          "ref": "bc_main_sidebar",
+          "width": 232,
+          "height": "fill_container"
+        },
+        {
+          "type": "frame",
+          "id": "bc_thread_center",
+          "name": "线程中央区",
+          "width": "fill_container",
+          "height": "fill_container",
+          "fill": "#F3F5F9",
+          "layout": "vertical",
+          "gap": 0,
+          "children": [
+            {
+              "type": "frame",
+              "id": "bc_thread_header",
+              "name": "头部",
+              "width": "fill_container",
+              "height": 56,
+              "fill": "#FFFFFF",
+              "stroke": { "fill": "#E6EAF2", "thickness": { "bottom": 1 } },
+              "layout": "horizontal",
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "padding": [0, 18],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_thread_header_title",
+                  "content": "# general   128 成员",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "700",
+                  "fill": "#1F2937"
+                },
+                {
+                  "type": "text",
+                  "id": "bc_thread_header_actions",
+                  "content": "⌕   成员   ⋯",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fill": "#6B7280"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bc_thread_message_area",
+              "name": "消息区",
+              "width": "fill_container",
+              "height": "fill_container",
+              "fill": "#F3F5F9",
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 18,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_thread_date",
+                  "content": "2026年5月8日",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fill": "#9AA3B2",
+                  "textAlign": "center",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container"
+                },
+                {
+                  "type": "text",
+                  "id": "bc_thread_msg_1",
+                  "content": "张三  10:32 AM\n大家好！新版聊天工具的 UI 设计稿已经出来了，请大家看看效果如何？\n3 条回复",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "lineHeight": 1.45,
+                  "fill": "#1F2937",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container"
+                },
+                {
+                  "type": "text",
+                  "id": "bc_thread_msg_2",
+                  "content": "李四  10:35 AM\n设计风格挺清爽！相比传统企业 IM，线程和审计提示更适合内部协作。",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "lineHeight": 1.45,
+                  "fill": "#1F2937",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "bc_thread_panel",
+          "name": "线程面板",
+          "width": 320,
+          "height": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": { "fill": "#E6EAF2", "thickness": { "left": 1 } },
+          "layout": "vertical",
+          "gap": 14,
+          "padding": [18, 16],
+          "children": [
+            {
+              "type": "frame",
+              "id": "bc_thread_panel_header",
+              "name": "线程头部",
+              "width": "fill_container",
+              "height": 28,
+              "layout": "horizontal",
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_thread_panel_title",
+                  "content": "线程",
+                  "fontFamily": "Inter",
+                  "fontSize": 15,
+                  "fontWeight": "700",
+                  "fill": "#1F2937"
+                },
+                {
+                  "type": "text",
+                  "id": "bc_thread_panel_close",
+                  "content": "×",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fill": "#6B7280"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bc_thread_root",
+              "name": "根消息",
+              "width": "fill_container",
+              "height": "fit_content",
+              "cornerRadius": 8,
+              "fill": "#F6F7FA",
+              "layout": "vertical",
+              "gap": 6,
+              "padding": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_thread_root_meta",
+                  "content": "张三  10:32 AM",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "700",
+                  "fill": "#374151"
+                },
+                {
+                  "type": "text",
+                  "id": "bc_thread_root_text",
+                  "content": "大家好！新版聊天工具的 UI 设计稿已经出来了，请大家看看效果如何？",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "lineHeight": 1.45,
+                  "fill": "#1F2937",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bc_thread_reply_list",
+              "name": "回复列表",
+              "width": "fill_container",
+              "height": "fill_container",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_thread_reply_1",
+                  "content": "李四  10:35 AM\n设计风格很好，建议右侧线程面板保持固定宽度。",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "lineHeight": 1.45,
+                  "fill": "#1F2937",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container"
+                },
+                {
+                  "type": "frame",
+                  "id": "bc_thread_audit",
+                  "name": "审计提示",
+                  "width": "fill_container",
+                  "height": "fit_content",
+                  "cornerRadius": 6,
+                  "fill": "#FFF5DF",
+                  "stroke": { "fill": "#F5C66A", "thickness": 1 },
+                  "padding": 10,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bc_thread_audit_text",
+                      "content": "此线程包含内部资料关键词，已进入审计队列。",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fill": "#A05C00",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "bc_thread_reply_2",
+                  "content": "王五  10:42 AM\n可以加上角色权限状态，管理员能看到更多审计信息。",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "lineHeight": 1.45,
+                  "fill": "#1F2937",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bc_thread_input",
+              "name": "线程输入",
+              "width": "fill_container",
+              "height": 36,
+              "cornerRadius": 6,
+              "fill": "#F6F7FA",
+              "layout": "vertical",
+              "justifyContent": "center",
+              "padding": [0, 10],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_thread_input_text",
+                  "content": "回复此线程...",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fill": "#9AA3B2"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "bc_login",
+      "x": 0,
+      "y": 780,
+      "name": "BeeChat - Login",
+      "width": 720,
+      "height": 540,
+      "fill": "#F5F7FB",
+      "layout": "vertical",
+      "justifyContent": "center",
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "bc_login_card",
+          "name": "登录卡片",
+          "width": 360,
+          "height": 430,
+          "cornerRadius": 10,
+          "fill": "#FFFFFF",
+          "layout": "vertical",
+          "gap": 18,
+          "alignItems": "center",
+          "padding": [24, 36],
+          "effect": { "type": "shadow", "shadowType": "outer", "offset": { "x": 0, "y": 18 }, "blur": 40, "color": "#11182722" },
+          "children": [
+            {
+              "type": "frame",
+              "id": "bc_login_logo",
+              "name": "Logo",
+              "width": 42,
+              "height": 42,
+              "cornerRadius": 9,
+              "fill": "#4A9FD8",
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_login_logo_text",
+                  "content": "B",
+                  "fontFamily": "Inter",
+                  "fontSize": 20,
+                  "fontWeight": "700",
+                  "fill": "#FFFFFF"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "bc_login_title",
+              "content": "登录 BeeChat",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "700",
+              "fill": "#1F2937"
+            },
+            {
+              "type": "text",
+              "id": "bc_login_desc",
+              "content": "欢迎回来，请输入您的账号信息",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fill": "#9AA3B2"
+            },
+            {
+              "type": "frame",
+              "id": "bc_login_fields",
+              "name": "表单",
+              "width": "fill_container",
+              "height": "fit_content",
+              "layout": "vertical",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "bc_login_account",
+                  "name": "账号",
+                  "width": "fill_container",
+                  "height": 42,
+                  "cornerRadius": 6,
+                  "fill": "#F6F7FA",
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "padding": [0, 12],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bc_login_account_text",
+                      "content": "name@example.com",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fill": "#9AA3B2"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bc_login_password",
+                  "name": "密码",
+                  "width": "fill_container",
+                  "height": 42,
+                  "cornerRadius": 6,
+                  "fill": "#F6F7FA",
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "padding": [0, 12],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bc_login_password_text",
+                      "content": "••••••••",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fill": "#6B7280"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bc_login_button",
+              "name": "登录按钮",
+              "width": "fill_container",
+              "height": 42,
+              "cornerRadius": 6,
+              "fill": "#4A9FD8",
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_login_button_text",
+                  "content": "登录",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "700",
+                  "fill": "#FFFFFF"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "bc_login_links",
+              "content": "忘记密码？  立即注册",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fill": "#4A9FD8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "bc_discover",
+      "x": 760,
+      "y": 780,
+      "name": "BeeChat - Discover Channels",
+      "width": 720,
+      "height": 540,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "gap": 14,
+      "padding": [22, 28],
+      "children": [
+        {
+          "type": "frame",
+          "id": "bc_discover_header",
+          "name": "头部",
+          "width": "fill_container",
+          "height": 36,
+          "layout": "horizontal",
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "bc_discover_back",
+              "content": "←",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fill": "#1F2937"
+            },
+            {
+              "type": "text",
+              "id": "bc_discover_title",
+              "content": "发现频道",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "700",
+              "fill": "#1F2937"
+            },
+            {
+              "type": "frame",
+              "id": "bc_discover_create",
+              "name": "创建频道",
+              "width": 92,
+              "height": 30,
+              "cornerRadius": 6,
+              "fill": "#4A9FD8",
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_discover_create_text",
+                  "content": "+ 创建频道",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "700",
+                  "fill": "#FFFFFF"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "bc_discover_search",
+          "name": "搜索频道",
+          "width": "fill_container",
+          "height": 36,
+          "cornerRadius": 6,
+          "fill": "#F6F7FA",
+          "layout": "vertical",
+          "justifyContent": "center",
+          "padding": [0, 12],
+          "children": [
+            {
+              "type": "text",
+              "id": "bc_discover_search_text",
+              "content": "搜索频道...",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fill": "#9AA3B2"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "bc_discover_list",
+          "name": "频道列表",
+          "width": "fill_container",
+          "height": "fit_content",
+          "layout": "vertical",
+          "gap": 10,
+          "children": [
+            {
+              "type": "text",
+              "id": "bc_discover_general",
+              "content": "#  general       团队日常讨论公告                                      加入",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fill": "#1F2937",
+              "textGrowth": "fixed-width",
+              "width": "fill_container"
+            },
+            {
+              "type": "text",
+              "id": "bc_discover_engineering",
+              "content": "#  engineering   技术讨论和代码分享                                      已加入",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fill": "#1F2937",
+              "textGrowth": "fixed-width",
+              "width": "fill_container"
+            },
+            {
+              "type": "text",
+              "id": "bc_discover_design",
+              "content": "#  design        UI/UX 设计讨论                                          加入",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fill": "#1F2937",
+              "textGrowth": "fixed-width",
+              "width": "fill_container"
+            },
+            {
+              "type": "text",
+              "id": "bc_discover_random",
+              "content": "#  random        轻松分享和随想碎片                                      加入",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fill": "#1F2937",
+              "textGrowth": "fixed-width",
+              "width": "fill_container"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "bc_settings",
+      "x": 0,
+      "y": 1360,
+      "name": "BeeChat - Settings",
+      "width": 840,
+      "height": 620,
+      "fill": "#FFFFFF",
+      "layout": "horizontal",
+      "gap": 0,
+      "children": [
+        {
+          "type": "frame",
+          "id": "bc_settings_nav",
+          "name": "设置导航",
+          "width": 208,
+          "height": "fill_container",
+          "fill": "#FAFBFD",
+          "layout": "vertical",
+          "gap": 10,
+          "padding": [24, 16],
+          "children": [
+            {
+              "type": "text",
+              "id": "bc_settings_title",
+              "content": "设置",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "700",
+              "fill": "#1F2937"
+            },
+            {
+              "type": "frame",
+              "id": "bc_settings_active",
+              "name": "个人资料",
+              "width": "fill_container",
+              "height": 34,
+              "cornerRadius": 6,
+              "fill": "#EEF1F6",
+              "layout": "vertical",
+              "justifyContent": "center",
+              "padding": [0, 12],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_settings_active_text",
+                  "content": "个人资料",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fill": "#1F2937"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "bc_settings_notice",
+              "content": "通知",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fill": "#6B7280"
+            },
+            {
+              "type": "text",
+              "id": "bc_settings_theme",
+              "content": "外观",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fill": "#6B7280"
+            },
+            {
+              "type": "text",
+              "id": "bc_settings_shortcut",
+              "content": "快捷键",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fill": "#6B7280"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "bc_settings_content",
+          "name": "个人资料",
+          "width": "fill_container",
+          "height": "fill_container",
+          "fill": "#FFFFFF",
+          "layout": "vertical",
+          "gap": 18,
+          "padding": [32, 42],
+          "children": [
+            {
+              "type": "text",
+              "id": "bc_settings_content_title",
+              "content": "个人资料",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "700",
+              "fill": "#1F2937"
+            },
+            {
+              "type": "frame",
+              "id": "bc_settings_profile",
+              "name": "头像区",
+              "width": "fill_container",
+              "height": 72,
+              "layout": "horizontal",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "bc_settings_avatar",
+                  "name": "头像",
+                  "width": 56,
+                  "height": 56,
+                  "cornerRadius": 28,
+                  "fill": "#4A9FD8",
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bc_settings_avatar_text",
+                      "content": "我",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "700",
+                      "fill": "#FFFFFF"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "bc_settings_profile_text",
+                  "content": "当前用户\nJPG、PNG 或 GIF，最大 2MB",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "lineHeight": 1.55,
+                  "fill": "#1F2937"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bc_settings_form",
+              "name": "表单",
+              "width": "fill_container",
+              "height": "fit_content",
+              "layout": "vertical",
+              "gap": 14,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_settings_name",
+                  "content": "显示名称\n当前用户",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "lineHeight": 1.7,
+                  "fill": "#1F2937",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container"
+                },
+                {
+                  "type": "text",
+                  "id": "bc_settings_email",
+                  "content": "邮箱\nuser@beechat.com",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "lineHeight": 1.7,
+                  "fill": "#1F2937",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container"
+                },
+                {
+                  "type": "text",
+                  "id": "bc_settings_bio",
+                  "content": "个人简介\n在 BeeChat 团队工作",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "lineHeight": 1.7,
+                  "fill": "#1F2937",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bc_settings_save",
+              "name": "保存按钮",
+              "width": 88,
+              "height": 36,
+              "cornerRadius": 6,
+              "fill": "#4A9FD8",
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bc_settings_save_text",
+                  "content": "保存更改",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "700",
+                  "fill": "#FFFFFF"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

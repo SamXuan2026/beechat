@@ -4,6 +4,8 @@ async function main() {
   const health = await request("/api/health");
   assert(health.status === "UP", "健康检查失败");
   assert(health.storage === "sqlite+json", "SQLite 存储状态异常");
+  assert(Array.isArray(health.migrations), "迁移状态异常");
+  assert(health.migrations.some((item) => item.version === "001"), "初始化迁移未执行");
 
   const session = await request("/api/login", {
     method: "POST",

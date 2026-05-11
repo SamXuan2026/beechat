@@ -29,7 +29,7 @@ Authorization: Bearer <token>
 GET /api/health
 ```
 
-返回服务状态、存储类型和当前时间。
+返回服务状态、存储类型、已执行数据库迁移和当前时间。
 
 ## 登录
 

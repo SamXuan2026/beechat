@@ -60,6 +60,28 @@ logs/beechat.log    服务日志
 run/beechat.pid     本机脚本进程号
 ```
 
+## 数据库迁移
+
+服务启动时会自动扫描：
+
+```text
+migrations/*.sql
+```
+
+执行规则：
+
+- 文件名格式：`001_init.sql`、`002_xxx.sql`
+- 迁移版本取文件名前缀，例如 `001`
+- 执行记录写入 `schema_migrations`
+- 已执行版本不会重复执行
+- 任一迁移失败会回滚当前迁移并阻止服务启动
+
+健康检查会返回已执行迁移：
+
+```bash
+curl http://127.0.0.1:5188/api/health
+```
+
 ## 内网部署建议
 
 - 使用反向代理统一暴露 HTTPS。

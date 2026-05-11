@@ -45,6 +45,7 @@
           <input id="channelName" placeholder="新频道名称" />
           <button id="createChannelBtn">创建</button>
         </div>
+        <button id="discoverBtn" class="discover-entry" type="button">发现频道</button>
         <div class="section-title">私信</div>
         <div id="dmList" class="dm-list"></div>
         <div class="user-card">
@@ -98,8 +99,14 @@
         <div id="memberContent" class="member-panel hidden"></div>
       </aside>
 
-      <aside class="discover">
-        <strong>发现频道</strong>
+      <div id="discoverScrim" class="discover-scrim hidden"></div>
+      <aside id="discoverPanel" class="discover hidden" role="dialog" aria-modal="true" aria-labelledby="discoverTitle">
+        <header>
+          <button id="closeDiscoverBtn" type="button">←</button>
+          <strong id="discoverTitle">发现频道</strong>
+          <span></span>
+        </header>
+        <input id="discoverSearch" placeholder="搜索频道..." />
         <div id="discoverList"></div>
       </aside>
     </div>

@@ -18,6 +18,7 @@ const state = {
   audits: [],
   members: [],
   auditFilter: "all",
+  discoverKeyword: "",
   realtimeSocket: null,
   realtimeTimer: null,
   realtimeRefreshTimer: null
@@ -56,6 +57,12 @@ const dom = {
   memberContent: document.querySelector("#memberContent"),
   channelName: document.querySelector("#channelName"),
   createChannelBtn: document.querySelector("#createChannelBtn"),
+  discoverBtn: document.querySelector("#discoverBtn"),
+  discoverScrim: document.querySelector("#discoverScrim"),
+  discoverPanel: document.querySelector("#discoverPanel"),
+  closeDiscoverBtn: document.querySelector("#closeDiscoverBtn"),
+  discoverSearch: document.querySelector("#discoverSearch"),
+  discoverList: document.querySelector("#discoverList"),
   logoutBtn: document.querySelector("#logoutBtn")
 };
 
@@ -89,6 +96,15 @@ function showLoginError(text) {
 
 function formatTime(value) {
   return new Intl.DateTimeFormat("zh-CN", { hour: "2-digit", minute: "2-digit" }).format(new Date(value));
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll("\"", "&quot;")
+    .replaceAll("'", "&#39;");
 }
 
 function activeChannel() {
@@ -174,6 +190,7 @@ function logout() {
   state.viewMode = "channel";
   state.activeDmUserId = null;
   dom.searchInput.value = "";
+  closeDiscover();
   hideSearchResults();
   dom.app.classList.add("hidden");
   dom.loginScreen.classList.remove("hidden");
@@ -433,11 +450,56 @@ async function joinChannel(channelId) {
   showNotice(`已加入 #${updated.name}。`);
 }
 
+function openDiscover() {
+  state.discoverKeyword = "";
+  dom.discoverSearch.value = "";
+  dom.discoverScrim.classList.remove("hidden");
+  dom.discoverPanel.classList.remove("hidden");
+  renderDiscover();
+  dom.discoverSearch.focus();
+}
+
+function closeDiscover() {
+  dom.discoverScrim.classList.add("hidden");
+  dom.discoverPanel.classList.add("hidden");
+}
+
+function renderDiscover() {
+  const keyword = state.discoverKeyword.trim().toLowerCase();
+  const channels = state.workspace.channels.filter((channel) => {
+    if (!keyword) return true;
+    return `${channel.name} ${channel.description}`.toLowerCase().includes(keyword);
+  });
+  if (!channels.length) {
+    dom.discoverList.innerHTML = "<div class=\"discover-empty\">没有匹配频道</div>";
+    return;
+  }
+  dom.discoverList.innerHTML = channels.map((channel) => `
+    <article class="discover-card">
+      <span>#</span>
+      <div>
+        <strong>${escapeHtml(channel.name)}</strong>
+        <small>${escapeHtml(channel.description)}</small>
+      </div>
+      <button ${channel.joined ? "disabled" : ""} data-discover-channel="${channel.id}">
+        ${channel.joined ? "已加入" : "加入"}
+      </button>
+    </article>
+  `).join("");
+  dom.discoverList.querySelectorAll("[data-discover-channel]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      await joinChannel(Number(button.dataset.discoverChannel));
+      renderDiscover();
+      closeDiscover();
+    });
+  });
+}
+
 function renderSidebar() {
   const joinedChannels = state.workspace.channels.filter((item) => item.joined);
   dom.channelList.innerHTML = joinedChannels.map((channel) => `
     <button class="${channel.id === state.activeChannelId ? "active" : ""}" data-channel-id="${channel.id}">
-      <span># ${channel.name}</span>
+      <span># ${escapeHtml(channel.name)}</span>
       ${channel.unreadCount ? `<b>${channel.unreadCount}</b>` : ""}
     </button>
   `).join("");
@@ -459,7 +521,7 @@ function renderSidebar() {
     .filter((user) => user.id !== state.user.id)
     .map((user) => `
       <button class="dm-row ${state.viewMode === "direct" && user.id === state.activeDmUserId ? "active" : ""}" data-dm-user-id="${user.id}">
-        <i class="${user.online ? "online" : ""}"></i><span>${user.name}</span>
+        <i class="${user.online ? "online" : ""}"></i><span>${escapeHtml(user.name)}</span>
         ${Number(state.workspace.directUnreadCounts?.[String(user.id)] || 0) ? `<b>${state.workspace.directUnreadCounts[String(user.id)]}</b>` : ""}
       </button>
     `)
@@ -496,24 +558,24 @@ function renderMessages(options = {}) {
         ${mine ? "" : `<span class="avatar" style="background:${message.avatarColor}">${message.avatarText}</span>`}
         <div class="message-body">
           <div class="meta">
-            <strong>${message.senderName}</strong>
+            <strong>${escapeHtml(message.senderName)}</strong>
             <span>${formatTime(message.createdAt)}</span>
             ${message.edited ? "<em>已编辑</em>" : ""}
             ${message.sensitive ? "<b>敏感词提示</b>" : ""}
           </div>
           ${editing ? `
             <div class="inline-editor">
-              <textarea data-edit-input="${message.id}">${message.content}</textarea>
+              <textarea data-edit-input="${message.id}">${escapeHtml(message.content)}</textarea>
               <div>
                 <button data-save-edit-id="${message.id}">保存</button>
                 <button data-cancel-edit-id="${message.id}">取消</button>
               </div>
             </div>
           ` : `
-            <p class="${revoked ? "revoked" : ""}">${message.content}</p>
+            <p class="${revoked ? "revoked" : ""}">${escapeHtml(message.content)}</p>
             ${message.file ? `
-              <a class="file-card" href="${message.file.path}" target="_blank" rel="noopener">
-                <strong>${message.file.originalName}</strong>
+              <a class="file-card" href="${encodeURI(message.file.path)}" target="_blank" rel="noopener">
+                <strong>${escapeHtml(message.file.originalName)}</strong>
                 <span>${formatFileSize(message.file.size)} · 点击下载</span>
               </a>
             ` : ""}
@@ -581,8 +643,8 @@ function renderThread() {
   dom.threadContent.className = "";
   dom.threadContent.innerHTML = `
     <div class="thread-root">
-      <strong>${state.threadRoot.senderName}</strong>
-      <p>${state.threadRoot.content}</p>
+      <strong>${escapeHtml(state.threadRoot.senderName)}</strong>
+      <p>${escapeHtml(state.threadRoot.content)}</p>
     </div>
     <div class="thread-audit">此线程包含客户信息时，转发前需完成脱敏检查。</div>
     <div class="thread-list">
@@ -597,8 +659,8 @@ function renderThread() {
         <div class="thread-item">
           <span style="background:${message.avatarColor}">${message.avatarText}</span>
           <div>
-            <strong>${message.senderName}</strong>
-            <p>${message.content}</p>
+            <strong>${escapeHtml(message.senderName)}</strong>
+            <p>${escapeHtml(message.content)}</p>
           </div>
         </div>
       `).join("")}
@@ -640,9 +702,9 @@ function renderAudits() {
     <div class="audit-list">
       ${audits.map((item) => `
         <div class="audit-item">
-          <strong>${item.action}</strong>
-          <span>${item.operator} · ${formatTime(item.createdAt)}</span>
-          <small>目标：${item.targetId}</small>
+          <strong>${escapeHtml(item.action)}</strong>
+          <span>${escapeHtml(item.operator)} · ${formatTime(item.createdAt)}</span>
+          <small>目标：${escapeHtml(item.targetId)}</small>
         </div>
       `).join("")}
     </div>
@@ -724,7 +786,7 @@ function renderMembers() {
         <div class="member-item">
           <span style="background:${item.avatarColor}">${item.avatarText}</span>
           <div>
-            <strong>${item.name}</strong>
+            <strong>${escapeHtml(item.name)}</strong>
             <small>${item.role === "ADMIN" ? "管理员" : "普通用户"}</small>
           </div>
           ${state.user.role === "ADMIN" && item.id !== state.user.id ? `<button data-remove-member="${item.id}">移除</button>` : ""}
@@ -734,7 +796,7 @@ function renderMembers() {
     ${state.user.role === "ADMIN" && candidates.length ? `
       <div class="member-invite">
         <select id="memberInviteSelect">
-          ${candidates.map((item) => `<option value="${item.id}">${item.name}</option>`).join("")}
+          ${candidates.map((item) => `<option value="${item.id}">${escapeHtml(item.name)}</option>`).join("")}
         </select>
         <button id="memberInviteBtn">邀请</button>
       </div>
@@ -775,6 +837,7 @@ function render() {
   renderHeader();
   renderMessages();
   renderThread();
+  if (!dom.discoverPanel.classList.contains("hidden")) renderDiscover();
   refreshAudits();
 }
 
@@ -857,6 +920,18 @@ dom.memberTabBtn.addEventListener("click", async () => {
   renderThread();
 });
 dom.createChannelBtn.addEventListener("click", createChannel);
+dom.discoverBtn.addEventListener("click", openDiscover);
+dom.discoverScrim.addEventListener("click", closeDiscover);
+dom.closeDiscoverBtn.addEventListener("click", closeDiscover);
+dom.discoverSearch.addEventListener("input", () => {
+  state.discoverKeyword = dom.discoverSearch.value;
+  renderDiscover();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !dom.discoverPanel.classList.contains("hidden")) {
+    closeDiscover();
+  }
+});
 dom.logoutBtn.addEventListener("click", logout);
 dom.searchInput.addEventListener("input", () => {
   clearTimeout(state.searchTimer);

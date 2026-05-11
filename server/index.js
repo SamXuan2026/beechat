@@ -10,6 +10,7 @@ const DATA_DIR = path.join(__dirname, "..", "data");
 const UPLOAD_DIR = path.join(DATA_DIR, "uploads");
 const DATA_FILE = path.join(DATA_DIR, "store.json");
 const DB_FILE = path.join(DATA_DIR, "beechat.sqlite");
+const MIGRATIONS_DIR = path.join(__dirname, "..", "migrations");
 const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
 const ALLOWED_UPLOAD_EXTS = new Set([".txt", ".md", ".pdf", ".png", ".jpg", ".jpeg", ".csv", ".xlsx", ".docx"]);
@@ -162,79 +163,46 @@ function saveStore() {
 function initDatabase() {
   db = new DatabaseSync(DB_FILE);
   db.exec(`
-    CREATE TABLE IF NOT EXISTS app_state (
-      key TEXT PRIMARY KEY,
-      value TEXT NOT NULL,
-      updated_at TEXT NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY,
-      account TEXT NOT NULL,
+    CREATE TABLE IF NOT EXISTS schema_migrations (
+      version TEXT PRIMARY KEY,
       name TEXT NOT NULL,
-      role TEXT NOT NULL,
-      avatar_text TEXT NOT NULL,
-      avatar_color TEXT NOT NULL,
-      online INTEGER NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS sessions (
-      token TEXT PRIMARY KEY,
-      user_id INTEGER NOT NULL,
-      expires_at INTEGER NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS channels (
-      id INTEGER PRIMARY KEY,
-      name TEXT NOT NULL,
-      description TEXT NOT NULL,
-      joined INTEGER NOT NULL,
-      member_count INTEGER NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS channel_members (
-      channel_id INTEGER NOT NULL,
-      user_id INTEGER NOT NULL,
-      PRIMARY KEY(channel_id, user_id)
-    );
-    CREATE TABLE IF NOT EXISTS messages (
-      id INTEGER PRIMARY KEY,
-      channel_id INTEGER,
-      parent_id INTEGER,
-      sender_id INTEGER NOT NULL,
-      receiver_id INTEGER,
-      message_type TEXT NOT NULL,
-      content TEXT NOT NULL,
-      sensitive INTEGER NOT NULL,
-      delivery_status TEXT NOT NULL,
-      reply_count INTEGER NOT NULL,
-      revoked INTEGER NOT NULL,
-      edited INTEGER NOT NULL,
-      file_json TEXT,
-      created_at TEXT NOT NULL,
-      edited_at TEXT,
-      revoked_at TEXT
-    );
-    CREATE TABLE IF NOT EXISTS files (
-      stored_name TEXT PRIMARY KEY,
-      message_id INTEGER NOT NULL,
-      original_name TEXT NOT NULL,
-      size INTEGER NOT NULL,
-      path TEXT NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS audits (
-      id INTEGER PRIMARY KEY,
-      module TEXT NOT NULL,
-      action TEXT NOT NULL,
-      target_id TEXT NOT NULL,
-      operator TEXT NOT NULL,
-      success INTEGER NOT NULL,
-      created_at TEXT NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS unread_state (
-      user_id INTEGER NOT NULL,
-      target_type TEXT NOT NULL,
-      target_id TEXT NOT NULL,
-      count INTEGER NOT NULL,
-      PRIMARY KEY(user_id, target_type, target_id)
+      applied_at TEXT NOT NULL
     );
   `);
+  runMigrations();
+}
+
+function runMigrations() {
+  if (!fs.existsSync(MIGRATIONS_DIR)) return;
+  const appliedRows = db.prepare("SELECT version FROM schema_migrations").all();
+  const appliedVersions = new Set(appliedRows.map((row) => row.version));
+  const files = fs.readdirSync(MIGRATIONS_DIR)
+    .filter((file) => /^\d+_.+\.sql$/.test(file))
+    .sort();
+
+  files.forEach((file) => {
+    const version = file.split("_")[0];
+    if (appliedVersions.has(version)) return;
+    const sql = fs.readFileSync(path.join(MIGRATIONS_DIR, file), "utf8").trim();
+    if (!sql) return;
+    db.exec("BEGIN");
+    try {
+      db.exec(sql);
+      db.prepare("INSERT INTO schema_migrations(version, name, applied_at) VALUES (?, ?, ?)")
+        .run(version, file, new Date().toISOString());
+      db.exec("COMMIT");
+      appliedVersions.add(version);
+      console.log(`数据库迁移已执行：${file}`);
+    } catch (error) {
+      db.exec("ROLLBACK");
+      throw new Error(`数据库迁移失败：${file}，${error.message}`);
+    }
+  });
+}
+
+function migrationStatus() {
+  if (!db) return [];
+  return db.prepare("SELECT version, name, applied_at AS appliedAt FROM schema_migrations ORDER BY version ASC").all();
 }
 
 function loadSqliteSnapshot() {
@@ -738,7 +706,13 @@ async function routeApi(request, response, url) {
   if (request.method === "OPTIONS") return sendJson(response, 200, true);
 
   if (request.method === "GET" && url.pathname === "/api/health") {
-    return sendJson(response, 200, { service: "bee-chat", status: "UP", storage: "sqlite+json", time: new Date().toISOString() });
+    return sendJson(response, 200, {
+      service: "bee-chat",
+      status: "UP",
+      storage: "sqlite+json",
+      migrations: migrationStatus(),
+      time: new Date().toISOString()
+    });
   }
 
   if (request.method === "POST" && url.pathname === "/api/login") {

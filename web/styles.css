@@ -6,7 +6,7 @@ html,
 body {
   height: 100%;
   margin: 0;
-  background: #eef1f7;
+  background: #f3f5f9;
   color: #1f2937;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   overflow: hidden;
@@ -29,25 +29,27 @@ button {
   display: grid;
   height: 100vh;
   place-items: center;
-  background: #f3f5f8;
+  background: #f5f7fb;
   padding: 24px;
   overflow: auto;
 }
 
 .login-panel {
-  width: min(420px, 100%);
+  width: min(360px, 100%);
   border: 1px solid #dfe4ec;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #fff;
-  padding: 28px;
-  box-shadow: 0 16px 44px rgba(31, 41, 55, 0.10);
+  padding: 30px 28px;
+  box-shadow: 0 18px 40px rgba(17, 24, 39, 0.13);
 }
 
 .login-brand {
-  display: flex;
+  display: grid;
+  justify-items: center;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: 10px;
+  margin-bottom: 26px;
+  text-align: center;
 }
 
 .login-brand > span {
@@ -56,7 +58,7 @@ button {
   justify-content: center;
   width: 38px;
   height: 38px;
-  border-radius: 8px;
+  border-radius: 9px;
   background: #4a9fd8;
   color: #fff;
   font-weight: 800;
@@ -65,7 +67,7 @@ button {
 .login-brand strong {
   display: block;
   color: #111827;
-  font-size: 22px;
+  font-size: 18px;
 }
 
 .login-brand small,
@@ -87,8 +89,9 @@ button {
 
 .login-panel input {
   width: 100%;
-  border: 1px solid #cfd6e2;
-  border-radius: 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: #f6f7fa;
   outline: 0;
   padding: 11px 12px;
 }
@@ -101,8 +104,8 @@ button {
 .login-panel button {
   width: 100%;
   border: 0;
-  border-radius: 8px;
-  background: #286fba;
+  border-radius: 6px;
+  background: #4a9fd8;
   color: #fff;
   padding: 11px 14px;
   font-weight: 800;
@@ -120,10 +123,10 @@ button {
 
 #app {
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr) 340px;
+  grid-template-columns: 232px minmax(0, 1fr) 320px;
   height: 100vh;
   min-height: 0;
-  background: #f5f6fa;
+  background: #f3f5f9;
   overflow: hidden;
 }
 
@@ -131,9 +134,9 @@ button {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  gap: 6px;
-  padding: 12px;
-  background: #28184a;
+  gap: 8px;
+  padding: 18px 12px 14px;
+  background: #281850;
   color: #fff;
   overflow: hidden;
 }
@@ -151,7 +154,7 @@ button {
 
 .brand {
   gap: 10px;
-  padding: 6px 8px;
+  padding: 0 6px 10px;
 }
 
 .brand > span,
@@ -179,34 +182,35 @@ button {
 .chat-header span,
 .discover small {
   display: block;
-  color: #9a8fc4;
+  color: #9aa3b2;
   font-size: 12px;
 }
 
 .search,
 .user-card,
 .create-channel,
-.nav-list button {
-  border-radius: 10px;
-  background: #39235f;
+.nav-list button,
+.discover-entry {
+  border-radius: 6px;
+  background: #3a236b;
 }
 
 .search {
   width: 100%;
   border: 0;
   outline: 0;
-  padding: 9px 12px;
-  color: #9a8fc4;
-  font-size: 13px;
+  padding: 9px 10px;
+  color: #c7bdec;
+  font-size: 12px;
 }
 
 .search::placeholder {
-  color: #9a8fc4;
+  color: #8f7dca;
 }
 
 .section-title {
   padding: 10px 8px 3px;
-  color: #9a8fc4;
+  color: #9c8dce;
   font-size: 11px;
   font-weight: 800;
 }
@@ -233,13 +237,13 @@ button {
   width: 100%;
   margin-bottom: 5px;
   border: 0;
-  padding: 8px 12px;
-  color: #c9b8e8;
+  padding: 8px 10px;
+  color: #c7bdec;
   text-align: left;
 }
 
 .nav-list button.active {
-  background: #52328a;
+  background: #5a3a9e;
   color: #fff;
   font-weight: 800;
 }
@@ -260,6 +264,16 @@ button {
   padding: 7px;
 }
 
+.discover-entry {
+  width: 100%;
+  border: 0;
+  color: #ffffff;
+  padding: 9px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: left;
+}
+
 .create-channel input,
 .composer input,
 .thread-input input {
@@ -278,7 +292,7 @@ button {
 .thread-input button,
 .discover button {
   border: 0;
-  border-radius: 10px;
+  border-radius: 6px;
   background: #4a9fd8;
   color: #fff;
   padding: 8px 12px;
@@ -291,13 +305,13 @@ button {
   background: transparent;
   gap: 8px;
   padding: 7px 12px;
-  color: #c9b8e8;
+  color: #c7bdec;
   text-align: left;
 }
 
 .dm-row.active {
-  border-radius: 8px;
-  background: #52328a;
+  border-radius: 6px;
+  background: #5a3a9e;
   color: #fff;
 }
 
@@ -327,6 +341,7 @@ button {
   margin-top: auto;
   padding: 10px;
   border: 1px solid #5d4390;
+  border-radius: 8px;
 }
 
 .user-card div {
@@ -350,7 +365,7 @@ button {
   min-width: 0;
   min-height: 0;
   flex-direction: column;
-  background: #f5f6fa;
+  background: #f3f5f9;
   overflow: hidden;
 }
 
@@ -358,14 +373,14 @@ button {
   justify-content: space-between;
   height: 56px;
   flex: 0 0 56px;
-  padding: 0 20px;
-  border-bottom: 1px solid #e6e8ef;
+  padding: 0 18px;
+  border-bottom: 1px solid #e6eaf2;
   background: #fff;
 }
 
 .chat-header strong {
   color: #1a1a1a;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .header-tags {
@@ -375,26 +390,26 @@ button {
 
 .header-tags span,
 .composer-row span {
-  border-radius: 8px;
-  background: #eaf7f1;
-  color: #228b5c;
-  padding: 6px 10px;
-  font-size: 12px;
+  border-radius: 999px;
+  background: #e9fbf2;
+  color: #16885a;
+  padding: 5px 10px;
+  font-size: 11px;
   font-weight: 800;
 }
 
 .notice {
-  margin: 8px 20px 0;
+  margin: 8px 18px 0;
   border: 1px solid #cfe6ff;
-  border-radius: 8px;
-  background: #eef6ff;
+  border-radius: 5px;
+  background: #eaf5ff;
   color: #357abd;
   padding: 8px 12px;
   font-size: 13px;
 }
 
 .search-results {
-  margin: 8px 20px 0;
+  margin: 8px 18px 0;
   border: 1px solid #dfe4ec;
   border-radius: 8px;
   background: #fff;
@@ -438,7 +453,7 @@ button {
   flex: 1;
   min-height: 0;
   overflow: auto;
-  padding: 12px 20px 14px;
+  padding: 12px 18px 14px;
 }
 
 .date {
@@ -489,7 +504,7 @@ button {
 
 .message-body p {
   margin: 4px 0 6px;
-  border-radius: 12px;
+  border-radius: 8px;
   background: #fff;
   padding: 9px 12px;
   line-height: 1.45;
@@ -601,9 +616,9 @@ button {
 
 .composer {
   flex: 0 0 auto;
-  border-top: 1px solid #e6e8ef;
+  border-top: 1px solid #e6eaf2;
   background: #fff;
-  padding: 10px 20px;
+  padding: 9px 16px;
 }
 
 .tools {
@@ -619,8 +634,8 @@ button {
 .composer-row input,
 .thread-input input {
   flex: 1;
-  border-radius: 12px;
-  background: #f0f1f5;
+  border-radius: 6px;
+  background: #f6f7fa;
   padding: 10px 12px;
 }
 
@@ -629,7 +644,7 @@ button {
   height: 100vh;
   min-height: 0;
   flex-direction: column;
-  border-left: 1px solid #e6e8ef;
+  border-left: 1px solid #e6eaf2;
   background: #fff;
   overflow: hidden;
 }
@@ -641,7 +656,7 @@ button {
   height: 56px;
   flex: 0 0 56px;
   padding: 0 16px;
-  border-bottom: 1px solid #e6e8ef;
+  border-bottom: 1px solid #e6eaf2;
 }
 
 .thread header button {
@@ -656,7 +671,7 @@ button {
 }
 
 .panel-tabs button {
-  border-radius: 8px;
+  border-radius: 6px;
   color: #667085;
   padding: 6px 10px;
 }
@@ -676,8 +691,8 @@ button {
 }
 
 .thread-root {
-  border-radius: 10px;
-  background: #fafbfd;
+  border-radius: 8px;
+  background: #f6f7fa;
   padding: 12px;
 }
 
@@ -868,8 +883,117 @@ button {
   padding: 7px 9px;
 }
 
+.discover-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 19;
+  background: rgba(17, 24, 39, 0.32);
+}
+
 .discover {
-  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 20;
+  display: flex;
+  width: min(720px, calc(100vw - 40px));
+  max-height: min(540px, calc(100vh - 40px));
+  flex-direction: column;
+  gap: 14px;
+  transform: translate(-50%, -50%);
+  border: 1px solid #e6eaf2;
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 22px 28px;
+  box-shadow: 0 24px 64px rgba(17, 24, 39, 0.22);
+}
+
+.discover header {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+}
+
+.discover header strong {
+  color: #1f2937;
+  font-size: 16px;
+  text-align: center;
+}
+
+.discover header button {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: transparent;
+  color: #1f2937;
+  padding: 0;
+  font-size: 18px;
+}
+
+.discover input {
+  width: 100%;
+  border: 0;
+  border-radius: 6px;
+  background: #f6f7fa;
+  outline: 0;
+  padding: 11px 12px;
+  color: #1f2937;
+}
+
+#discoverList {
+  display: grid;
+  gap: 10px;
+  overflow: auto;
+}
+
+.discover-card {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  border-radius: 8px;
+  background: #f6f7fa;
+  padding: 10px;
+}
+
+.discover-card > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #4a9fd8;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.discover-card strong,
+.discover-card small {
+  display: block;
+}
+
+.discover-card strong {
+  color: #1f2937;
+  font-size: 13px;
+}
+
+.discover-card button {
+  min-width: 64px;
+  padding: 7px 12px;
+}
+
+.discover-card button:disabled {
+  cursor: default;
+  background: #41c585;
+}
+
+.discover-empty {
+  border-radius: 8px;
+  background: #f6f7fa;
+  color: #6b7280;
+  padding: 16px;
+  text-align: center;
 }
 
 @media (max-width: 1100px) {
