@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BeeChat 数据库适配方案</title>
+    <link rel="stylesheet" href="../assets/docs.css?v=tailwind-20260513" />
+  </head>
+  <body>
+    <div class="doc-shell">
+      <aside class="doc-sidebar">
+        <div class="doc-brand">
+          <strong>BeeChat Docs</strong>
+          <span>HTML 文档中心</span>
+        </div>
+        <nav><a class="doc-nav-link" href="../../design/beechat/DESIGN_SPEC.html"><span>设计</span>BeeChat 设计规范</a>
+<a class="doc-nav-link" href="../../design/beechat/README.html"><span>设计</span>BeeChat 设计稿</a>
+<a class="doc-nav-link" href="../../design/README.html"><span>设计</span>设计文件归档</a>
+<a class="doc-nav-link" href="API.html"><span>BeeChat</span>BeeChat MVP 接口文档</a>
+<a class="doc-nav-link active" href="DATABASE_PLAN.html"><span>BeeChat</span>BeeChat 数据库适配方案</a>
+<a class="doc-nav-link" href="DEPLOYMENT.html"><span>BeeChat</span>BeeChat MVP 部署说明</a>
+<a class="doc-nav-link" href="DESIGN.html"><span>BeeChat</span>BeeChat 设计文档</a>
+<a class="doc-nav-link" href="FRONTEND_REFACTOR_PLAN.html"><span>BeeChat</span>BeeChat 前端工程化改造方案</a>
+<a class="doc-nav-link" href="ITERATION_PLAN.html"><span>BeeChat</span>BeeChat 迭代计划</a>
+<a class="doc-nav-link" href="REQUIREMENTS.html"><span>BeeChat</span>BeeChat 需求文档</a>
+<a class="doc-nav-link" href="ROADMAP.html"><span>BeeChat</span>BeeChat Roadmap</a>
+<a class="doc-nav-link" href="TESTING.html"><span>BeeChat</span>BeeChat 测试说明与报告索引</a>
+<a class="doc-nav-link" href="../beepilot/conversation-channel-adapter.html"><span>BeePilot</span>Conversation Channel Adapter 设计草案</a>
+<a class="doc-nav-link" href="../beepilot/functional-scope.html"><span>BeePilot</span>BeePilot 整体功能规划与功能清单</a>
+<a class="doc-nav-link" href="../beepilot/phase1-implementation-plan.html"><span>BeePilot</span>BeePilot Phase 1 正式开发计划</a>
+<a class="doc-nav-link" href="../beepilot/product-roadmap-and-architecture.html"><span>BeePilot</span>BeePilot 产品 Roadmap 与技术框架</a>
+<a class="doc-nav-link" href="../beepilot/references/beeworks-ai-advisor-system-roadmap.html"><span>BeePilot 参考</span>BeeWorks 官网 AI 顾问系统 Roadmap</a>
+<a class="doc-nav-link" href="../beepilot/references/beeworks-ai-plg-homepage-plan.html"><span>BeePilot 参考</span>BeeWorks 官网 + AI PLG 闭环方案</a>
+<a class="doc-nav-link" href="../README.html"><span>项目</span>BeeChat / BeePilot 文档索引</a>
+<a class="doc-nav-link" href="../../README.html"><span>项目</span>BeeChat MVP</a></nav>
+      </aside>
+      <main class="doc-main">
+        <article class="doc-article">
+          <div class="doc-meta">
+            <span>BeeChat</span>
+            <span>离线 HTML · Tailwind CSS</span>
+          </div>
+          <h1 id="beechat-数据库适配方案">BeeChat 数据库适配方案</h1>
+<h2 id="一-目标">一、目标</h2>
+<p>阶段 6 第十六期目标是将 BeeChat 从单机 SQLite 数据形态逐步升级为可生产部署的 PostgreSQL 数据底座，并继续把消息编辑与撤回写入链路接入业务仓储。</p>
+<p>本期先交付：</p>
+<ul><li>PostgreSQL 表结构迁移脚本。</li><li>生产环境变量约定。</li><li>SQLite 到 PostgreSQL 迁移路径。</li><li>PostgreSQL 一次性导入 SQL 生成脚本。</li><li>数据库运行模式配置校验。</li><li>PostgreSQL 查询适配层第一版。</li><li>业务仓储契约与 SQLite/PostgreSQL 双实现骨架。</li><li>主服务频道、成员、频道消息分页、私信分页、频道文件列表、审计查询只读路径接入 SQLite 仓储。</li><li>PostgreSQL 仓储补齐频道消息分页、私信分页、频道文件列表与审计筛选只读查询。</li><li>主服务频道消息与线程回复发送写入路径接入 SQLite 仓储。</li><li>主服务私信发送写入路径接入 SQLite 仓储。</li><li>主服务消息编辑与消息撤回写入路径接入 SQLite 仓储。</li><li>PostgreSQL 频道消息、私信、消息编辑与消息撤回写入仓储保持显式未启用保护。</li><li>回滚与验证方案。</li><li>快速回归检查脚本。</li></ul>
+<h2 id="二-当前状态">二、当前状态</h2>
+<p>当前运行形态：</p>
+<pre><code class="language-text">Node.js 原生服务
+SQLite 本地数据库：data/beechat.sqlite
+JSON 快照：data/store.json
+上传文件：data/uploads/</code></pre>
+<p>当前适合 MVP、单机演示和小团队本地试用，不适合正式多人生产。</p>
+<p>主要限制：</p>
+<ul><li>SQLite 单文件写入并发能力有限。</li><li>缺少数据库级外键与索引治理。</li><li>备份恢复依赖文件复制。</li><li>后续 Redis、对象存储、审计归档接入时需要更清晰的数据边界。</li></ul>
+<h2 id="三-目标架构">三、目标架构</h2>
+<pre><code class="language-text">BeeChat 服务
+  |
+  |-- PostgreSQL：用户、频道、消息、审计、会话、未读状态
+  |-- 对象存储：上传文件
+  |-- Redis：会话缓存、WebSocket 广播、在线状态</code></pre>
+<p>第一阶段仍保留 SQLite 默认运行能力，避免破坏现有 MVP。</p>
+<p>生产环境通过环境变量选择：</p>
+<pre><code class="language-text">BEECHAT_DB_PROVIDER=sqlite
+BEECHAT_DB_PROVIDER=postgres</code></pre>
+<p>当前版本默认并仅启用 SQLite 运行路径。<code>postgres</code> 模式已经纳入配置校验，但运行适配层尚未启用；如果配置为 <code>postgres</code>，服务会在启动阶段给出明确错误，避免误以为已经完成生产切库。</p>
+<h2 id="四-postgresql-查询适配层">四、PostgreSQL 查询适配层</h2>
+<p>适配层文件：</p>
+<pre><code class="language-text">server/database/postgres-adapter.js</code></pre>
+<p>当前能力：</p>
+<ul><li>PostgreSQL 连接串格式校验。</li><li><code>pg.Pool</code> 连接池封装。</li><li><code>query(sql, params)</code> 参数化查询入口。</li><li><code>transaction(handler)</code> 事务封装，自动提交和回滚。</li><li><code>health()</code> 数据库健康检查。</li><li><code>migrationStatus()</code> 迁移状态读取。</li><li><code>runMigrations()</code> 执行 <code>migrations/postgres/*.sql</code>。</li></ul>
+<p>当前限制：</p>
+<ul><li>主服务默认仍不切换到 PostgreSQL。</li><li>本地未安装 <code>pg</code> 驱动时，只有真正连接 PostgreSQL 时才会提示缺少驱动。</li><li>业务读写仓储尚未从 SQLite 抽象到 PostgreSQL，放入后续迭代。</li></ul>
+<h2 id="五-业务仓储契约与主服务接入">五、业务仓储契约与主服务接入</h2>
+<p>契约文件：</p>
+<pre><code class="language-text">server/repositories/contracts.js</code></pre>
+<p>SQLite 实现骨架：</p>
+<pre><code class="language-text">server/repositories/sqlite-repository.js</code></pre>
+<p>PostgreSQL 实现骨架：</p>
+<pre><code class="language-text">server/repositories/postgres-repository.js</code></pre>
+<p>当前契约方法：</p>
+<pre><code class="language-text">channelById
+channelMembers
+channelMessages
+directMessages
+channelFiles
+audits
+createChannelMessage
+createDirectMessage
+migrationStatus
+health</code></pre>
+<p>当前策略：</p>
+<ul><li>SQLite 仓储承接当前主服务中的频道、成员、消息、文件、审计读取形态，并承接频道消息、线程回复、私信发送、消息编辑与消息撤回写入。</li><li>PostgreSQL 仓储先实现频道、成员、频道消息分页、私信分页、频道文件列表、审计、迁移状态和健康检查。</li><li>PostgreSQL 频道消息、私信、消息编辑与消息撤回写入仍显式报错，避免被误用。</li><li>主服务已初始化 SQLite 仓储，并优先迁移低风险读取路径、消息发送写入路径和消息状态变更写入路径。</li></ul>
+<p>已接入主服务的仓储路径：</p>
+<pre><code class="language-text">GET /api/channels/:id/members  频道读取与成员列表
+GET /api/channels/:id/messages 频道存在性、访问权限判断与消息分页
+GET /api/direct/:id/messages   私信分页
+GET /api/channels/:id/files    频道读取与文件列表
+GET /api/audits                审计组合筛选
+GET /api/admin/audits/export   审计导出读取
+POST /api/messages             频道消息和线程回复发送
+POST /api/direct/messages      私信发送
+PUT /api/messages/:id          消息编辑
+POST /api/messages/:id/revoke  消息撤回</code></pre>
+<p>暂未迁移的路径：</p>
+<pre><code class="language-text">文件上传发送</code></pre>
+<p>当前频道消息、线程回复、私信发送、消息编辑与消息撤回已经接入 SQLite 仓储，但仍保持现有内存主状态加 SQLite 快照持久化模型。文件上传发送原实现暂时保留，下一期再继续迁移剩余写入链路。</p>
+<h2 id="六-postgresql-表结构">六、PostgreSQL 表结构</h2>
+<p>迁移脚本位置：</p>
+<pre><code class="language-text">migrations/postgres/001_init.sql</code></pre>
+<p>核心设计：</p>
+<ul><li>使用 <code>BIGINT</code> 保持当前数字 ID 兼容。</li><li>使用 <code>password_hash</code> 保存本地账号密码哈希，后续接入 SSO 后可降级为兼容字段。</li><li>使用 <code>JSONB</code> 存储收藏用户、表情回应、@ 人、文件元数据。</li><li>使用 <code>TIMESTAMPTZ</code> 存储带时区时间。</li><li>增加用户、频道、消息、文件、审计、会话、未读状态外键。</li><li>增加消息列表、私信列表、审计查询常用索引。</li></ul>
+<h2 id="七-sqlite-到-postgresql-迁移路径">七、SQLite 到 PostgreSQL 迁移路径</h2>
+<p>推荐迁移步骤：</p>
+<ol><li>停止 BeeChat 服务。</li><li>执行 <code>npm run backup</code>，保留 SQLite、JSON 快照和上传文件。</li><li>创建 PostgreSQL 数据库和专用账号。</li><li>执行 <code>migrations/postgres/001_init.sql</code>。</li><li>执行一次性导出脚本读取 <code>data/store.json</code>，生成 PostgreSQL 导入 SQL。</li><li>配置 <code>.env.prod</code>：</li></ol>
+<pre><code class="language-text">BEECHAT_DB_PROVIDER=postgres
+BEECHAT_DATABASE_URL=postgres://beechat:替换密码@127.0.0.1:5432/beechat</code></pre>
+<ol><li>使用 <code>psql</code> 在 PostgreSQL 执行生成的 SQL。</li><li>启动服务并执行快速回归。</li><li>确认消息、文件、审计、权限、搜索、未读均正常。</li></ol>
+<p>导出命令：</p>
+<pre><code class="language-bash">npm run db:export:postgres</code></pre>
+<p>生成文件：</p>
+<pre><code class="language-text">backups/postgres/beechat-postgres-seed.sql</code></pre>
+<p>导入顺序：</p>
+<pre><code class="language-text">users
+channels
+channel_members
+messages
+files
+audits
+unread_state
+app_state</code></pre>
+<p>脚本特性：</p>
+<ul><li>使用事务包裹导入过程。</li><li>导入前按外键依赖顺序清理目标表。</li><li>使用 <code>ON CONFLICT</code> 保证重复执行时可覆盖更新。</li><li>不迁移活动会话和登录失败锁定状态，切库后用户需要重新登录。</li><li>将清理后的 <code>store.json</code> 快照写入 <code>app_state</code>，便于回滚和核查。</li><li>当前不直接连接 PostgreSQL，避免在未安装数据库驱动时破坏开发链路。</li></ul>
+<h2 id="八-回滚策略">八、回滚策略</h2>
+<p>回滚必须以数据不丢失为优先。</p>
+<p>推荐策略：</p>
+<ul><li>切换 PostgreSQL 前保留完整 <code>backups/</code>。</li><li>首次迁移后保留 SQLite 原文件至少一个发布周期。</li><li>PostgreSQL 上线失败时，恢复 <code>.env.prod</code> 为 <code>BEECHAT_DB_PROVIDER=sqlite</code>。</li><li>回滚后使用最近一次 <code>backups/beechat-&lt;时间戳&gt;/</code> 覆盖 <code>data/</code>。</li><li>回滚完成后执行 <code>npm run smoke</code>。</li></ul>
+<h2 id="九-验证方式">九、验证方式</h2>
+<p>静态配置检查：</p>
+<pre><code class="language-bash">npm run db:plan:check</code></pre>
+<p>生成 PostgreSQL 导入 SQL：</p>
+<pre><code class="language-bash">npm run db:export:postgres</code></pre>
+<p>数据库运行模式检查：</p>
+<pre><code class="language-bash">npm run db:runtime:check</code></pre>
+<p>PostgreSQL 查询适配层检查：</p>
+<pre><code class="language-bash">npm run db:adapter:check</code></pre>
+<p>仓储契约检查：</p>
+<pre><code class="language-bash">npm run db:repository:check</code></pre>
+<p>检查内容：</p>
+<ul><li><code>postgres</code> 模式缺少 <code>BEECHAT_DATABASE_URL</code> 时必须启动失败。</li><li>不支持的数据库类型必须启动失败。</li><li>PostgreSQL 运行适配层未启用前必须启动失败。</li><li>默认 <code>sqlite</code> 模式继续保持 MVP 可运行。</li></ul>
+<p>快速回归：</p>
+<pre><code class="language-bash">npm run smoke</code></pre>
+<p>文档构建：</p>
+<pre><code class="language-bash">npm run docs:build</code></pre>
+<p>当前阶段不要求连接真实 PostgreSQL 实例；真实连接和完整读写切换放入后续迭代执行。</p>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BeeChat 设计文档</title>
+    <link rel="stylesheet" href="../assets/docs.css?v=tailwind-20260513" />
+  </head>
+  <body>
+    <div class="doc-shell">
+      <aside class="doc-sidebar">
+        <div class="doc-brand">
+          <strong>BeeChat Docs</strong>
+          <span>HTML 文档中心</span>
+        </div>
+        <nav><a class="doc-nav-link" href="../../design/beechat/DESIGN_SPEC.html"><span>设计</span>BeeChat 设计规范</a>
+<a class="doc-nav-link" href="../../design/beechat/README.html"><span>设计</span>BeeChat 设计稿</a>
+<a class="doc-nav-link" href="../../design/README.html"><span>设计</span>设计文件归档</a>
+<a class="doc-nav-link" href="API.html"><span>BeeChat</span>BeeChat MVP 接口文档</a>
+<a class="doc-nav-link" href="DATABASE_PLAN.html"><span>BeeChat</span>BeeChat 数据库适配方案</a>
+<a class="doc-nav-link" href="DEPLOYMENT.html"><span>BeeChat</span>BeeChat MVP 部署说明</a>
+<a class="doc-nav-link active" href="DESIGN.html"><span>BeeChat</span>BeeChat 设计文档</a>
+<a class="doc-nav-link" href="FRONTEND_REFACTOR_PLAN.html"><span>BeeChat</span>BeeChat 前端工程化改造方案</a>
+<a class="doc-nav-link" href="ITERATION_PLAN.html"><span>BeeChat</span>BeeChat 迭代计划</a>
+<a class="doc-nav-link" href="REQUIREMENTS.html"><span>BeeChat</span>BeeChat 需求文档</a>
+<a class="doc-nav-link" href="ROADMAP.html"><span>BeeChat</span>BeeChat Roadmap</a>
+<a class="doc-nav-link" href="TESTING.html"><span>BeeChat</span>BeeChat 测试说明与报告索引</a>
+<a class="doc-nav-link" href="../beepilot/conversation-channel-adapter.html"><span>BeePilot</span>Conversation Channel Adapter 设计草案</a>
+<a class="doc-nav-link" href="../beepilot/functional-scope.html"><span>BeePilot</span>BeePilot 整体功能规划与功能清单</a>
+<a class="doc-nav-link" href="../beepilot/phase1-implementation-plan.html"><span>BeePilot</span>BeePilot Phase 1 正式开发计划</a>
+<a class="doc-nav-link" href="../beepilot/product-roadmap-and-architecture.html"><span>BeePilot</span>BeePilot 产品 Roadmap 与技术框架</a>
+<a class="doc-nav-link" href="../beepilot/references/beeworks-ai-advisor-system-roadmap.html"><span>BeePilot 参考</span>BeeWorks 官网 AI 顾问系统 Roadmap</a>
+<a class="doc-nav-link" href="../beepilot/references/beeworks-ai-plg-homepage-plan.html"><span>BeePilot 参考</span>BeeWorks 官网 + AI PLG 闭环方案</a>
+<a class="doc-nav-link" href="../README.html"><span>项目</span>BeeChat / BeePilot 文档索引</a>
+<a class="doc-nav-link" href="../../README.html"><span>项目</span>BeeChat MVP</a></nav>
+      </aside>
+      <main class="doc-main">
+        <article class="doc-article">
+          <div class="doc-meta">
+            <span>BeeChat</span>
+            <span>离线 HTML · Tailwind CSS</span>
+          </div>
+          <h1 id="beechat-设计文档">BeeChat 设计文档</h1>
+<h2 id="一-设计来源">一、设计来源</h2>
+<p>原 BeeChat Pencil 多画板源文件已丢失。当前设计已基于历史截图、现有 MVP 功能与重建设计规范重新整理。</p>
+<p>正式设计源文件：</p>
+<pre><code class="language-text">design/beechat/beechat-main-chat.pen</code></pre>
+<p>设计规范：</p>
+<pre><code class="language-text">design/beechat/DESIGN_SPEC.md</code></pre>
+<p>旧占位文件：</p>
+<pre><code class="language-text">design/beechat/beechat-main-chat.placeholder-old.pen</code></pre>
+<p>旧占位文件内容仍是“多模型智能聊天工作台”，不可作为 BeeChat 设计依据。</p>
+<h2 id="二-设计原则">二、设计原则</h2>
+<ul><li>企业后台风格：克制、清晰、稳定，优先信息效率。</li><li>私有化协同：突出内网审计、消息留痕、文件脱敏。</li><li>低学习成本：沿用频道、私信、线程、搜索等常见协作范式。</li><li>高可迭代性：界面拆分为主工作台、线程、登录、发现频道、设置五类画板。</li></ul>
+<h2 id="三-信息架构">三、信息架构</h2>
+<pre><code class="language-text">BeeChat
+├── 登录页
+├── 主聊天工作台
+│   ├── 左侧导航
+│   │   ├── 品牌与安全模式
+│   │   ├── 全局搜索
+│   │   ├── 频道列表
+│   │   ├── 发现频道
+│   │   ├── 私信列表
+│   │   └── 当前用户
+│   ├── 中央消息区
+│   │   ├── 频道头部
+│   │   ├── 安全提示
+│   │   ├── 消息列表
+│   │   └── 输入区
+│   └── 右侧面板
+│       ├── 线程
+│       ├── 审计
+│       └── 成员
+├── 发现频道
+└── 设置页</code></pre>
+<h2 id="四-核心画板">四、核心画板</h2>
+<table><thead><tr><th>画板</th><th>用途</th><th>当前状态</th></tr></thead><tbody><tr><td>BeeChat - Main</td><td>主聊天工作台</td><td>已重建</td></tr><tr><td>BeeChat - Thread View</td><td>线程视图</td><td>已重建</td></tr><tr><td>BeeChat - Login</td><td>登录页</td><td>已重建</td></tr><tr><td>BeeChat - Discover Channels</td><td>发现频道</td><td>已重建</td></tr><tr><td>BeeChat - Settings</td><td>设置页</td><td>已重建</td></tr></tbody></table>
+<h2 id="五-前端实现映射">五、前端实现映射</h2>
+<table><thead><tr><th>设计区域</th><th>前端文件</th><th>实现说明</th></tr></thead><tbody><tr><td>登录页</td><td><code>frontend/src/features/auth/LoginPage.tsx</code>、<code>LoginPage.css</code></td><td>登录卡片、测试账号快捷登录、账号密码、错误提示</td></tr><tr><td>工作台容器</td><td><code>frontend/src/features/chat/ChatWorkspace.tsx</code></td><td>状态编排、数据刷新、实时事件、业务操作分发</td></tr><tr><td>工作台 Hooks</td><td><code>frontend/src/features/chat/hooks/</code></td><td>搜索、草稿、线程、发现频道、设置、管理后台状态收敛</td></tr><tr><td>左侧导航</td><td><code>frontend/src/features/chat/components/ChatSidebar.tsx</code></td><td>品牌、全局搜索、搜索类型标签、频道、私信、发现频道入口、当前用户</td></tr><tr><td>左侧导航样式</td><td><code>frontend/src/features/chat/components/ChatSidebar.css</code></td><td>渐变侧栏、品牌卡片、当前频道高亮条、搜索结果类型色条、频道、私信、未读徽标、当前用户卡片</td></tr><tr><td>主聊天区</td><td><code>frontend/src/features/chat/components/ChatMainPanel.tsx</code></td><td>频道头部、频道图标、安全协作信息条、频道公告、置顶摘要、消息列表、输入区壳层</td></tr><tr><td>主聊天区样式</td><td><code>frontend/src/features/chat/components/ChatMainPanel.css</code></td><td>频道头部、频道图标、安全协作信息条、频道公告、置顶摘要</td></tr><tr><td>消息列表</td><td><code>frontend/src/features/chat/components/MessageList.tsx</code></td><td>消息渲染、发送者归属、文件卡片、图片预览、置顶、收藏、回应、搜索高亮</td></tr><tr><td>消息列表样式</td><td><code>frontend/src/features/chat/components/MessageList.css</code></td><td>背景层次、日期胶囊、消息气泡、自己消息蓝色渐变、他人消息白色卡片、文件卡片、反应区、消息错误态</td></tr><tr><td>输入区</td><td><code>frontend/src/features/chat/components/MessageComposer.tsx</code></td><td>文本输入、发送、上传、<code>@</code> 人快捷入口、草稿状态、发送状态辅助文本</td></tr><tr><td>输入区样式</td><td><code>frontend/src/features/chat/components/MessageComposer.css</code></td><td>工具栏、输入框、发送区、固定尺寸工具按钮、<code>@</code> 人快捷入口、输入区错误态</td></tr><tr><td>窄屏工作台</td><td><code>frontend/src/features/chat/ChatWorkspace.css</code></td><td>动态侧栏高度、主区剩余视口、移动端一屏布局</td></tr><tr><td>弹层基础样式</td><td><code>frontend/src/components/Modal/Modal.css</code></td><td>桌面居中弹层、窄屏近全屏弹层</td></tr><tr><td>右侧面板</td><td><code>frontend/src/features/chat/components/RightPanel.tsx</code></td><td>线程、文件、审计、成员 Tab 壳层</td></tr><tr><td>右侧面板样式</td><td><code>frontend/src/features/chat/components/RightPanel.css</code></td><td>右侧面板壳层、分段 Tab、统一面板头、线程、成员、文件、审计卡片</td></tr><tr><td>线程面板</td><td><code>frontend/src/features/chat/components/ThreadPanel.tsx</code></td><td>面板头、线程根消息、回复列表、线程回复输入</td></tr><tr><td>审计面板</td><td><code>frontend/src/features/chat/components/AuditPanel.tsx</code></td><td>面板头、审计过滤、审计列表、加载态、错误态</td></tr><tr><td>成员面板</td><td><code>frontend/src/features/chat/components/MemberPanel.tsx</code></td><td>面板头、成员列表、邀请、移除、加载态、错误态</td></tr><tr><td>文件面板</td><td><code>frontend/src/features/chat/components/FilePanel.tsx</code></td><td>面板头、频道文件列表、图片文件区分、空状态</td></tr><tr><td>发现频道</td><td><code>frontend/src/features/chat/components/DiscoverChannelsModal.tsx</code></td><td>弹层、搜索、创建频道、加入频道</td></tr><tr><td>发现频道样式</td><td><code>frontend/src/features/chat/components/DiscoverChannelsModal.css</code></td><td>创建表单、频道列表、频道卡片</td></tr><tr><td>设置页</td><td><code>frontend/src/features/chat/components/SettingsModal.tsx</code></td><td>个人资料、通知偏好、快捷键展示</td></tr><tr><td>设置页样式</td><td><code>frontend/src/features/chat/components/SettingsModal.css</code></td><td>个人资料、偏好开关、快捷键、操作区</td></tr><tr><td>管理后台</td><td><code>frontend/src/features/chat/components/AdminModal.tsx</code></td><td>用户角色、频道说明、审计、安全策略、文件策略、网络策略</td></tr><tr><td>管理后台样式</td><td><code>frontend/src/features/chat/components/AdminModal.css</code></td><td>摘要、指标、用户、频道、审计、策略区</td></tr></tbody></table>
+<h2 id="六-视觉规范">六、视觉规范</h2>
+<p>主色：</p>
+<pre><code class="language-text">侧边栏背景   #281850
+高亮紫       #5A3A9E
+主按钮蓝     #4A9FD8
+成功绿       #41C585
+警告橙       #F5A623
+错误红       #E05252
+页面背景     #F3F5F9
+内容背景     #FFFFFF
+边框         #E6EAF2</code></pre>
+<p>尺寸：</p>
+<pre><code class="language-text">左侧导航宽度     232px
+右侧面板宽度     320px
+顶部栏高度       56px
+登录卡片宽度     360px
+发现频道弹层宽度 720px</code></pre>
+<p>圆角：</p>
+<pre><code class="language-text">按钮       6px
+输入框     6px
+消息气泡   8px
+卡片       8px
+登录卡片   10px</code></pre>
+<h2 id="七-交互说明">七、交互说明</h2>
+<h3 id="发现频道">发现频道</h3>
+<ul><li>点击左侧“发现频道”打开弹层。</li><li>输入关键词过滤频道名称与描述。</li><li>已加入频道按钮置灰并显示“已加入”。</li><li>未加入频道点击“加入”后切换当前频道并关闭弹层。</li></ul>
+<h3 id="线程">线程</h3>
+<ul><li>点击消息操作区的“线程”打开右侧线程面板。</li><li>线程面板展示根消息、回复列表、审计提示、回复输入框。</li><li>私信模式不展示线程入口。</li></ul>
+<h3 id="审计">审计</h3>
+<ul><li>审计面板支持全部、消息、文件、成员、登录过滤。</li><li>敏感词消息在消息区展示提示。</li><li>关键操作进入审计记录。</li></ul>
+<h3 id="侧边栏与搜索">侧边栏与搜索</h3>
+<ul><li>频道与私信统一使用紧凑导航条目，长名称自动省略。</li><li>频道未读、<code>@我</code>、私信未读统一使用徽标样式。</li><li>搜索结果提供加载态、空状态、错误态和结果数量。</li><li>搜索结果区域独立滚动，不能挤压当前用户区或撑破主界面。</li></ul>
+<h3 id="消息区与输入区状态">消息区与输入区状态</h3>
+<ul><li>消息列表的加载失败保留在消息流区域，并提供重试动作。</li><li>发送失败、上传失败固定展示在输入区上方，避免与消息读取错误混淆。</li><li>发送按钮在空内容、发送中、上传中状态下禁用。</li><li>输入区使用“待输入”“上传中”“草稿已保存”等弱提示说明当前状态，不抢占消息阅读区。</li></ul>
+<h3 id="成员">成员</h3>
+<ul><li>管理员可邀请、移除频道成员。</li><li>普通用户不展示管理操作。</li></ul>
+<h3 id="管理后台">管理后台</h3>
+<ul><li>管理后台顶部展示摘要区，突出当前控制台用途和审计导出主操作。</li><li>用户、策略、频道、审计按独立区块排列，避免表单堆叠。</li><li>安全策略、文件策略、网络策略在桌面端使用策略网格，窄屏自动单列。</li><li>审计详情保留最近记录数量，导出入口在顶部保持稳定可见。</li></ul>
+<h3 id="窄屏适配">窄屏适配</h3>
+<ul><li>窄屏下左侧栏改为顶部区域并支持内部滚动。</li><li>窄屏下右侧面板隐藏，避免主消息区被压扁。</li><li>输入区始终保持在主消息区底部。</li><li>弹层在窄屏下接近全屏展示，内部滚动，避免内容被裁切。</li></ul>
+<h2 id="八-设计验收">八、设计验收</h2>
+<ul><li>Pencil 文件可打开，顶层画板数量为 5。</li><li>前端主界面与 Pencil 主画板布局一致。</li><li>登录页、发现频道、线程面板视觉风格一致。</li><li>动态文本渲染前进行 HTML 转义。</li><li>窄屏下右侧线程面板隐藏，主流程仍可操作。</li><li>阶段 6.5 无头 E2E 验收 14 个用例全部通过。</li></ul>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

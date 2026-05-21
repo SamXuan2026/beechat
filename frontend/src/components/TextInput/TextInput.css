@@ -1,0 +1,25 @@
+.bc-field {
+  display: grid;
+  gap: 6px;
+}
+
+.bc-field span {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.bc-input {
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: var(--radius-input);
+  background: var(--color-input);
+  outline: 0;
+  padding: 11px 12px;
+  color: var(--color-text);
+}
+
+.bc-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(74, 159, 216, 0.16);
+}

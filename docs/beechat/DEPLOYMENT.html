@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BeeChat MVP 部署说明</title>
+    <link rel="stylesheet" href="../assets/docs.css?v=tailwind-20260513" />
+  </head>
+  <body>
+    <div class="doc-shell">
+      <aside class="doc-sidebar">
+        <div class="doc-brand">
+          <strong>BeeChat Docs</strong>
+          <span>HTML 文档中心</span>
+        </div>
+        <nav><a class="doc-nav-link" href="../../design/beechat/DESIGN_SPEC.html"><span>设计</span>BeeChat 设计规范</a>
+<a class="doc-nav-link" href="../../design/beechat/README.html"><span>设计</span>BeeChat 设计稿</a>
+<a class="doc-nav-link" href="../../design/README.html"><span>设计</span>设计文件归档</a>
+<a class="doc-nav-link" href="API.html"><span>BeeChat</span>BeeChat MVP 接口文档</a>
+<a class="doc-nav-link" href="DATABASE_PLAN.html"><span>BeeChat</span>BeeChat 数据库适配方案</a>
+<a class="doc-nav-link active" href="DEPLOYMENT.html"><span>BeeChat</span>BeeChat MVP 部署说明</a>
+<a class="doc-nav-link" href="DESIGN.html"><span>BeeChat</span>BeeChat 设计文档</a>
+<a class="doc-nav-link" href="FRONTEND_REFACTOR_PLAN.html"><span>BeeChat</span>BeeChat 前端工程化改造方案</a>
+<a class="doc-nav-link" href="ITERATION_PLAN.html"><span>BeeChat</span>BeeChat 迭代计划</a>
+<a class="doc-nav-link" href="REQUIREMENTS.html"><span>BeeChat</span>BeeChat 需求文档</a>
+<a class="doc-nav-link" href="ROADMAP.html"><span>BeeChat</span>BeeChat Roadmap</a>
+<a class="doc-nav-link" href="TESTING.html"><span>BeeChat</span>BeeChat 测试说明与报告索引</a>
+<a class="doc-nav-link" href="../beepilot/conversation-channel-adapter.html"><span>BeePilot</span>Conversation Channel Adapter 设计草案</a>
+<a class="doc-nav-link" href="../beepilot/functional-scope.html"><span>BeePilot</span>BeePilot 整体功能规划与功能清单</a>
+<a class="doc-nav-link" href="../beepilot/phase1-implementation-plan.html"><span>BeePilot</span>BeePilot Phase 1 正式开发计划</a>
+<a class="doc-nav-link" href="../beepilot/product-roadmap-and-architecture.html"><span>BeePilot</span>BeePilot 产品 Roadmap 与技术框架</a>
+<a class="doc-nav-link" href="../beepilot/references/beeworks-ai-advisor-system-roadmap.html"><span>BeePilot 参考</span>BeeWorks 官网 AI 顾问系统 Roadmap</a>
+<a class="doc-nav-link" href="../beepilot/references/beeworks-ai-plg-homepage-plan.html"><span>BeePilot 参考</span>BeeWorks 官网 + AI PLG 闭环方案</a>
+<a class="doc-nav-link" href="../README.html"><span>项目</span>BeeChat / BeePilot 文档索引</a>
+<a class="doc-nav-link" href="../../README.html"><span>项目</span>BeeChat MVP</a></nav>
+      </aside>
+      <main class="doc-main">
+        <article class="doc-article">
+          <div class="doc-meta">
+            <span>BeeChat</span>
+            <span>离线 HTML · Tailwind CSS</span>
+          </div>
+          <h1 id="beechat-mvp-部署说明">BeeChat MVP 部署说明</h1>
+<h2 id="本机启动">本机启动</h2>
+<pre><code class="language-bash">./start.sh</code></pre>
+<p>状态检查：</p>
+<pre><code class="language-bash">./status.sh</code></pre>
+<p>停止：</p>
+<pre><code class="language-bash">./stop.sh</code></pre>
+<p>访问：</p>
+<pre><code class="language-text">http://127.0.0.1:5188</code></pre>
+<h2 id="docker-部署">Docker 部署</h2>
+<p>构建并启动：</p>
+<pre><code class="language-bash">docker compose up -d --build</code></pre>
+<p>查看日志：</p>
+<pre><code class="language-bash">docker compose logs -f beechat</code></pre>
+<p>停止：</p>
+<pre><code class="language-bash">docker compose down</code></pre>
+<h2 id="生产-compose-部署">生产 Compose 部署</h2>
+<p>准备环境变量：</p>
+<pre><code class="language-bash">cp .env.prod.example .env.prod</code></pre>
+<p>按内网策略修改：</p>
+<pre><code class="language-text">BEECHAT_BIND=127.0.0.1   仅本机反向代理访问
+BEECHAT_BIND=0.0.0.0     内网网段直接访问
+BEECHAT_PORT=5188        服务端口</code></pre>
+<p>构建并启动生产配置：</p>
+<pre><code class="language-bash">docker compose --env-file .env.prod -f docker-compose.prod.yml up -d --build</code></pre>
+<p>检查状态：</p>
+<pre><code class="language-bash">docker compose --env-file .env.prod -f docker-compose.prod.yml ps
+curl http://127.0.0.1:5188/api/health</code></pre>
+<p>停止：</p>
+<pre><code class="language-bash">docker compose --env-file .env.prod -f docker-compose.prod.yml down</code></pre>
+<p>生产配置包含：</p>
+<ul><li>多阶段 Docker 构建，镜像内包含 Vite 前端产物。</li><li><code>data/</code>、<code>logs/</code>、<code>backups/</code> 挂载到宿主机。</li><li>Docker 健康检查。</li><li>Docker JSON 日志轮转。</li><li><code>no-new-privileges</code> 基础容器安全约束。</li></ul>
+<h2 id="环境变量">环境变量</h2>
+<pre><code class="language-text">PORT 服务端口，默认 5188
+BEECHAT_DB_PROVIDER 数据库类型，当前默认 sqlite，后续生产可切换 postgres
+BEECHAT_DATABASE_URL PostgreSQL 连接串，仅 BEECHAT_DB_PROVIDER=postgres 时使用</code></pre>
+<h2 id="postgresql-适配计划">PostgreSQL 适配计划</h2>
+<p>阶段 6 第四期已补充 PostgreSQL 生产数据库适配骨架。</p>
+<p>交付文件：</p>
+<pre><code class="language-text">migrations/postgres/001_init.sql
+docs/beechat/DATABASE_PLAN.md
+scripts/check-postgres-plan.js
+scripts/export-postgres-seed.js
+scripts/check-database-runtime.js
+server/database/postgres-adapter.js
+scripts/check-postgres-adapter.js
+server/repositories/contracts.js
+server/repositories/sqlite-repository.js
+server/repositories/postgres-repository.js
+scripts/check-repository-contract.js</code></pre>
+<p>当前阶段仍默认使用 SQLite，避免破坏现有 MVP 运行。主服务已把频道读取、成员读取、频道消息分页、私信分页、频道文件列表和审计查询等低风险只读路径接入 SQLite 仓储；频道消息、线程回复、私信发送、消息编辑和消息撤回写入路径已接入 SQLite 仓储。文件上传发送仍保持原链路；PostgreSQL 写入仍未启用。生产切换 PostgreSQL 前，需要先执行完整备份、数据迁移和真实数据库回归。</p>
+<p>环境变量约定：</p>
+<pre><code class="language-text">BEECHAT_DB_PROVIDER=sqlite
+BEECHAT_DB_PROVIDER=postgres
+BEECHAT_DATABASE_URL=postgres://beechat:替换密码@127.0.0.1:5432/beechat</code></pre>
+<p>检查 PostgreSQL 适配计划：</p>
+<pre><code class="language-bash">npm run db:plan:check</code></pre>
+<p>生成 PostgreSQL 一次性导入 SQL：</p>
+<pre><code class="language-bash">npm run db:export:postgres</code></pre>
+<p>生成文件：</p>
+<pre><code class="language-text">backups/postgres/beechat-postgres-seed.sql</code></pre>
+<p>检查数据库运行模式保护：</p>
+<pre><code class="language-bash">npm run db:runtime:check</code></pre>
+<p>检查 PostgreSQL 查询适配层：</p>
+<pre><code class="language-bash">npm run db:adapter:check</code></pre>
+<p>检查业务仓储契约：</p>
+<pre><code class="language-bash">npm run db:repository:check</code></pre>
+<p>当前版本默认并仅启用 SQLite 运行路径。<code>BEECHAT_DB_PROVIDER=postgres</code> 已纳入配置校验，但主服务运行切换尚未启用；生产切库前必须先完成 PostgreSQL 仓储读写实现、连接适配和真实库回归。</p>
+<p>详细迁移路径、回滚策略和验证方式见：</p>
+<pre><code class="language-text">docs/beechat/DATABASE_PLAN.md</code></pre>
+<h2 id="运维检查">运维检查</h2>
+<p>健康检查：</p>
+<pre><code class="language-bash">curl http://127.0.0.1:5188/api/health</code></pre>
+<p>运行指标：</p>
+<pre><code class="language-bash">curl http://127.0.0.1:5188/api/metrics -H &quot;Authorization: Bearer &lt;token&gt;&quot;</code></pre>
+<p><code>/api/metrics</code> 仅管理员和审计员可访问，返回进程、内存、会话、实时连接、数据文件大小、日志大小、业务计数和迁移状态。</p>
+<h2 id="数据目录">数据目录</h2>
+<pre><code class="language-text">data/beechat.sqlite SQLite 本地数据
+data/store.json     JSON 快照
+data/uploads/       上传文件
+logs/beechat.log    服务日志
+run/beechat.pid     本机脚本进程号
+backups/            本地备份产物</code></pre>
+<h2 id="本地备份">本地备份</h2>
+<p>执行：</p>
+<pre><code class="language-bash">npm run backup</code></pre>
+<p>备份内容：</p>
+<pre><code class="language-text">data/beechat.sqlite
+data/store.json
+data/uploads/
+manifest.json</code></pre>
+<p>备份目录：</p>
+<pre><code class="language-text">backups/beechat-&lt;时间戳&gt;/</code></pre>
+<p><code>manifest.json</code> 会记录备份时间、复制结果和上传文件清单。<code>backups/</code> 默认不提交到 Git。</p>
+<h2 id="结构化日志">结构化日志</h2>
+<p>服务会将运行日志写入：</p>
+<pre><code class="language-text">logs/beechat.log</code></pre>
+<p>日志格式为 JSON Lines，每行一条事件，便于接入日志采集、审计归档和离线排查。</p>
+<p>当前覆盖事件：</p>
+<pre><code class="language-text">server.started       服务启动
+migration.applied    数据库迁移执行
+http.request         HTTP 请求访问
+http.error           HTTP 异常
+audit.recorded       审计记录写入</code></pre>
+<p>日志达到 5MB 后会自动轮转为：</p>
+<pre><code class="language-text">logs/beechat-&lt;时间戳&gt;.log</code></pre>
+<p>生产环境建议将 <code>logs/</code> 挂载到独立目录，并接入系统日志轮转或集中采集。</p>
+<h2 id="nginx-反向代理">Nginx 反向代理</h2>
+<p>样例文件：</p>
+<pre><code class="language-text">deploy/nginx/beechat.conf</code></pre>
+<p>该样例包含普通 HTTP 代理与 <code>/api/realtime</code> WebSocket 升级配置。生产环境建议在 Nginx 层启用 HTTPS，并将 <code>server_name</code> 替换为企业内网域名。</p>
+<h2 id="数据库迁移">数据库迁移</h2>
+<p>服务启动时会自动扫描：</p>
+<pre><code class="language-text">migrations/*.sql</code></pre>
+<p>执行规则：</p>
+<ul><li>文件名格式：<code>001_init.sql</code>、<code>002_xxx.sql</code></li><li>迁移版本取文件名前缀，例如 <code>001</code></li><li>执行记录写入 <code>schema_migrations</code></li><li>已执行版本不会重复执行</li><li>任一迁移失败会回滚当前迁移并阻止服务启动</li></ul>
+<p>健康检查会返回启动时间、运行时长和已执行迁移：</p>
+<pre><code class="language-bash">curl http://127.0.0.1:5188/api/health</code></pre>
+<h2 id="内网部署建议">内网部署建议</h2>
+<ul><li>使用反向代理统一暴露 HTTPS。</li><li>将 <code>data/</code> 挂载到独立数据盘。</li><li>将 <code>logs/</code> 接入日志轮转。</li><li>定期备份 <code>data/beechat.sqlite</code> 与 <code>data/uploads/</code>。</li><li>生产环境建议将默认账号密码替换为企业身份源或初始化脚本。</li></ul>
+<h2 id="验证">验证</h2>
+<pre><code class="language-bash">npm run smoke</code></pre>
+<p>冒烟测试覆盖登录、实时连接、消息、私信、权限、成员、文件、搜索、审计。</p>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

@@ -2,5 +2,13 @@
 data/*.json
 data/*.sqlite
 data/uploads/
+backups/
 logs/
 run/
+frontend/node_modules/
+frontend/dist/
+frontend/*.tsbuildinfo
+node_modules/
+test-results/
+playwright-report/
+blob-report/

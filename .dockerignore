@@ -1,0 +1,16 @@
+.DS_Store
+.git
+backups
+data
+logs
+node_modules
+playwright-report
+run
+test-results
+frontend/dist
+frontend/node_modules
+frontend/*.tsbuildinfo
+docs/**/*.html
+docs/assets
+design/**/*.html
+README.html

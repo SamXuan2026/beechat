@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BeeChat 迭代计划</title>
+    <link rel="stylesheet" href="../assets/docs.css?v=tailwind-20260513" />
+  </head>
+  <body>
+    <div class="doc-shell">
+      <aside class="doc-sidebar">
+        <div class="doc-brand">
+          <strong>BeeChat Docs</strong>
+          <span>HTML 文档中心</span>
+        </div>
+        <nav><a class="doc-nav-link" href="../../design/beechat/DESIGN_SPEC.html"><span>设计</span>BeeChat 设计规范</a>
+<a class="doc-nav-link" href="../../design/beechat/README.html"><span>设计</span>BeeChat 设计稿</a>
+<a class="doc-nav-link" href="../../design/README.html"><span>设计</span>设计文件归档</a>
+<a class="doc-nav-link" href="API.html"><span>BeeChat</span>BeeChat MVP 接口文档</a>
+<a class="doc-nav-link" href="DATABASE_PLAN.html"><span>BeeChat</span>BeeChat 数据库适配方案</a>
+<a class="doc-nav-link" href="DEPLOYMENT.html"><span>BeeChat</span>BeeChat MVP 部署说明</a>
+<a class="doc-nav-link" href="DESIGN.html"><span>BeeChat</span>BeeChat 设计文档</a>
+<a class="doc-nav-link" href="FRONTEND_REFACTOR_PLAN.html"><span>BeeChat</span>BeeChat 前端工程化改造方案</a>
+<a class="doc-nav-link active" href="ITERATION_PLAN.html"><span>BeeChat</span>BeeChat 迭代计划</a>
+<a class="doc-nav-link" href="REQUIREMENTS.html"><span>BeeChat</span>BeeChat 需求文档</a>
+<a class="doc-nav-link" href="ROADMAP.html"><span>BeeChat</span>BeeChat Roadmap</a>
+<a class="doc-nav-link" href="TESTING.html"><span>BeeChat</span>BeeChat 测试说明与报告索引</a>
+<a class="doc-nav-link" href="../beepilot/conversation-channel-adapter.html"><span>BeePilot</span>Conversation Channel Adapter 设计草案</a>
+<a class="doc-nav-link" href="../beepilot/functional-scope.html"><span>BeePilot</span>BeePilot 整体功能规划与功能清单</a>
+<a class="doc-nav-link" href="../beepilot/phase1-implementation-plan.html"><span>BeePilot</span>BeePilot Phase 1 正式开发计划</a>
+<a class="doc-nav-link" href="../beepilot/product-roadmap-and-architecture.html"><span>BeePilot</span>BeePilot 产品 Roadmap 与技术框架</a>
+<a class="doc-nav-link" href="../beepilot/references/beeworks-ai-advisor-system-roadmap.html"><span>BeePilot 参考</span>BeeWorks 官网 AI 顾问系统 Roadmap</a>
+<a class="doc-nav-link" href="../beepilot/references/beeworks-ai-plg-homepage-plan.html"><span>BeePilot 参考</span>BeeWorks 官网 + AI PLG 闭环方案</a>
+<a class="doc-nav-link" href="../README.html"><span>项目</span>BeeChat / BeePilot 文档索引</a>
+<a class="doc-nav-link" href="../../README.html"><span>项目</span>BeeChat MVP</a></nav>
+      </aside>
+      <main class="doc-main">
+        <article class="doc-article">
+          <div class="doc-meta">
+            <span>BeeChat</span>
+            <span>离线 HTML · Tailwind CSS</span>
+          </div>
+          <h1 id="beechat-迭代计划">BeeChat 迭代计划</h1>
+<h2 id="一-当前进展">一、当前进展</h2>
+<p>当前 BeeChat 已完成 MVP 底座、第一轮设计同步与前端工程化主体改造，状态如下：</p>
+<pre><code class="language-text">产品方向       企业内网私有化协同聊天
+工程形态       Node.js 原生服务 + Vite React 前端 + SQLite
+设计源文件     Pencil 多画板已重建
+当前主线       阶段 6.5 主聊天体验打磨与前端结构收敛
+核心验证       开发期快速回归通过后更新 HTML 报告</code></pre>
+<h2 id="二-已完成阶段">二、已完成阶段</h2>
+<h3 id="阶段-0-项目纠偏与目录归档">阶段 0：项目纠偏与目录归档</h3>
+<p>状态：已完成。</p>
+<ul><li>确认 BeeChat 独立目录为 <code>bee-chat/</code>。</li><li>将 BeeChat 文档统一放入 <code>docs/beechat/</code>。</li><li>将 BeePilot 文档统一放入 <code>docs/beepilot/</code>。</li><li>将设计文件统一放入 <code>design/beechat/</code>。</li><li>识别并隔离旧 Pencil 占位文件。</li></ul>
+<h3 id="阶段-1-mvp-功能底座">阶段 1：MVP 功能底座</h3>
+<p>状态：已完成。</p>
+<ul><li>登录与会话恢复。</li><li>频道、私信、消息、线程。</li><li>文件上传与下载。</li><li>搜索、未读数、WebSocket 实时刷新。</li><li>审计、敏感词提示。</li><li>成员管理与基础权限。</li><li>SQLite 持久化。</li><li>数据库初始化迁移。</li><li>Docker 与本地启动脚本。</li><li>冒烟测试脚本。</li></ul>
+<h3 id="阶段-2-设计重建与前端同步">阶段 2：设计重建与前端同步</h3>
+<p>状态：主体已完成，进入验收收口。</p>
+<ul><li>重建 <code>beechat-main-chat.pen</code>。</li><li>补充 <code>DESIGN_SPEC.md</code>。</li><li>前端同步新版视觉风格。</li><li>新增发现频道弹层。</li><li>补充前端动态内容 HTML 转义。</li><li>已补充一屏布局约束与回归用例。</li><li>待完成：阶段验收截图归档、移动端视觉细节继续微调。</li></ul>
+<h3 id="阶段-3-前端工程化">阶段 3：前端工程化</h3>
+<p>状态：主体已完成，进入持续完善。</p>
+<p>目标：将当前原生前端升级为可长期维护的工程化前端。</p>
+<p>已采用技术路线：</p>
+<pre><code class="language-text">Vite + React + TypeScript
+组件化业务模块
+统一 API Client
+统一设计令牌</code></pre>
+<p>已完成：</p>
+<ul><li>拆分登录页、主工作台、侧栏、消息列表、线程面板、审计面板、成员面板。</li><li>抽象 Avatar、Badge、Button、EmptyState、Modal 等基础组件。</li><li>引入统一主题变量，与 <code>DESIGN_SPEC.md</code> 对齐。</li><li>增加前端构建脚本与静态资源输出目录。</li><li>增加 Playwright 回归脚本与基础页面级验证。</li></ul>
+<p>待收口：</p>
+<ul><li>继续拆分 <code>ChatWorkspace</code> 内部业务组件。</li><li>设置页第一期已实现，支持个人资料、通知偏好、快捷键展示与退出登录入口。</li><li>补充更多可访问性与响应式断言。</li></ul>
+<p>验收：</p>
+<ul><li>功能与当前 MVP 等价。</li><li>视觉与 Pencil 主画板一致。</li><li><code>npm run smoke</code> 继续通过。</li></ul>
+<h2 id="三-当前插入阶段-阶段-6-5-主聊天体验打磨">三、当前插入阶段：阶段 6.5 主聊天体验打磨</h2>
+<p>状态：已完成。第十五期阶段验收已通过，14 个无头 E2E 用例全部通过。</p>
+<p>插入原因：</p>
+<ul><li>后端生产化已推进到阶段 6 第十五期，继续深挖前先把主聊天体验打磨稳定。</li><li><code>ChatWorkspace</code> 和 <code>ChatWorkspace.css</code> 已膨胀，后续继续改 UI 的风险偏高。</li><li>E2E 已覆盖主流程，但 UI/UX 细节断言不足。</li></ul>
+<h3 id="第一期-主聊天界面打磨">第一期：主聊天界面打磨</h3>
+<p>本期交付：</p>
+<ul><li>新增 <code>ChatMainPanel</code>，承接频道头部、提示区、消息列表和输入区。</li><li><code>ChatWorkspace</code> 保留状态编排、数据刷新和事件分发。</li><li>新增 <code>useWorkspaceSearch</code>、<code>useDraftComposer</code>、<code>useThreadWorkspace</code>、<code>useDiscoverChannels</code>、<code>useSettingsWorkspace</code>、<code>useAdminWorkspace</code>。</li><li><code>ChatWorkspace.tsx</code> 已从 737 行收敛到 500 行以内。</li><li>主工作台继续保持一屏内完成核心操作。</li><li>消息长文本、文件卡片、线程根消息增加换行保护。</li><li>消息操作按钮常态弱化，悬停和聚焦时增强。</li><li>输入区固定底部，发送、上传、草稿状态层级更清晰。</li><li>右侧面板 Tab 固定顶部，内容区独立滚动。</li><li>私信消息不展示线程入口。</li><li>增强 Playwright 无头用例：一屏布局、长文本、输入区、右侧面板切换。</li><li>更新 <code>DESIGN.md</code> React 组件映射。</li></ul>
+<p>快速回归：</p>
+<pre><code class="language-text">node --check server/index.js
+node --check scripts/smoke.js
+node --check tests/e2e/beechat.regression.spec.js
+npm --prefix frontend run typecheck
+npm --prefix frontend run build
+npm run docs:build
+npm run smoke
+git diff --check</code></pre>
+<h3 id="第二期-侧边栏与搜索体验">第二期：侧边栏与搜索体验</h3>
+<p>交付：</p>
+<ul><li>频道、私信、搜索结果密度优化。已完成：频道与私信统一 <code>sidebar-nav-item</code> 结构。</li><li>未读、<code>@我</code>、在线状态标识统一。已完成：频道未读、<code>@我</code>、私信未读统一徽标结构。</li><li>搜索结果空状态、加载态、错误态补齐。已完成：搜索标题、结果数量、空状态、错误态、加载态和悬停聚焦反馈。</li><li>搜索定位后的高亮与滚动体验继续优化。已完成：搜索结果区域独立滚动，不撑破侧边栏。</li><li>快速回归补充。已完成：侧边栏搜索、频道 <code>@我</code>、私信项和搜索布局断言。</li></ul>
+<h3 id="第三期-管理后台-ui-收敛">第三期：管理后台 UI 收敛</h3>
+<p>交付：</p>
+<ul><li>管理后台表单分区优化。已完成：管理后台增加摘要头、指标区、用户区、策略区、频道区、审计区。</li><li>审计筛选体验优化。已完成：审计详情显示最近记录数量，保留独立滚动。</li><li>角色、安全策略、文件策略、网络策略视觉层级优化。已完成：策略表单归入三列策略网格，窄屏自动单列。</li><li>审计导出入口增强。已完成：导出 CSV 提升为管理后台顶部主操作。</li><li>快速回归补充。已完成：管理后台打开后校验摘要区、策略区和面板高度不溢出。</li></ul>
+<h3 id="第四期-窄屏适配与阶段验收">第四期：窄屏适配与阶段验收</h3>
+<p>交付：</p>
+<ul><li>窄屏侧栏、主消息区、右侧面板适配。已完成：侧栏内部滚动、主区输入区固定、右侧面板窄屏隐藏。</li><li>完整无头 E2E 阶段验收。已完成：<code>npm run e2e</code>，14 个用例全部通过。</li><li>用户要求观看过程时再执行可视化 E2E。已遵守：本次未执行可视化 E2E。</li><li>归档 HTML 测试报告。已完成：Playwright 报告与 BeeChat HTML 文档均已生成。</li></ul>
+<h3 id="第五期-主消息区状态与输入区反馈">第五期：主消息区状态与输入区反馈</h3>
+<p>交付：</p>
+<ul><li>消息加载错误态增加明确重试按钮，失败后不需要刷新整页。</li><li>发送失败、上传失败从消息列表错误态拆出，固定展示在输入区上方。</li><li>输入区发送按钮同时响应空内容、发送中、上传中状态。</li><li>输入区状态徽标补充“待输入”“上传中”，降低用户对禁用按钮的困惑。</li><li>保持主工作台一屏布局约束，继续不新增大型后端能力。</li></ul>
+<h3 id="第六期-主聊天区-css-结构收敛">第六期：主聊天区 CSS 结构收敛</h3>
+<p>交付：</p>
+<ul><li>新增 <code>ChatMainPanel.css</code>，承接频道头部、安全提示、频道公告样式。</li><li>新增 <code>MessageList.css</code>，承接消息列表、消息气泡、文件卡片、反应区和消息错误态样式。</li><li>新增 <code>MessageComposer.css</code>，承接输入区、附件入口、@ 人快捷入口和输入区错误态样式。</li><li><code>ChatWorkspace.css</code> 从 1421 行降到 1056 行，继续保留工作台布局、侧边栏、右侧面板、弹层和管理后台样式。</li><li>本期不改变 DOM 结构和接口语义，降低视觉回归风险。</li></ul>
+<h3 id="第七期-侧边栏-css-结构收敛">第七期：侧边栏 CSS 结构收敛</h3>
+<p>交付：</p>
+<ul><li>新增 <code>ChatSidebar.css</code>，承接品牌、全局搜索、搜索结果、频道、私信、当前用户卡片样式。</li><li><code>ChatWorkspace.css</code> 从 1056 行继续降到 796 行，只保留工作台网格、主区壳、右侧面板、弹层和管理后台样式。</li><li>侧边栏搜索、频道未读、<code>@我</code>、私信在线状态仍沿用原 DOM 与测试定位。</li><li>本期不改变接口语义，不新增后端能力。</li></ul>
+<h3 id="第八期-右侧面板-css-结构收敛">第八期：右侧面板 CSS 结构收敛</h3>
+<p>交付：</p>
+<ul><li>新增 <code>RightPanel.css</code>，承接右侧面板壳层、线程、成员、文件和审计面板样式。</li><li><code>RightPanel.tsx</code> 独立引入右侧面板样式，继续保持 Tab 壳层职责。</li><li><code>ChatWorkspace.css</code> 从 796 行继续降到 474 行，只保留工作台网格、主区壳、弹层和管理后台样式。</li><li>线程根消息、回复列表、成员列表、文件卡片、审计筛选仍沿用原 DOM 与测试定位。</li><li>本期不改变接口语义，不新增后端能力。</li></ul>
+<h3 id="第九期-弹层与管理后台-css-结构收敛">第九期：弹层与管理后台 CSS 结构收敛</h3>
+<p>交付：</p>
+<ul><li>新增 <code>DiscoverChannelsModal.css</code>，承接发现频道创建表单、频道列表和频道卡片样式。</li><li>新增 <code>SettingsModal.css</code>，承接设置页个人资料、偏好开关、快捷键和操作区样式。</li><li>新增 <code>AdminModal.css</code>，承接管理后台摘要、指标、用户、频道、审计和策略区样式。</li><li><code>ChatWorkspace.css</code> 从 474 行继续降到 92 行，只保留工作台网格、主区壳和窄屏工作台布局规则。</li><li>发现频道、设置、管理后台仍沿用原 DOM 与测试定位。</li><li>本期不改变接口语义，不新增后端能力。</li></ul>
+<h3 id="第十期-输入区交互状态打磨">第十期：输入区交互状态打磨</h3>
+<p>交付：</p>
+<ul><li><code>MessageComposer</code> 增加 <code>empty</code>、<code>ready</code>、<code>sending</code>、<code>uploading</code> 状态标记，便于 UI 与测试稳定识别。</li><li>输入区表单增加 <code>aria-busy</code>，状态栏增加 <code>aria-live</code>，提升辅助访问体验。</li><li>上传入口改为固定尺寸工具按钮，增加 <code>composer-upload-button</code> 测试定位。</li><li>发送或上传过程中锁定输入框，避免重复操作导致状态错乱。</li><li>E2E 脚本补充输入区空态、就绪态和上传按钮可用性断言。</li><li>本期不改变接口语义，不新增后端能力。</li></ul>
+<h3 id="第十一期-消息列表阅读与操作语义增强">第十一期：消息列表阅读与操作语义增强</h3>
+<p>交付：</p>
+<ul><li><code>MessageList</code> 消息行增加 <code>data-message-owner</code>，稳定区分自己消息和他人消息。</li><li>消息行增加可访问名称，辅助识别消息归属。</li><li>消息操作区和回应区增加 <code>role=&quot;group&quot;</code> 与中文语义标签。</li><li>消息操作按钮增加 <code>aria-label</code> 与 <code>title</code>，提升键盘和读屏可用性。</li><li>自己消息的气泡、操作区、回应区进一步右对齐，保持阅读结构稳定。</li><li>E2E 脚本补充自己消息归属、消息操作组和回应组断言。</li><li>本期不改变接口语义，不新增后端能力。</li></ul>
+<h3 id="第十二期-线程与右侧面板体验精修">第十二期：线程与右侧面板体验精修</h3>
+<p>交付：</p>
+<ul><li><code>ThreadPanel</code> 增加统一面板头，展示线程回复数量和加载状态。</li><li><code>FilePanel</code> 增加统一面板头，展示频道文件数量和排序说明。</li><li><code>MemberPanel</code> 增加统一面板头，展示频道成员数量和管理权限状态。</li><li><code>AuditPanel</code> 增加统一面板头，展示审计记录数量和筛选能力。</li><li>线程区改为独立纵向布局，根消息、提醒、回复列表、输入区层级更稳定。</li><li>E2E 脚本补充线程详情、成员、文件、审计面板标题断言。</li><li>本期不改变接口语义，不新增后端能力。</li></ul>
+<h3 id="第十三期-侧边栏与搜索体验精修">第十三期：侧边栏与搜索体验精修</h3>
+<p>交付：</p>
+<ul><li>搜索结果增加类型标签，区分频道消息、线程和私信。</li><li>搜索结果按类型增加左侧色条，提升扫描效率。</li><li>搜索结果按钮增加中文可访问名称，便于键盘和读屏识别。</li><li>未读和 <code>@我</code> 徽标统一最小宽度、外边距和内边距。</li><li>E2E 脚本补充搜索结果类型标签断言。</li><li>本期不改变接口语义，不新增后端能力。</li></ul>
+<h3 id="第十四期-移动端与窄屏细节精修">第十四期：移动端与窄屏细节精修</h3>
+<p>交付：</p>
+<ul><li>窄屏侧栏高度改为 <code>clamp(210px, 32dvh, 280px)</code>，主区使用剩余视口高度。</li><li>输入区工具栏增强横向滚动，工具按钮固定宽度，避免挤压输入框。</li><li>弹层在窄屏下改为距离视口 8px 的近全屏布局。</li><li>管理后台移动端表单和策略区压缩间距，提升可操作面积。</li><li>E2E 脚本补充窄屏侧栏高度区间断言。</li><li>本期不改变接口语义，不新增后端能力。</li></ul>
+<h3 id="第十五期-阶段验收与归档">第十五期：阶段验收与归档</h3>
+<p>交付：</p>
+<ul><li>执行完整无头 E2E 阶段验收，14 个用例全部通过。</li><li>修复阶段验收中暴露的线程回复按钮选择器歧义。</li><li>刷新 HTML 文档和冒烟报告。</li><li>阶段 6.5 状态改为已完成。</li><li>后续建议进入阶段 7 企业系统集成，或回到阶段 6 后端生产化。</li></ul>
+<h3 id="补丁-可感知-ui-优化">补丁：可感知 UI 优化</h3>
+<p>状态：已完成。</p>
+<p>交付：</p>
+<ul><li>主聊天首屏增强频道标题、频道图标、安全协作信息条和置顶摘要，打开页面即可看到层级变化。</li><li>消息列表增强背景层次、日期胶囊、自己消息蓝色气泡、他人消息白色气泡、状态标签和文件卡片质感。</li><li>输入区升级为明确的工具栏、输入框和发送区结构，增加准备发送、输入消息后发送等辅助状态。</li><li>侧边栏增强品牌区、当前频道选中态、搜索结果类型标签、未读和 <code>@我</code> 徽标。</li><li>右侧面板增强分段 Tab、面板标题卡片、线程根消息、回复列表、文件、成员和审计卡片质感。</li><li>E2E 脚本补充频道信息条、输入区状态和侧边栏选中项断言。</li><li>收尾验收已修复输入区状态文案优先级和侧边栏频道列表覆盖操作按钮问题。</li><li>完整无头 E2E 已重新通过，14 个用例全部通过。</li><li>本补丁不改变接口语义、数据库结构和权限逻辑。</li></ul>
+<h2 id="四-后续阶段计划">四、后续阶段计划</h2>
+<h3 id="阶段-4-企业安全与管理">阶段 4：企业安全与管理</h3>
+<p>状态：已验收，审计组合筛选、文件上传策略、网络策略、审计员角色与频道管理员角色已完成。</p>
+<p>目标：补齐私有化企业协同所需的基础管理能力。</p>
+<p>第一期已完成：</p>
+<ul><li>管理员专属入口。</li><li>管理后台弹层。</li><li>用户列表与角色、在线状态展示。</li><li>频道列表与频道说明维护。</li><li>最近审计详情展示。</li><li><code>/api/admin/overview</code> 管理概览接口。</li><li><code>/api/admin/channels/:id</code> 频道说明更新接口。</li></ul>
+<p>第二期已完成：</p>
+<ul><li>角色权限配置。</li><li>审计导出。</li><li>密码策略。</li><li>登录失败锁定。</li></ul>
+<p>后续任务：</p>
+<ul><li>IP 白名单。</li><li>更细粒度角色权限矩阵。</li></ul>
+<p>第三期已完成：</p>
+<ul><li>审计按类型、操作者、关键词、起止日期组合筛选。</li><li>审计组合筛选快速回归覆盖。</li><li>文件上传大小与扩展名策略配置。</li><li>文件上传策略快速回归覆盖。</li><li>新增审计员角色。</li><li>普通成员审计访问收敛。</li><li>审计员可查看与导出审计，但不可进入管理总览。</li><li>新增频道管理员角色。</li><li>频道管理员可维护已加入频道的成员与频道说明。</li><li>频道管理员不可访问管理总览、安全策略、文件策略和用户角色配置。</li><li>新增 IP 白名单网络策略。</li><li>网络策略默认关闭，开启后统一拦截非白名单 IP。</li></ul>
+<p>验收：</p>
+<ul><li>管理员与普通用户权限边界清晰。</li><li>审计可按时间、操作者、类型过滤。</li><li>高风险操作有审计记录。</li><li><code>npm run e2e</code> 阶段验收通过，11 个用例全部通过。</li></ul>
+<h3 id="阶段-5-消息与协作增强">阶段 5：消息与协作增强</h3>
+<p>状态：主体完成，第一期已完成频道公告与置顶消息，第二期已完成消息收藏与表情回应，第三期已完成图片预览与频道文件列表，第四期已完成 @ 人提醒与本地草稿，第五期已完成搜索结果定位，第六期已完成在线状态优化。</p>
+<p>目标：提升日常协同效率。</p>
+<p>任务：</p>
+<ul><li>@ 人提醒。已完成：发送消息识别 <code>@姓名</code>、频道提及未读、侧栏提及标识、消息区 <code>@我</code> 标识、快速回归。</li><li>频道公告。已完成：频道模型、管理维护、顶部展示、审计记录、快速回归。</li><li>置顶消息。已完成：置顶接口、权限控制、消息区标识、置顶摘要、审计记录、快速回归。</li><li>消息收藏。已完成：收藏接口、个人收藏态、消息标识、审计记录、快速回归。</li><li>图片预览。已完成：图片文件消息缩略预览、下载入口复用、快速回归。</li><li>文件列表。已完成：频道文件列表接口、右侧文件面板、图片与普通文件区分展示、快速回归。</li><li>搜索结果定位到消息上下文。已完成：侧栏搜索、结果列表、频道切换、目标消息高亮、快速回归。</li><li>草稿。已完成：频道维度本地草稿保存、切换频道恢复草稿、发送后清理草稿、输入区保存提示。</li><li>表情回应。已完成：快捷回应接口、回应计数、个人回应态、审计记录、快速回归。</li><li>在线状态优化。已完成：基于有效会话与实时连接动态计算在线状态，退出登录后释放在线状态，WebSocket 推送 <code>presence:updated</code>，快速回归覆盖。</li></ul>
+<p>验收：</p>
+<ul><li>频道协作流程更接近真实企业使用。</li><li>搜索、文件、线程能形成完整闭环。</li></ul>
+<h3 id="阶段-6-生产级部署架构">阶段 6：生产级部署架构</h3>
+<p>状态：进行中，第一期已完成健康检查增强、运行指标接口和本地备份脚本，第二期已完成结构化日志与日志落盘，第三期已完成生产部署配置骨架，第四期已完成 PostgreSQL 适配计划与表结构迁移骨架，第五期已完成 PostgreSQL 一次性导入 SQL 生成脚本，第六期已完成数据库运行模式保护，第七期已完成 PostgreSQL 查询适配层第一版，第八期已完成业务仓储契约第一版，第九期已完成主服务低风险只读路径接入 SQLite 仓储，第十期已完成频道消息分页只读路径仓储接入，第十一期已完成私信分页只读路径仓储接入，第十二期已完成审计查询只读路径仓储接入，第十三期已完成 PostgreSQL 频道文件列表只读查询，第十四期已完成频道消息与线程回复发送写入路径接入 SQLite 仓储，第十五期已完成私信发送写入路径接入 SQLite 仓储，第十六期已完成消息编辑与消息撤回写入路径接入 SQLite 仓储。</p>
+<p>目标：从 MVP 单机形态升级为可生产部署形态。</p>
+<p>任务：</p>
+<ul><li>PostgreSQL 适配。已完成第十六期：PostgreSQL 初始化迁移、生产环境变量约定、SQLite 到 PostgreSQL 迁移路径、一次性导入 SQL 生成脚本、数据库运行模式保护、查询适配层、业务仓储契约、主服务低风险只读路径仓储接入、频道消息分页仓储接入、私信分页仓储接入、频道文件列表 PostgreSQL 查询、审计查询仓储接入、频道消息发送写入 SQLite 仓储接入、私信发送写入 SQLite 仓储接入、消息编辑与消息撤回写入 SQLite 仓储接入、PostgreSQL 消息写入显式未启用保护、回滚策略和静态检查脚本。</li><li>Redis 会话与 WebSocket 分布式广播。</li><li>对象存储适配。</li><li>反向代理配置。已完成第三期：<code>deploy/nginx/beechat.conf</code> 提供 HTTP 代理和 WebSocket 升级样例。</li><li>生产 Compose。已完成第三期：<code>docker-compose.prod.yml</code>、<code>.env.prod.example</code>、数据卷、日志卷、备份卷、健康检查和容器日志轮转。</li><li>备份与恢复。已完成第一期：<code>npm run backup</code> 备份 SQLite、JSON 快照、上传文件和清单。</li><li>健康检查与监控指标。已完成第一期：<code>/api/health</code> 返回启动时间与运行时长，<code>/api/metrics</code> 返回进程、内存、会话、实时连接、数据大小、业务计数和迁移状态。</li><li>日志分级与审计日志落盘。已完成第二期：JSON Lines 文件日志、HTTP 访问日志、异常日志、审计日志、启动日志、迁移日志和 5MB 自动轮转。</li><li>数据库迁移版本管理增强。</li></ul>
+<p>第十六期完成：</p>
+<ul><li>消息编辑与消息撤回写入链路已迁移到仓储。</li><li>SQLite 已补齐消息内容编辑与撤回状态变更仓储方法。</li><li>PostgreSQL 已为消息编辑、撤回写入预留显式未启用保护。</li><li>仓储契约检查、冒烟静态检查和快速回归已覆盖新增链路。</li></ul>
+<p>第十七期建议：</p>
+<ul><li>迁移文件上传发送链路到仓储，收敛剩余消息写入路径。</li><li>补齐 PostgreSQL 文件消息写入保护与后续真实库实现计划。</li><li>继续保持开发期快速回归，阶段验收再运行完整 E2E。</li></ul>
+<p>验收：</p>
+<ul><li>支持单机私有化部署。</li><li>支持后续平滑扩展到多实例。</li><li>数据备份与恢复流程可演练。</li></ul>
+<h3 id="阶段-7-企业集成">阶段 7：企业集成</h3>
+<p>目标：接入企业已有身份、组织和办公系统。</p>
+<p>任务：</p>
+<ul><li>单点登录。</li><li>LDAP / 企业微信 / 钉钉组织同步适配预留。</li><li>Webhook。</li><li>Bot 消息入口。</li><li>内部知识库关联。</li><li>审批系统消息通知。</li></ul>
+<p>验收：</p>
+<ul><li>BeeChat 可作为企业内部消息中心底座。</li><li>外部系统接入有清晰接口与鉴权策略。</li></ul>
+<h2 id="五-优先级建议">五、优先级建议</h2>
+<p>近期优先级：</p>
+<pre><code class="language-text">P0  浏览器视觉验收与 UI 细节修复
+P0  文档补齐与仓库整理
+P1  前端工程化组件细拆
+P1  管理后台增强与审计导出
+P2  PostgreSQL / Redis / 对象存储
+P2  企业组织与单点登录</code></pre>
+<h2 id="六-风险与处理">六、风险与处理</h2>
+<table><thead><tr><th>风险</th><th>影响</th><th>处理方式</th></tr></thead><tbody><tr><td>原 Pencil 源文件丢失</td><td>设计追溯困难</td><td>已重建正式 Pencil 源文件</td></tr><tr><td>原生前端继续膨胀</td><td>后期维护成本升高</td><td>阶段 3 迁移工程化前端</td></tr><tr><td>SQLite 不适合多人生产</td><td>数据一致性与扩展受限</td><td>阶段 6 引入 PostgreSQL</td></tr><tr><td>WebSocket 单实例限制</td><td>多实例无法广播</td><td>阶段 6 引入 Redis Pub/Sub</td></tr><tr><td>审计权限边界不够细</td><td>合规风险</td><td>阶段 4 收敛审计权限</td></tr></tbody></table>
+<h2 id="七-当前建议执行项">七、当前建议执行项</h2>
+<ol><li>完成浏览器视觉验收与截图归档。</li><li>清理并提交当前文档、设计、前端工程化改动。</li><li>继续拆分 <code>ChatWorkspace</code>，降低单文件复杂度。</li><li>启动阶段 4 管理后台与审计详情设计。</li></ol>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

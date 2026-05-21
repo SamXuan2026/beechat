@@ -1,0 +1,30 @@
+services:
+  beechat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: beechat:${BEECHAT_IMAGE_TAG:-prod}
+    container_name: ${BEECHAT_CONTAINER_NAME:-beechat}
+    restart: unless-stopped
+    environment:
+      PORT: ${BEECHAT_PORT:-5188}
+      NODE_ENV: production
+    ports:
+      - "${BEECHAT_BIND:-127.0.0.1}:${BEECHAT_PORT:-5188}:5188"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./backups:/app/backups
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:5188/api/health >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BeeChat 设计规范</title>
+    <link rel="stylesheet" href="../../docs/assets/docs.css?v=tailwind-20260513" />
+  </head>
+  <body>
+    <div class="doc-shell">
+      <aside class="doc-sidebar">
+        <div class="doc-brand">
+          <strong>BeeChat Docs</strong>
+          <span>HTML 文档中心</span>
+        </div>
+        <nav><a class="doc-nav-link active" href="DESIGN_SPEC.html"><span>设计</span>BeeChat 设计规范</a>
+<a class="doc-nav-link" href="README.html"><span>设计</span>BeeChat 设计稿</a>
+<a class="doc-nav-link" href="../README.html"><span>设计</span>设计文件归档</a>
+<a class="doc-nav-link" href="../../docs/beechat/API.html"><span>BeeChat</span>BeeChat MVP 接口文档</a>
+<a class="doc-nav-link" href="../../docs/beechat/DATABASE_PLAN.html"><span>BeeChat</span>BeeChat 数据库适配方案</a>
+<a class="doc-nav-link" href="../../docs/beechat/DEPLOYMENT.html"><span>BeeChat</span>BeeChat MVP 部署说明</a>
+<a class="doc-nav-link" href="../../docs/beechat/DESIGN.html"><span>BeeChat</span>BeeChat 设计文档</a>
+<a class="doc-nav-link" href="../../docs/beechat/FRONTEND_REFACTOR_PLAN.html"><span>BeeChat</span>BeeChat 前端工程化改造方案</a>
+<a class="doc-nav-link" href="../../docs/beechat/ITERATION_PLAN.html"><span>BeeChat</span>BeeChat 迭代计划</a>
+<a class="doc-nav-link" href="../../docs/beechat/REQUIREMENTS.html"><span>BeeChat</span>BeeChat 需求文档</a>
+<a class="doc-nav-link" href="../../docs/beechat/ROADMAP.html"><span>BeeChat</span>BeeChat Roadmap</a>
+<a class="doc-nav-link" href="../../docs/beechat/TESTING.html"><span>BeeChat</span>BeeChat 测试说明与报告索引</a>
+<a class="doc-nav-link" href="../../docs/beepilot/conversation-channel-adapter.html"><span>BeePilot</span>Conversation Channel Adapter 设计草案</a>
+<a class="doc-nav-link" href="../../docs/beepilot/functional-scope.html"><span>BeePilot</span>BeePilot 整体功能规划与功能清单</a>
+<a class="doc-nav-link" href="../../docs/beepilot/phase1-implementation-plan.html"><span>BeePilot</span>BeePilot Phase 1 正式开发计划</a>
+<a class="doc-nav-link" href="../../docs/beepilot/product-roadmap-and-architecture.html"><span>BeePilot</span>BeePilot 产品 Roadmap 与技术框架</a>
+<a class="doc-nav-link" href="../../docs/beepilot/references/beeworks-ai-advisor-system-roadmap.html"><span>BeePilot 参考</span>BeeWorks 官网 AI 顾问系统 Roadmap</a>
+<a class="doc-nav-link" href="../../docs/beepilot/references/beeworks-ai-plg-homepage-plan.html"><span>BeePilot 参考</span>BeeWorks 官网 + AI PLG 闭环方案</a>
+<a class="doc-nav-link" href="../../docs/README.html"><span>项目</span>BeeChat / BeePilot 文档索引</a>
+<a class="doc-nav-link" href="../../README.html"><span>项目</span>BeeChat MVP</a></nav>
+      </aside>
+      <main class="doc-main">
+        <article class="doc-article">
+          <div class="doc-meta">
+            <span>设计</span>
+            <span>离线 HTML · Tailwind CSS</span>
+          </div>
+          <h1 id="beechat-设计规范">BeeChat 设计规范</h1>
+<h2 id="设计状态">设计状态</h2>
+<p>BeeChat 原 Pencil 多画板源文件已无法在本机可读目录中定位。当前设计以历史截图和 BeeChat MVP 已实现功能为基准重建，后续所有 Pencil / Figma / 前端实现应以本文档为准。</p>
+<h2 id="设计目标">设计目标</h2>
+<ul><li>面向企业内网私有化协同聊天场景。</li><li>保持轻量、清晰、低学习成本的工作台风格。</li><li>优先支撑频道协作、私聊、线程、审计、搜索、文件、成员管理。</li><li>视觉上延续截图中的深紫侧边栏、浅色内容区、蓝色主操作按钮。</li></ul>
+<h2 id="核心画板">核心画板</h2>
+<h3 id="beechat-main">BeeChat - Main</h3>
+<p>主聊天工作台，尺寸建议 <code>1280 x 720</code>。</p>
+<p>布局：</p>
+<ul><li>左侧导航栏，宽度 <code>232</code>，背景 <code>#281850</code>。</li><li>顶部品牌区：BeeChat 标识、当前工作区下拉。</li><li>搜索框：深紫输入框，支持搜索频道、成员、消息。</li><li>频道列表：<code># general</code>、<code># random</code>、<code># engineering</code>、<code>announcements</code>。</li><li>私信列表：张三、李四、王五，在线状态用绿色圆点。</li><li>底部当前用户卡片：头像、昵称、更多操作。</li><li>中央消息区：频道标题、成员数、工具图标、内网审计状态。</li><li>消息列表：日期分割线、系统安全提示、成员消息、本人消息、审计提示。</li><li>底部输入区：富文本按钮、附件、输入框、表情、审计标识、发送按钮。</li></ul>
+<p>关键状态：</p>
+<ul><li>当前频道高亮：<code>#5A3A9E</code>。</li><li>未读数：红色圆形徽标 <code>#E05252</code>。</li><li>本人消息气泡：蓝色 <code>#4A9FD8</code>，右侧对齐。</li><li>他人消息：无卡片或浅色文本块，左侧头像。</li><li>审计提示条：蓝色信息条与橙色敏感词提示条。</li></ul>
+<h3 id="beechat-thread-view">BeeChat - Thread View</h3>
+<p>线程页，尺寸建议 <code>1280 x 720</code>。</p>
+<p>布局：</p>
+<ul><li>继承主聊天左侧导航和中央消息区。</li><li>右侧线程面板，宽度 <code>320</code>，背景 <code>#FFFFFF</code>，左边框 <code>#E6EAF2</code>。</li><li>线程标题：线程图标、标题、关闭按钮。</li><li>根消息卡片：展示原消息、作者、时间、线程回复数。</li><li>回复列表：按时间排列，支持审计状态和敏感提示。</li><li>底部线程回复输入框。</li></ul>
+<p>关键状态：</p>
+<ul><li>当前线程消息在中央列表中保持可识别。</li><li>线程面板内敏感提示使用浅橙背景 <code>#FFF5DF</code>。</li><li>回复数量使用小号蓝色文本。</li></ul>
+<h3 id="beechat-login">BeeChat - Login</h3>
+<p>登录页，尺寸建议 <code>720 x 540</code>。</p>
+<p>布局：</p>
+<ul><li>浅灰背景 <code>#F5F7FB</code>。</li><li>居中登录卡片，宽度 <code>360</code>，圆角 <code>10</code>。</li><li>顶部品牌图标：蓝色方块 <code>B</code>。</li><li>标题：登录 BeeChat。</li><li>字段：账号、密码。</li><li>主按钮：登录。</li><li>辅助入口：语言、消息、忘记密码、立即注册。</li></ul>
+<p>关键状态：</p>
+<ul><li>输入框背景 <code>#F6F7FA</code>。</li><li>登录按钮背景 <code>#4A9FD8</code>。</li><li>错误态使用 <code>#E05252</code>，需要保留字段级错误提示位置。</li></ul>
+<h3 id="beechat-discover-channels">BeeChat - Discover Channels</h3>
+<p>发现频道页，尺寸建议 <code>720 x 540</code>。</p>
+<p>布局：</p>
+<ul><li>顶部栏：返回按钮、标题“发现频道”、创建频道按钮。</li><li>搜索框：搜索频道。</li><li>频道卡片列表：图标、频道名、描述、加入/已加入按钮。</li><li>频道：general、engineering、design、random。</li></ul>
+<p>关键状态：</p>
+<ul><li>已加入按钮使用绿色 <code>#41C585</code>。</li><li>未加入按钮使用蓝色 <code>#4A9FD8</code>。</li><li>频道图标按类型使用蓝、橙、绿区分。</li></ul>
+<h3 id="beechat-settings">BeeChat - Settings</h3>
+<p>设置页，尺寸建议 <code>840 x 620</code>。</p>
+<p>布局：</p>
+<ul><li>左侧设置导航，宽度 <code>208</code>。</li><li>导航项：个人资料、通知、外观、快捷键。</li><li>右侧内容区：个人资料表单。</li><li>头像、显示名称、邮箱、个人简介、保存按钮。</li></ul>
+<p>关键状态：</p>
+<ul><li>当前导航高亮背景 <code>#EEF1F6</code>。</li><li>保存按钮使用蓝色主按钮。</li><li>表单输入框统一浅灰背景，字号 <code>13</code>。</li></ul>
+<h2 id="视觉令牌">视觉令牌</h2>
+<p>颜色：</p>
+<pre><code class="language-text">主侧边栏背景       #281850
+侧边栏高亮         #5A3A9E
+页面背景           #F3F5F9
+内容背景           #FFFFFF
+浅灰输入背景       #F6F7FA
+主按钮蓝           #4A9FD8
+成功绿             #41C585
+警告橙             #F5A623
+错误红             #E05252
+主文字             #1F2937
+次级文字           #6B7280
+弱文字             #9AA3B2
+边框               #E6EAF2</code></pre>
+<p>字体：</p>
+<pre><code class="language-text">默认字体           Inter / PingFang SC / system-ui
+页面标题           16px / 700
+区域标题           14px / 700
+正文               13px / 400
+说明文字           12px / 400
+徽标               11px / 700</code></pre>
+<p>圆角：</p>
+<pre><code class="language-text">按钮               6px
+输入框             6px
+消息气泡           8px
+卡片               8px
+登录卡片           10px</code></pre>
+<p>间距：</p>
+<pre><code class="language-text">页面内边距         16px
+列表间距           8px
+区域间距           16px
+输入区高度         72px
+顶部栏高度         52px</code></pre>
+<h2 id="功能映射">功能映射</h2>
+<table><thead><tr><th>设计区域</th><th>对应 MVP 能力</th></tr></thead><tbody><tr><td>登录页</td><td>登录态、本地账号</td></tr><tr><td>频道列表</td><td>频道查询、加入频道、未读数</td></tr><tr><td>消息列表</td><td>消息分页、发送、编辑、撤回</td></tr><tr><td>本人消息</td><td>已读状态、发送状态</td></tr><tr><td>线程面板</td><td>线程回复</td></tr><tr><td>搜索框</td><td>消息搜索</td></tr><tr><td>附件入口</td><td>文件上传、下载</td></tr><tr><td>审计提示</td><td>敏感词、操作审计</td></tr><tr><td>设置页</td><td>用户资料、后续偏好设置</td></tr></tbody></table>
+<h2 id="文件归档要求">文件归档要求</h2>
+<p>重建后的源文件统一保存为：</p>
+<pre><code class="language-text">design/beechat/beechat-main-chat.pen</code></pre>
+<p>如导出评审图，命名为：</p>
+<pre><code class="language-text">design/beechat/beechat-design-review-YYYYMMDD.png</code></pre>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

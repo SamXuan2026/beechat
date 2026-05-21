@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BeeChat MVP</title>
+    <link rel="stylesheet" href="docs/assets/docs.css?v=tailwind-20260513" />
+  </head>
+  <body>
+    <div class="doc-shell">
+      <aside class="doc-sidebar">
+        <div class="doc-brand">
+          <strong>BeeChat Docs</strong>
+          <span>HTML 文档中心</span>
+        </div>
+        <nav><a class="doc-nav-link" href="design/beechat/DESIGN_SPEC.html"><span>设计</span>BeeChat 设计规范</a>
+<a class="doc-nav-link" href="design/beechat/README.html"><span>设计</span>BeeChat 设计稿</a>
+<a class="doc-nav-link" href="design/README.html"><span>设计</span>设计文件归档</a>
+<a class="doc-nav-link" href="docs/beechat/API.html"><span>BeeChat</span>BeeChat MVP 接口文档</a>
+<a class="doc-nav-link" href="docs/beechat/DATABASE_PLAN.html"><span>BeeChat</span>BeeChat 数据库适配方案</a>
+<a class="doc-nav-link" href="docs/beechat/DEPLOYMENT.html"><span>BeeChat</span>BeeChat MVP 部署说明</a>
+<a class="doc-nav-link" href="docs/beechat/DESIGN.html"><span>BeeChat</span>BeeChat 设计文档</a>
+<a class="doc-nav-link" href="docs/beechat/FRONTEND_REFACTOR_PLAN.html"><span>BeeChat</span>BeeChat 前端工程化改造方案</a>
+<a class="doc-nav-link" href="docs/beechat/ITERATION_PLAN.html"><span>BeeChat</span>BeeChat 迭代计划</a>
+<a class="doc-nav-link" href="docs/beechat/REQUIREMENTS.html"><span>BeeChat</span>BeeChat 需求文档</a>
+<a class="doc-nav-link" href="docs/beechat/ROADMAP.html"><span>BeeChat</span>BeeChat Roadmap</a>
+<a class="doc-nav-link" href="docs/beechat/TESTING.html"><span>BeeChat</span>BeeChat 测试说明与报告索引</a>
+<a class="doc-nav-link" href="docs/beepilot/conversation-channel-adapter.html"><span>BeePilot</span>Conversation Channel Adapter 设计草案</a>
+<a class="doc-nav-link" href="docs/beepilot/functional-scope.html"><span>BeePilot</span>BeePilot 整体功能规划与功能清单</a>
+<a class="doc-nav-link" href="docs/beepilot/phase1-implementation-plan.html"><span>BeePilot</span>BeePilot Phase 1 正式开发计划</a>
+<a class="doc-nav-link" href="docs/beepilot/product-roadmap-and-architecture.html"><span>BeePilot</span>BeePilot 产品 Roadmap 与技术框架</a>
+<a class="doc-nav-link" href="docs/beepilot/references/beeworks-ai-advisor-system-roadmap.html"><span>BeePilot 参考</span>BeeWorks 官网 AI 顾问系统 Roadmap</a>
+<a class="doc-nav-link" href="docs/beepilot/references/beeworks-ai-plg-homepage-plan.html"><span>BeePilot 参考</span>BeeWorks 官网 + AI PLG 闭环方案</a>
+<a class="doc-nav-link" href="docs/README.html"><span>项目</span>BeeChat / BeePilot 文档索引</a>
+<a class="doc-nav-link active" href="README.html"><span>项目</span>BeeChat MVP</a></nav>
+      </aside>
+      <main class="doc-main">
+        <article class="doc-article">
+          <div class="doc-meta">
+            <span>项目</span>
+            <span>离线 HTML · Tailwind CSS</span>
+          </div>
+          <h1 id="beechat-mvp">BeeChat MVP</h1>
+<p>BeeChat 是面向企业内网私有化部署的轻量协同聊天系统 MVP。当前版本已从纯演示版升级为可持续迭代底座：本地持久化、登录态、权限、实时推送、审计、文件、搜索均已具备最小闭环。</p>
+<h2 id="已实现">已实现</h2>
+<ul><li>账号密码登录、会话恢复、退出登录</li><li>工作区、频道、私信列表</li><li>频道消息、私信消息、线程回复</li><li>手写 WebSocket 实时推送</li><li>SQLite 本地持久化，同时保留 JSON 快照便于排障</li><li>启动时自动执行 SQLite 迁移脚本</li><li>管理员/普通用户角色控制</li><li>频道成员查看、邀请、移除</li><li>创建频道、加入频道</li><li>未读数与已读清零</li><li>消息编辑、撤回</li><li>文件上传、下载、权限校验</li><li>消息搜索</li><li>敏感词提示</li><li>审计日志与分类筛选</li><li>独立前端界面</li></ul>
+<h2 id="账号">账号</h2>
+<pre><code class="language-text">管理员：13677889001 / admin123
+普通用户：zhangsan / 123456
+普通用户：lisi / 123456</code></pre>
+<h2 id="启动">启动</h2>
+<p>推荐使用脚本：</p>
+<pre><code class="language-bash">./start.sh</code></pre>
+<p>或直接运行：</p>
+<pre><code class="language-bash">npm start</code></pre>
+<p>访问：</p>
+<pre><code class="language-text">http://127.0.0.1:5188</code></pre>
+<p>Docker 启动：</p>
+<pre><code class="language-bash">docker compose up -d --build</code></pre>
+<h2 id="状态与停止">状态与停止</h2>
+<pre><code class="language-bash">./status.sh
+./stop.sh</code></pre>
+<h2 id="冒烟验证">冒烟验证</h2>
+<p>服务启动后执行：</p>
+<pre><code class="language-bash">npm run smoke</code></pre>
+<p>冒烟覆盖：健康检查、登录态、WebSocket、频道消息、私信、编辑、撤回、频道权限、成员管理、文件上传下载、搜索、审计筛选。</p>
+<h2 id="e2e-回归测试">E2E 回归测试</h2>
+<p>首次运行前安装测试依赖：</p>
+<pre><code class="language-bash">npm install</code></pre>
+<p>无头浏览器回归：</p>
+<pre><code class="language-bash">npm run e2e</code></pre>
+<p>本地可视化调试：</p>
+<pre><code class="language-bash">npm run e2e:headed</code></pre>
+<p>E2E 覆盖：入口加载、管理员登录、频道发消息、线程回复、退出登录。</p>
+<h2 id="文档">文档</h2>
+<pre><code class="language-text">docs/README.html                         文档索引
+docs/beechat/API.html                    BeeChat 接口文档
+docs/beechat/DEPLOYMENT.html             BeeChat 部署说明
+docs/beechat/ITERATION_PLAN.html         BeeChat 后续迭代计划
+docs/beechat/TESTING.html                BeeChat 测试说明与报告索引
+docs/beepilot/                           BeePilot 产品规划文档
+design/README.html                       设计文件归档规则
+migrations/001_init.sql                SQLite 初始化迁移
+Dockerfile                             容器镜像定义
+docker-compose.yml                     单机部署编排</code></pre>
+<h2 id="数据目录">数据目录</h2>
+<pre><code class="language-text">data/beechat.sqlite   SQLite 本地数据
+data/store.json       JSON 快照
+data/uploads/         上传文件
+logs/beechat.log      服务日志
+run/beechat.pid       运行进程号</code></pre>
+<p>这些运行数据已在 <code>.gitignore</code> 中排除。</p>
+<h2 id="说明">说明</h2>
+<p>当前版本使用 Node.js 内置能力实现，无外部依赖。SQLite 使用 <code>node:sqlite</code>，需要较新的 Node.js 版本支持。</p>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

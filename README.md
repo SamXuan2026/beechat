@@ -72,15 +72,38 @@ npm run smoke
 
 冒烟覆盖：健康检查、登录态、WebSocket、频道消息、私信、编辑、撤回、频道权限、成员管理、文件上传下载、搜索、审计筛选。
 
+## E2E 回归测试
+
+首次运行前安装测试依赖：
+
+```bash
+npm install
+```
+
+无头浏览器回归：
+
+```bash
+npm run e2e
+```
+
+本地可视化调试：
+
+```bash
+npm run e2e:headed
+```
+
+E2E 覆盖：入口加载、管理员登录、频道发消息、线程回复、退出登录。
+
 ## 文档
 
 ```text
-docs/README.md                         文档索引
-docs/beechat/API.md                    BeeChat 接口文档
-docs/beechat/DEPLOYMENT.md             BeeChat 部署说明
-docs/beechat/ITERATION_PLAN.md         BeeChat 后续迭代计划
-docs/beepilot/                         BeePilot 产品规划文档
-design/README.md                       设计文件归档规则
+docs/README.html                         文档索引
+docs/beechat/API.html                    BeeChat 接口文档
+docs/beechat/DEPLOYMENT.html             BeeChat 部署说明
+docs/beechat/ITERATION_PLAN.html         BeeChat 后续迭代计划
+docs/beechat/TESTING.html                BeeChat 测试说明与报告索引
+docs/beepilot/                           BeePilot 产品规划文档
+design/README.html                       设计文件归档规则
 migrations/001_init.sql                SQLite 初始化迁移
 Dockerfile                             容器镜像定义
 docker-compose.yml                     单机部署编排

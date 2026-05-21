@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BeeChat MVP 接口文档</title>
+    <link rel="stylesheet" href="../assets/docs.css?v=tailwind-20260513" />
+  </head>
+  <body>
+    <div class="doc-shell">
+      <aside class="doc-sidebar">
+        <div class="doc-brand">
+          <strong>BeeChat Docs</strong>
+          <span>HTML 文档中心</span>
+        </div>
+        <nav><a class="doc-nav-link" href="../../design/beechat/DESIGN_SPEC.html"><span>设计</span>BeeChat 设计规范</a>
+<a class="doc-nav-link" href="../../design/beechat/README.html"><span>设计</span>BeeChat 设计稿</a>
+<a class="doc-nav-link" href="../../design/README.html"><span>设计</span>设计文件归档</a>
+<a class="doc-nav-link active" href="API.html"><span>BeeChat</span>BeeChat MVP 接口文档</a>
+<a class="doc-nav-link" href="DATABASE_PLAN.html"><span>BeeChat</span>BeeChat 数据库适配方案</a>
+<a class="doc-nav-link" href="DEPLOYMENT.html"><span>BeeChat</span>BeeChat MVP 部署说明</a>
+<a class="doc-nav-link" href="DESIGN.html"><span>BeeChat</span>BeeChat 设计文档</a>
+<a class="doc-nav-link" href="FRONTEND_REFACTOR_PLAN.html"><span>BeeChat</span>BeeChat 前端工程化改造方案</a>
+<a class="doc-nav-link" href="ITERATION_PLAN.html"><span>BeeChat</span>BeeChat 迭代计划</a>
+<a class="doc-nav-link" href="REQUIREMENTS.html"><span>BeeChat</span>BeeChat 需求文档</a>
+<a class="doc-nav-link" href="ROADMAP.html"><span>BeeChat</span>BeeChat Roadmap</a>
+<a class="doc-nav-link" href="TESTING.html"><span>BeeChat</span>BeeChat 测试说明与报告索引</a>
+<a class="doc-nav-link" href="../beepilot/conversation-channel-adapter.html"><span>BeePilot</span>Conversation Channel Adapter 设计草案</a>
+<a class="doc-nav-link" href="../beepilot/functional-scope.html"><span>BeePilot</span>BeePilot 整体功能规划与功能清单</a>
+<a class="doc-nav-link" href="../beepilot/phase1-implementation-plan.html"><span>BeePilot</span>BeePilot Phase 1 正式开发计划</a>
+<a class="doc-nav-link" href="../beepilot/product-roadmap-and-architecture.html"><span>BeePilot</span>BeePilot 产品 Roadmap 与技术框架</a>
+<a class="doc-nav-link" href="../beepilot/references/beeworks-ai-advisor-system-roadmap.html"><span>BeePilot 参考</span>BeeWorks 官网 AI 顾问系统 Roadmap</a>
+<a class="doc-nav-link" href="../beepilot/references/beeworks-ai-plg-homepage-plan.html"><span>BeePilot 参考</span>BeeWorks 官网 + AI PLG 闭环方案</a>
+<a class="doc-nav-link" href="../README.html"><span>项目</span>BeeChat / BeePilot 文档索引</a>
+<a class="doc-nav-link" href="../../README.html"><span>项目</span>BeeChat MVP</a></nav>
+      </aside>
+      <main class="doc-main">
+        <article class="doc-article">
+          <div class="doc-meta">
+            <span>BeeChat</span>
+            <span>离线 HTML · Tailwind CSS</span>
+          </div>
+          <h1 id="beechat-mvp-接口文档">BeeChat MVP 接口文档</h1>
+<p>基础地址：</p>
+<pre><code class="language-text">http://127.0.0.1:5188</code></pre>
+<p>除登录、健康检查外，其余接口建议携带：</p>
+<pre><code class="language-text">Authorization: Bearer &lt;token&gt;</code></pre>
+<h2 id="通用响应">通用响应</h2>
+<pre><code class="language-json">{
+  &quot;success&quot;: true,
+  &quot;code&quot;: &quot;OK&quot;,
+  &quot;message&quot;: &quot;处理成功&quot;,
+  &quot;data&quot;: {}
+}</code></pre>
+<h2 id="健康检查">健康检查</h2>
+<pre><code class="language-http">GET /api/health</code></pre>
+<p>返回服务状态、存储类型、启动时间、运行时长、已执行数据库迁移和当前时间。</p>
+<h2 id="运行指标">运行指标</h2>
+<pre><code class="language-http">GET /api/metrics
+Authorization: Bearer &lt;token&gt;</code></pre>
+<p>仅管理员和审计员可访问。返回进程、内存、实时连接、会话、数据文件大小、日志大小、业务计数和迁移状态，用于内网运维巡检。</p>
+<h2 id="登录">登录</h2>
+<pre><code class="language-http">POST /api/login
+Content-Type: application/json</code></pre>
+<pre><code class="language-json">{
+  &quot;account&quot;: &quot;13677889001&quot;,
+  &quot;password&quot;: &quot;admin123&quot;
+}</code></pre>
+<h2 id="恢复会话">恢复会话</h2>
+<pre><code class="language-http">GET /api/session
+Authorization: Bearer &lt;token&gt;</code></pre>
+<h2 id="退出登录">退出登录</h2>
+<pre><code class="language-http">POST /api/logout
+Authorization: Bearer &lt;token&gt;</code></pre>
+<p>退出后当前会话立即失效，工作区用户在线状态会通过 WebSocket <code>presence:updated</code> 事件同步。</p>
+<h2 id="工作区">工作区</h2>
+<pre><code class="language-http">GET /api/workspace
+Authorization: Bearer &lt;token&gt;</code></pre>
+<p>返回频道、用户、未读数。用户对象中的 <code>online</code> 由当前有效会话与实时连接动态计算，不再依赖静态种子数据。</p>
+<p>频道对象新增：</p>
+<pre><code class="language-json">{
+  &quot;announcement&quot;: &quot;频道公告&quot;
+}</code></pre>
+<h2 id="频道消息">频道消息</h2>
+<pre><code class="language-http">GET /api/channels/{channelId}/messages
+Authorization: Bearer &lt;token&gt;</code></pre>
+<p>分页参数：</p>
+<pre><code class="language-text">pageSize  每页条数，默认 30，最大 100
+beforeId  加载指定消息 ID 之前的更早消息</code></pre>
+<p>分页响应：</p>
+<pre><code class="language-json">{
+  &quot;items&quot;: [],
+  &quot;hasMore&quot;: true,
+  &quot;nextBeforeId&quot;: 101,
+  &quot;pageSize&quot;: 30
+}</code></pre>
+<p>线程回复：</p>
+<pre><code class="language-http">GET /api/channels/{channelId}/messages?parentId={messageId}</code></pre>
+<p>线程回复同样支持 <code>pageSize</code> 和 <code>beforeId</code>。</p>
+<p>发送频道消息：</p>
+<pre><code class="language-http">POST /api/messages
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json</code></pre>
+<pre><code class="language-json">{
+  &quot;channelId&quot;: 1,
+  &quot;content&quot;: &quot;消息内容&quot;
+}</code></pre>
+<p>消息内容支持 <code>@姓名</code>、<code>@账号</code> 或 <code>@头像字</code> 提醒频道成员。后端会返回 <code>mentionUserIds</code>，并在被提醒用户的频道未读中累计 <code>mentionCount</code>。用户读取频道消息后，该频道的 <code>unreadCount</code> 与 <code>mentionCount</code> 会清零。</p>
+<p>发送线程回复：</p>
+<pre><code class="language-json">{
+  &quot;channelId&quot;: 1,
+  &quot;parentId&quot;: 101,
+  &quot;content&quot;: &quot;线程回复&quot;
+}</code></pre>
+<h2 id="私信">私信</h2>
+<pre><code class="language-http">GET /api/direct/{userId}/messages
+Authorization: Bearer &lt;token&gt;</code></pre>
+<p>私信消息同样返回分页结构，并支持 <code>pageSize</code> 和 <code>beforeId</code>。</p>
+<pre><code class="language-http">POST /api/direct/messages
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json</code></pre>
+<pre><code class="language-json">{
+  &quot;receiverId&quot;: 2,
+  &quot;content&quot;: &quot;私信内容&quot;
+}</code></pre>
+<h2 id="消息编辑与撤回">消息编辑与撤回</h2>
+<pre><code class="language-http">PUT /api/messages/{messageId}
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json</code></pre>
+<pre><code class="language-json">{
+  &quot;content&quot;: &quot;编辑后的内容&quot;
+}</code></pre>
+<pre><code class="language-http">POST /api/messages/{messageId}/revoke
+Authorization: Bearer &lt;token&gt;</code></pre>
+<p>置顶或取消置顶消息，管理员与频道管理员可用：</p>
+<pre><code class="language-http">POST /api/messages/{messageId}/pin
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json</code></pre>
+<pre><code class="language-json">{
+  &quot;pinned&quot;: true
+}</code></pre>
+<p>收藏或取消收藏消息，消息可见用户可用：</p>
+<pre><code class="language-http">POST /api/messages/{messageId}/favorite
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json</code></pre>
+<pre><code class="language-json">{
+  &quot;favorited&quot;: true
+}</code></pre>
+<p>添加或取消表情回应，消息可见用户可用：</p>
+<pre><code class="language-http">POST /api/messages/{messageId}/reactions
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json</code></pre>
+<pre><code class="language-json">{
+  &quot;emoji&quot;: &quot;👍&quot;,
+  &quot;reacted&quot;: true
+}</code></pre>
+<p>当前支持 <code>👍</code>、<code>✅</code>、<code>👀</code> 三类快捷回应。</p>
+<h2 id="频道与成员">频道与成员</h2>
+<p>创建频道，管理员可用：</p>
+<pre><code class="language-http">POST /api/channels
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json</code></pre>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;project-a&quot;,
+  &quot;description&quot;: &quot;项目协作频道&quot;
+}</code></pre>
+<p>加入频道：</p>
+<pre><code class="language-http">POST /api/channels/{channelId}/join
+Authorization: Bearer &lt;token&gt;</code></pre>
+<p>查看频道成员：</p>
+<pre><code class="language-http">GET /api/channels/{channelId}/members
+Authorization: Bearer &lt;token&gt;</code></pre>
+<p>维护频道说明与公告，管理员或该频道频道管理员可用：</p>
+<pre><code class="language-http">PUT /api/admin/channels/{channelId}
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json</code></pre>
+<pre><code class="language-json">{
+  &quot;description&quot;: &quot;项目协作频道&quot;,
+  &quot;announcement&quot;: &quot;本周优先同步阶段 5 验收风险&quot;
+}</code></pre>
+<p>邀请成员，管理员可用：</p>
+<pre><code class="language-http">POST /api/channels/{channelId}/members
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json</code></pre>
+<pre><code class="language-json">{
+  &quot;userId&quot;: 2
+}</code></pre>
+<p>移除成员，管理员可用：</p>
+<pre><code class="language-http">DELETE /api/channels/{channelId}/members/{userId}
+Authorization: Bearer &lt;token&gt;</code></pre>
+<h2 id="文件">文件</h2>
+<pre><code class="language-http">POST /api/files
+Authorization: Bearer &lt;token&gt;
+Content-Type: multipart/form-data</code></pre>
+<p>字段：</p>
+<pre><code class="language-text">file       文件
+channelId 频道 ID
+receiverId 私信接收人 ID</code></pre>
+<p>下载：</p>
+<pre><code class="language-http">GET /api/files/{storedName}
+Authorization: Bearer &lt;token&gt;</code></pre>
+<p>查看频道文件列表：</p>
+<pre><code class="language-http">GET /api/channels/{channelId}/files
+Authorization: Bearer &lt;token&gt;</code></pre>
+<p>返回当前频道最近 100 条文件消息。图片文件可由前端直接使用 <code>file.path</code> 做预览。</p>
+<h2 id="搜索">搜索</h2>
+<pre><code class="language-http">GET /api/search?q=关键词
+Authorization: Bearer &lt;token&gt;</code></pre>
+<p>返回最近 30 条可见消息，包含 <code>id</code>、<code>messageType</code>、<code>channelId</code>、<code>peerId</code>、<code>title</code>、<code>senderName</code>、<code>content</code>、<code>createdAt</code>。前端可用 <code>channelId + id</code> 切换频道并高亮目标消息。</p>
+<h2 id="审计">审计</h2>
+<p>仅管理员和审计员可访问。</p>
+<pre><code class="language-http">GET /api/audits?type=all
+Authorization: Bearer &lt;token&gt;</code></pre>
+<p>组合筛选：</p>
+<pre><code class="language-http">GET /api/audits?type=file&amp;operator=13677889001&amp;q=文件&amp;from=2026-05-01&amp;to=2026-05-15
+Authorization: Bearer &lt;token&gt;</code></pre>
+<p>筛选类型：</p>
+<pre><code class="language-text">all
+message
+file
+member
+login</code></pre>
+<h2 id="管理后台">管理后台</h2>
+<p>管理总览、安全策略、文件策略、用户角色配置仅管理员可访问。频道说明维护允许管理员或已加入该频道的频道管理员访问。</p>
+<pre><code class="language-http">GET /api/admin/overview
+Authorization: Bearer &lt;token&gt;</code></pre>
+<p>返回用户、频道、最近审计、安全策略与管理指标。</p>
+<pre><code class="language-http">PUT /api/admin/users/{id}
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{
+  &quot;role&quot;: &quot;ADMIN&quot;,
+  &quot;disabled&quot;: false
+}</code></pre>
+<p>保存用户角色与停用状态。当前管理员不能停用自己，也不能降低自己的管理员权限。</p>
+<p>角色：</p>
+<pre><code class="language-text">ADMIN          管理员
+AUDITOR        审计员
+CHANNEL_ADMIN  频道管理员
+USER           成员</code></pre>
+<pre><code class="language-http">PUT /api/admin/security-policy
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{
+  &quot;maxLoginFailures&quot;: 5,
+  &quot;lockMinutes&quot;: 15,
+  &quot;minPasswordLength&quot;: 8,
+  &quot;requireNumber&quot;: true
+}</code></pre>
+<p>保存登录失败锁定与密码策略配置。</p>
+<pre><code class="language-http">PUT /api/admin/upload-policy
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{
+  &quot;allowedExtensions&quot;: [&quot;.txt&quot;, &quot;.pdf&quot;, &quot;.png&quot;],
+  &quot;maxFileSizeMb&quot;: 5
+}</code></pre>
+<p>保存文件上传策略。服务端会按策略校验文件大小与扩展名。</p>
+<pre><code class="language-http">PUT /api/admin/network-policy
+Authorization: Bearer &lt;token&gt;
+Content-Type: application/json
+
+{
+  &quot;enabled&quot;: true,
+  &quot;allowedIps&quot;: [&quot;127.0.0.1&quot;, &quot;10.0.0.8&quot;]
+}</code></pre>
+<p>保存网络访问策略。默认关闭；开启时，服务端会统一拦截非白名单 IP。</p>
+<pre><code class="language-http">GET /api/admin/audits/export?token=&lt;token&gt;</code></pre>
+<p>导出 CSV 格式审计日志。管理员和审计员可访问，浏览器下载场景支持通过查询参数传入 token。</p>
+<h2 id="实时推送">实时推送</h2>
+<pre><code class="language-text">ws://127.0.0.1:5188/api/realtime?token=&lt;token&gt;</code></pre>
+<p>事件示例：</p>
+<pre><code class="language-json">{
+  &quot;event&quot;: &quot;message:channel&quot;,
+  &quot;payload&quot;: {
+    &quot;message&quot;: {}
+  },
+  &quot;time&quot;: &quot;2026-05-09T00:00:00.000Z&quot;
+}</code></pre>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,98 @@
+.settings-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.settings-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: var(--radius-card);
+  background: var(--color-input);
+  padding: 12px;
+}
+
+.settings-profile span {
+  display: block;
+  margin-top: 3px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.settings-avatar {
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.settings-field {
+  display: grid;
+  gap: 6px;
+}
+
+.settings-field span,
+.settings-shortcuts > strong {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.settings-field input,
+.settings-field textarea {
+  width: 100%;
+  border: 0;
+  border-radius: var(--radius-input);
+  background: var(--color-input);
+  color: var(--color-text);
+  outline: 0;
+  padding: 10px 12px;
+  resize: vertical;
+}
+
+.settings-toggles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.settings-toggle,
+.settings-shortcuts div,
+.settings-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.settings-toggle,
+.settings-shortcuts div {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  padding: 10px 12px;
+}
+
+.settings-toggle span,
+.settings-shortcuts span {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.settings-shortcuts {
+  display: grid;
+  gap: 8px;
+}
+
+.settings-shortcuts kbd {
+  border-radius: 5px;
+  background: var(--color-input);
+  color: var(--color-text-secondary);
+  padding: 4px 7px;
+  font-size: 12px;
+  font-family: var(--font-family-base);
+}

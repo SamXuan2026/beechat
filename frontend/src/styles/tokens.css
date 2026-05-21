@@ -1,0 +1,29 @@
+:root {
+  --color-sidebar: #281850;
+  --color-sidebar-active: #5a3a9e;
+  --color-sidebar-muted: #9c8dce;
+  --color-sidebar-text: #c7bdec;
+  --color-page: #f3f5f9;
+  --color-surface: #ffffff;
+  --color-input: #f6f7fa;
+  --color-primary: #4a9fd8;
+  --color-success: #41c585;
+  --color-warning: #f5a623;
+  --color-danger: #e05252;
+  --color-text: #1f2937;
+  --color-text-secondary: #6b7280;
+  --color-text-muted: #9aa3b2;
+  --color-border: #e6eaf2;
+
+  --radius-button: 6px;
+  --radius-input: 6px;
+  --radius-bubble: 8px;
+  --radius-card: 8px;
+  --radius-panel: 10px;
+
+  --sidebar-width: 232px;
+  --right-panel-width: 320px;
+  --topbar-height: 56px;
+
+  --font-family-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}

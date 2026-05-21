@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BeeChat / BeePilot 文档索引</title>
+    <link rel="stylesheet" href="assets/docs.css?v=tailwind-20260513" />
+  </head>
+  <body>
+    <div class="doc-shell">
+      <aside class="doc-sidebar">
+        <div class="doc-brand">
+          <strong>BeeChat Docs</strong>
+          <span>HTML 文档中心</span>
+        </div>
+        <nav><a class="doc-nav-link" href="../design/beechat/DESIGN_SPEC.html"><span>设计</span>BeeChat 设计规范</a>
+<a class="doc-nav-link" href="../design/beechat/README.html"><span>设计</span>BeeChat 设计稿</a>
+<a class="doc-nav-link" href="../design/README.html"><span>设计</span>设计文件归档</a>
+<a class="doc-nav-link" href="beechat/API.html"><span>BeeChat</span>BeeChat MVP 接口文档</a>
+<a class="doc-nav-link" href="beechat/DATABASE_PLAN.html"><span>BeeChat</span>BeeChat 数据库适配方案</a>
+<a class="doc-nav-link" href="beechat/DEPLOYMENT.html"><span>BeeChat</span>BeeChat MVP 部署说明</a>
+<a class="doc-nav-link" href="beechat/DESIGN.html"><span>BeeChat</span>BeeChat 设计文档</a>
+<a class="doc-nav-link" href="beechat/FRONTEND_REFACTOR_PLAN.html"><span>BeeChat</span>BeeChat 前端工程化改造方案</a>
+<a class="doc-nav-link" href="beechat/ITERATION_PLAN.html"><span>BeeChat</span>BeeChat 迭代计划</a>
+<a class="doc-nav-link" href="beechat/REQUIREMENTS.html"><span>BeeChat</span>BeeChat 需求文档</a>
+<a class="doc-nav-link" href="beechat/ROADMAP.html"><span>BeeChat</span>BeeChat Roadmap</a>
+<a class="doc-nav-link" href="beechat/TESTING.html"><span>BeeChat</span>BeeChat 测试说明与报告索引</a>
+<a class="doc-nav-link" href="beepilot/conversation-channel-adapter.html"><span>BeePilot</span>Conversation Channel Adapter 设计草案</a>
+<a class="doc-nav-link" href="beepilot/functional-scope.html"><span>BeePilot</span>BeePilot 整体功能规划与功能清单</a>
+<a class="doc-nav-link" href="beepilot/phase1-implementation-plan.html"><span>BeePilot</span>BeePilot Phase 1 正式开发计划</a>
+<a class="doc-nav-link" href="beepilot/product-roadmap-and-architecture.html"><span>BeePilot</span>BeePilot 产品 Roadmap 与技术框架</a>
+<a class="doc-nav-link" href="beepilot/references/beeworks-ai-advisor-system-roadmap.html"><span>BeePilot 参考</span>BeeWorks 官网 AI 顾问系统 Roadmap</a>
+<a class="doc-nav-link" href="beepilot/references/beeworks-ai-plg-homepage-plan.html"><span>BeePilot 参考</span>BeeWorks 官网 + AI PLG 闭环方案</a>
+<a class="doc-nav-link active" href="README.html"><span>项目</span>BeeChat / BeePilot 文档索引</a>
+<a class="doc-nav-link" href="../README.html"><span>项目</span>BeeChat MVP</a></nav>
+      </aside>
+      <main class="doc-main">
+        <article class="doc-article">
+          <div class="doc-meta">
+            <span>项目</span>
+            <span>离线 HTML · Tailwind CSS</span>
+          </div>
+          <h1 id="beechat-beepilot-文档索引">BeeChat / BeePilot 文档索引</h1>
+<p>本目录统一存放 BeeChat 工程文档与 BeePilot 产品规划文档。</p>
+<h2 id="html-输出">HTML 输出</h2>
+<p>项目内所有 Markdown 文档统一生成同路径 HTML 文件，便于浏览器查看与交付归档。</p>
+<pre><code class="language-text">npm run docs:build</code></pre>
+<p>生成规则：</p>
+<ul><li><code>README.md</code> 输出为 <code>README.html</code>。</li><li><code>docs/beechat/API.md</code> 输出为 <code>docs/beechat/API.html</code>。</li><li><code>design/beechat/DESIGN_SPEC.md</code> 输出为 <code>design/beechat/DESIGN_SPEC.html</code>。</li><li>HTML 统一使用本地 Tailwind CSS 编译后的 <code>docs/assets/docs.css</code> 排版样式，可离线浏览。</li><li>Tailwind 源文件为 <code>docs/assets/docs.tailwind.css</code>，配置文件为 <code>tailwind.docs.config.js</code>。</li></ul>
+<h2 id="beechat-工程文档">BeeChat 工程文档</h2>
+<pre><code class="language-text">docs/beechat/API.html             BeeChat MVP 接口文档
+docs/beechat/DEPLOYMENT.html      BeeChat 部署说明
+docs/beechat/DATABASE_PLAN.html   BeeChat 数据库适配方案
+docs/beechat/REQUIREMENTS.html    BeeChat 需求文档
+docs/beechat/DESIGN.html          BeeChat 设计文档
+docs/beechat/ITERATION_PLAN.html  BeeChat 后续迭代计划
+docs/beechat/ROADMAP.html         BeeChat 产品与技术路线图
+docs/beechat/FRONTEND_REFACTOR_PLAN.html  BeeChat 前端工程化改造方案
+docs/beechat/TESTING.html         BeeChat 测试说明与报告索引</code></pre>
+<h2 id="beepilot-产品文档">BeePilot 产品文档</h2>
+<pre><code class="language-text">docs/beepilot/product-roadmap-and-architecture.html  BeePilot 产品 Roadmap 与技术框架
+docs/beepilot/phase1-implementation-plan.html        BeePilot Phase 1 正式开发计划
+docs/beepilot/functional-scope.html                  BeePilot 功能范围
+docs/beepilot/conversation-channel-adapter.html      Conversation Channel 适配说明</code></pre>
+<h2 id="beepilot-参考资料">BeePilot 参考资料</h2>
+<pre><code class="language-text">docs/beepilot/references/beeworks-ai-advisor-system-roadmap.html
+docs/beepilot/references/beeworks-ai-plg-homepage-plan.html</code></pre>
+<h2 id="归档规则">归档规则</h2>
+<ul><li>BeeChat 工程实现、接口、部署、迭代文档放入 <code>docs/beechat/</code>。</li><li>BeePilot 产品路线、阶段计划、功能范围、架构边界放入 <code>docs/beepilot/</code>。</li><li>BeeWorks、官网、AI Advisor 等背景材料放入 <code>docs/beepilot/references/</code>。</li><li>设计稿、截图、Pencil/Figma 导出文件放入 <code>design/</code>。</li></ul>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

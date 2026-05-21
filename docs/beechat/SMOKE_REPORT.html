@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BeeChat 冒烟测试报告</title>
+    <link rel="stylesheet" href="../assets/docs.css" />
+  </head>
+  <body>
+    <div class="doc-shell">
+      <main class="doc-main">
+        <article class="doc-article">
+          <div class="doc-meta"><span>BeeChat</span><span>离线 HTML 测试报告</span></div>
+          <h1>BeeChat 冒烟测试报告</h1>
+          <p class="border text-emerald-700 bg-emerald-50 border-emerald-200 rounded-md px-4 py-3 font-bold">结果：通过</p>
+          <table>
+            <tbody>
+              <tr><th>开始时间</th><td>2026/5/21 09:35:15</td></tr>
+              <tr><th>结束时间</th><td>2026/5/21 09:35:19</td></tr>
+              <tr><th>入口地址</th><td><code>http://127.0.0.1:5188</code></td></tr>
+              <tr><th>执行命令</th><td><code>npm run smoke</code></td></tr>
+              <tr><th>结论</th><td>BeeChat MVP 冒烟验证通过</td></tr>
+            </tbody>
+          </table>
+          <h2>覆盖范围</h2>
+          <ul>
+            <li>入口页面、静态资源、健康检查、运行指标、结构化日志、数据库迁移。</li>
+            <li>Docker 多阶段构建、生产 Compose、环境变量样例、Nginx WebSocket 代理样例。</li>
+            <li>PostgreSQL 表结构迁移、生产数据库变量、SQLite 到 PostgreSQL 迁移规划。</li>
+            <li>PostgreSQL 一次性导入 SQL 生成脚本与数据顺序校验。</li>
+            <li>数据库运行模式配置、PostgreSQL 未启用保护和健康检查数据库摘要。</li>
+            <li>PostgreSQL 查询适配层、连接串校验、事务封装和迁移执行封装。</li>
+            <li>业务仓储契约、SQLite 仓储骨架、PostgreSQL 仓储骨架和双实现契约检查。</li>
+            <li>主服务频道、成员、频道消息分页、私信分页、文件列表、审计查询只读路径接入 SQLite 仓储。</li>
+            <li>主服务频道消息发送写入路径接入 SQLite 仓储。</li>
+            <li>主服务私信发送写入路径接入 SQLite 仓储。</li>
+            <li>主服务消息编辑与消息撤回写入路径接入 SQLite 仓储。</li>
+            <li>登录、会话恢复、退出登录、WebSocket 实时连接、动态在线状态。</li>
+            <li>频道消息、线程、私信、未读清零。</li>
+            <li>频道公告、置顶消息、消息收藏、表情回应、频道成员管理。</li>
+            <li>@ 人提醒、文件上传策略、下载、图片预览数据、频道文件列表、搜索定位、审计筛选与导出。</li>
+            <li>角色权限、安全策略、IP 白名单。</li>
+          </ul>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

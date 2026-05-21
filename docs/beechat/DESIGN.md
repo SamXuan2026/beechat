@@ -71,13 +71,31 @@ BeeChat
 
 | 设计区域 | 前端文件 | 实现说明 |
 | --- | --- | --- |
-| 登录页 | `web/index.html`、`web/styles.css` | 登录卡片、账号密码、错误提示 |
-| 左侧导航 | `web/index.html`、`web/app.js`、`web/styles.css` | 频道、私信、发现频道入口 |
-| 消息区 | `web/app.js`、`web/styles.css` | 消息渲染、编辑、撤回、文件卡片 |
-| 线程面板 | `web/app.js`、`web/styles.css` | 线程根消息、回复、线程输入 |
-| 审计面板 | `web/app.js`、`web/styles.css` | 审计过滤、审计列表 |
-| 成员面板 | `web/app.js`、`web/styles.css` | 成员列表、邀请、移除 |
-| 发现频道 | `web/index.html`、`web/app.js`、`web/styles.css` | 弹层、搜索、加入频道 |
+| 登录页 | `frontend/src/features/auth/LoginPage.tsx`、`LoginPage.css` | 登录卡片、测试账号快捷登录、账号密码、错误提示 |
+| 工作台容器 | `frontend/src/features/chat/ChatWorkspace.tsx` | 状态编排、数据刷新、实时事件、业务操作分发 |
+| 工作台 Hooks | `frontend/src/features/chat/hooks/` | 搜索、草稿、线程、发现频道、设置、管理后台状态收敛 |
+| 左侧导航 | `frontend/src/features/chat/components/ChatSidebar.tsx` | 品牌、全局搜索、搜索类型标签、频道、私信、发现频道入口、当前用户 |
+| 左侧导航样式 | `frontend/src/features/chat/components/ChatSidebar.css` | 渐变侧栏、品牌卡片、当前频道高亮条、搜索结果类型色条、频道、私信、未读徽标、当前用户卡片 |
+| 主聊天区 | `frontend/src/features/chat/components/ChatMainPanel.tsx` | 频道头部、频道图标、安全协作信息条、频道公告、置顶摘要、消息列表、输入区壳层 |
+| 主聊天区样式 | `frontend/src/features/chat/components/ChatMainPanel.css` | 频道头部、频道图标、安全协作信息条、频道公告、置顶摘要 |
+| 消息列表 | `frontend/src/features/chat/components/MessageList.tsx` | 消息渲染、发送者归属、文件卡片、图片预览、置顶、收藏、回应、搜索高亮 |
+| 消息列表样式 | `frontend/src/features/chat/components/MessageList.css` | 背景层次、日期胶囊、消息气泡、自己消息蓝色渐变、他人消息白色卡片、文件卡片、反应区、消息错误态 |
+| 输入区 | `frontend/src/features/chat/components/MessageComposer.tsx` | 文本输入、发送、上传、`@` 人快捷入口、草稿状态、发送状态辅助文本 |
+| 输入区样式 | `frontend/src/features/chat/components/MessageComposer.css` | 工具栏、输入框、发送区、固定尺寸工具按钮、`@` 人快捷入口、输入区错误态 |
+| 窄屏工作台 | `frontend/src/features/chat/ChatWorkspace.css` | 动态侧栏高度、主区剩余视口、移动端一屏布局 |
+| 弹层基础样式 | `frontend/src/components/Modal/Modal.css` | 桌面居中弹层、窄屏近全屏弹层 |
+| 右侧面板 | `frontend/src/features/chat/components/RightPanel.tsx` | 线程、文件、审计、成员 Tab 壳层 |
+| 右侧面板样式 | `frontend/src/features/chat/components/RightPanel.css` | 右侧面板壳层、分段 Tab、统一面板头、线程、成员、文件、审计卡片 |
+| 线程面板 | `frontend/src/features/chat/components/ThreadPanel.tsx` | 面板头、线程根消息、回复列表、线程回复输入 |
+| 审计面板 | `frontend/src/features/chat/components/AuditPanel.tsx` | 面板头、审计过滤、审计列表、加载态、错误态 |
+| 成员面板 | `frontend/src/features/chat/components/MemberPanel.tsx` | 面板头、成员列表、邀请、移除、加载态、错误态 |
+| 文件面板 | `frontend/src/features/chat/components/FilePanel.tsx` | 面板头、频道文件列表、图片文件区分、空状态 |
+| 发现频道 | `frontend/src/features/chat/components/DiscoverChannelsModal.tsx` | 弹层、搜索、创建频道、加入频道 |
+| 发现频道样式 | `frontend/src/features/chat/components/DiscoverChannelsModal.css` | 创建表单、频道列表、频道卡片 |
+| 设置页 | `frontend/src/features/chat/components/SettingsModal.tsx` | 个人资料、通知偏好、快捷键展示 |
+| 设置页样式 | `frontend/src/features/chat/components/SettingsModal.css` | 个人资料、偏好开关、快捷键、操作区 |
+| 管理后台 | `frontend/src/features/chat/components/AdminModal.tsx` | 用户角色、频道说明、审计、安全策略、文件策略、网络策略 |
+| 管理后台样式 | `frontend/src/features/chat/components/AdminModal.css` | 摘要、指标、用户、频道、审计、策略区 |
 
 ## 六、视觉规范
 
@@ -136,10 +154,38 @@ BeeChat
 - 敏感词消息在消息区展示提示。
 - 关键操作进入审计记录。
 
+### 侧边栏与搜索
+
+- 频道与私信统一使用紧凑导航条目，长名称自动省略。
+- 频道未读、`@我`、私信未读统一使用徽标样式。
+- 搜索结果提供加载态、空状态、错误态和结果数量。
+- 搜索结果区域独立滚动，不能挤压当前用户区或撑破主界面。
+
+### 消息区与输入区状态
+
+- 消息列表的加载失败保留在消息流区域，并提供重试动作。
+- 发送失败、上传失败固定展示在输入区上方，避免与消息读取错误混淆。
+- 发送按钮在空内容、发送中、上传中状态下禁用。
+- 输入区使用“待输入”“上传中”“草稿已保存”等弱提示说明当前状态，不抢占消息阅读区。
+
 ### 成员
 
 - 管理员可邀请、移除频道成员。
 - 普通用户不展示管理操作。
+
+### 管理后台
+
+- 管理后台顶部展示摘要区，突出当前控制台用途和审计导出主操作。
+- 用户、策略、频道、审计按独立区块排列，避免表单堆叠。
+- 安全策略、文件策略、网络策略在桌面端使用策略网格，窄屏自动单列。
+- 审计详情保留最近记录数量，导出入口在顶部保持稳定可见。
+
+### 窄屏适配
+
+- 窄屏下左侧栏改为顶部区域并支持内部滚动。
+- 窄屏下右侧面板隐藏，避免主消息区被压扁。
+- 输入区始终保持在主消息区底部。
+- 弹层在窄屏下接近全屏展示，内部滚动，避免内容被裁切。
 
 ## 八、设计验收
 
@@ -148,3 +194,4 @@ BeeChat
 - 登录页、发现频道、线程面板视觉风格一致。
 - 动态文本渲染前进行 HTML 转义。
 - 窄屏下右侧线程面板隐藏，主流程仍可操作。
+- 阶段 6.5 无头 E2E 验收 14 个用例全部通过。

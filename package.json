@@ -2,8 +2,22 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node server/index.js",
+    "frontend:build": "npm --prefix frontend run build",
+    "backup": "node scripts/backup.js",
+    "prod:check": "node scripts/check-prod-config.js",
+    "db:plan:check": "node scripts/check-postgres-plan.js",
+    "db:runtime:check": "node scripts/check-database-runtime.js",
+    "db:adapter:check": "node scripts/check-postgres-adapter.js",
+    "db:repository:check": "node scripts/check-repository-contract.js",
+    "db:export:postgres": "node scripts/export-postgres-seed.js",
+    "docs:build": "node scripts/build-docs.js && npm run docs:css",
+    "docs:css": "tailwindcss -c tailwind.docs.config.js -i docs/assets/docs.tailwind.css -o docs/assets/docs.css --minify",
+    "e2e": "playwright test",
+    "e2e:headed": "playwright test --headed",
     "smoke": "node scripts/smoke.js"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "tailwindcss": "^3.4.17"
+  }
 }

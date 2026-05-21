@@ -1,0 +1,30 @@
+.bc-panel-tabs {
+  display: flex;
+  border: 1px solid #dfe7f1;
+  border-radius: 10px;
+  background: #f5f8fc;
+  gap: 6px;
+  padding: 4px;
+}
+
+.bc-panel-tabs button {
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  padding: 7px 10px;
+  transition: background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.bc-panel-tabs button.active {
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(31, 41, 55, 0.08);
+  color: #286fba;
+  font-weight: 800;
+}
+
+.bc-panel-tabs button:hover,
+.bc-panel-tabs button:focus-visible {
+  background: #ffffff;
+  outline: 0;
+}

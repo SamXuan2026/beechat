@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply m-0 bg-[#eef2f7] font-sans text-bee-ink antialiased;
+  }
+
+  * {
+    @apply box-border;
+  }
+}
+
+@layer components {
+  .doc-shell {
+    @apply grid min-h-screen grid-cols-[320px_minmax(0,1fr)] bg-[#eef2f7];
+  }
+
+  .doc-sidebar {
+    @apply sticky top-0 h-screen overflow-auto border-r border-bee-line bg-white px-5 py-6 text-bee-ink;
+  }
+
+  .doc-brand {
+    @apply mb-6 grid gap-2 rounded-2xl bg-bee-sidebar px-4 py-4 text-white shadow-doc;
+  }
+
+  .doc-brand strong {
+    @apply text-xl font-bold tracking-normal;
+  }
+
+  .doc-brand span {
+    @apply text-xs text-[#d7cdf2];
+  }
+
+  .doc-sidebar nav {
+    @apply grid gap-2;
+  }
+
+  .doc-nav-link {
+    @apply grid gap-1 rounded-xl border border-transparent px-3 py-2.5 text-sm text-bee-ink no-underline transition-colors;
+  }
+
+  .doc-nav-link span {
+    @apply text-[11px] font-semibold text-bee-muted;
+  }
+
+  .doc-nav-link:hover,
+  .doc-nav-link.active {
+    @apply border-[#cfe4f6] bg-[#edf7ff] text-bee-primaryDark;
+  }
+
+  .doc-main {
+    @apply px-10 py-12;
+  }
+
+  .doc-article {
+    @apply mx-auto w-full max-w-5xl rounded-3xl border border-bee-line bg-bee-panel px-14 py-12 shadow-doc;
+  }
+
+  .doc-meta {
+    @apply mb-6 flex flex-wrap items-center gap-3 border-b border-bee-line pb-5 text-xs font-semibold text-bee-muted;
+  }
+
+  .doc-meta span {
+    @apply rounded-full bg-[#eef6ff] px-3 py-1 text-bee-primaryDark;
+  }
+
+  .doc-article h1,
+  .doc-article h2,
+  .doc-article h3,
+  .doc-article h4,
+  .doc-article h5,
+  .doc-article h6 {
+    @apply font-bold tracking-normal text-bee-ink;
+  }
+
+  .doc-article h1 {
+    @apply mt-0 text-4xl leading-tight;
+  }
+
+  .doc-article h2 {
+    @apply mb-4 mt-12 rounded-xl bg-[#f5f9fd] px-4 py-3 text-2xl leading-snug;
+  }
+
+  .doc-article h3 {
+    @apply mb-2 mt-7 text-lg leading-snug;
+  }
+
+  .doc-article h4,
+  .doc-article h5,
+  .doc-article h6 {
+    @apply mb-2 mt-5 text-base;
+  }
+
+  .doc-article p {
+    @apply my-4 text-base leading-8 text-[#2d374b];
+  }
+
+  .doc-article a {
+    @apply font-medium text-bee-primaryDark no-underline;
+  }
+
+  .doc-article a:hover {
+    @apply underline;
+  }
+
+  .doc-article ul,
+  .doc-article ol {
+    @apply my-4 space-y-2 rounded-xl bg-[#fafcff] px-7 py-4 text-base leading-8 text-[#2d374b];
+  }
+
+  .doc-article li {
+    @apply leading-8;
+  }
+
+  .doc-article code {
+    @apply rounded-md bg-[#eef4fb] px-1.5 py-0.5 font-mono text-[0.92em] text-[#245b83];
+  }
+
+  .doc-article pre {
+    @apply my-5 overflow-auto rounded-xl bg-bee-code p-4;
+  }
+
+  .doc-article pre code {
+    @apply bg-transparent p-0 text-sm leading-7 text-[#e7edf7];
+  }
+
+  .doc-article table {
+    @apply my-6 w-full overflow-hidden rounded-2xl border border-bee-line text-sm shadow-sm;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .doc-article th {
+    @apply bg-[#eaf4fd] px-4 py-3 text-left font-bold text-[#26344d];
+  }
+
+  .doc-article td {
+    @apply border-t border-bee-line px-4 py-3 align-top text-[#2d374b];
+  }
+
+  .doc-article blockquote {
+    @apply my-6 rounded-2xl border border-[#b9dcf8] bg-[#eef7ff] px-5 py-4;
+  }
+
+  .doc-article blockquote p {
+    @apply m-0;
+  }
+}
+
+@media (max-width: 980px) {
+  .doc-shell {
+    @apply grid-cols-1;
+  }
+
+  .doc-sidebar {
+    @apply static h-auto;
+  }
+
+  .doc-main {
+    @apply p-4;
+  }
+
+  .doc-article {
+    @apply px-5 py-7;
+  }
+
+  .doc-meta {
+    @apply items-start;
+  }
+}

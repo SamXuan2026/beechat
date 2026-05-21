@@ -1,0 +1,7 @@
+.bc-empty {
+  border-radius: var(--radius-card);
+  background: var(--color-input);
+  color: var(--color-text-muted);
+  padding: 16px;
+  text-align: center;
+}
